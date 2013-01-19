@@ -5,7 +5,7 @@ html{
   height: 100%;
 }
 body{
-  background-image: url('img/bg-texture.png');
+  background-image: url('/img/bg-texture.png');
   background-attachment:fixed;
   margin:0;
   top: 0;
@@ -235,6 +235,6 @@ footer{
   float: left;
   width: 24px;
   height: 24px;
-  background: url("img/ajax-loader-pacman.gif") no-repeat;
+  background: url("/img/ajax-loader-pacman.gif") no-repeat;
   margin: 3px 10px;
 }
