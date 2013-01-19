@@ -37,8 +37,8 @@ html(lang="en")
         article#downloaded-content
           .loading
             .downloadStatusText
-            .downloadLoader.ajaxLoader
             progress#downloadProgress
+            .downloadLoader.ajaxLoader
             .clear
           .fileInfo
           button
@@ -77,10 +77,10 @@ html(lang="en")
                     .explain
               .clear
             .status
-              progress#uploadProgress
               button#submit.btn.btn-primary(type='button', value='Upload')
                 i.icon-lock.icon-white
                 | &nbsp; Get Secure Link
+              progress#uploadProgress
               .uploadLoader.ajaxLoader
             .clear
             .itemStatus

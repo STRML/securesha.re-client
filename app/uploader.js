@@ -21,13 +21,13 @@ $(function() {
     // Check file
     var file = this.files[0]; // browser 'File' object
     if(!file) return window.alert("Please attach a file to share.");
-    if(file.size > 10 * 1024 * 1024) return window.alert("File is too big. Please choose a file under 10MB");
+    if(file.size > window.secureShared.fileSizeLimit) return window.alert("File is too big. Please choose a file under 10MB");
     file.name = file.name + "?" + (Math.random() * 1000); // browser cache buster
 
     // Change page styles to indicate encryption is in #uploadProgress
     window.isEncrypting = true;
     $(".uploadLoader").show();
-    $(".attachedFileInfo").html("File attached: " + file.name + ". <br>Size: " + file.size);
+    $(".attachedFileInfo").html("File attached: " + file.name + ". <br>Size: " + window.secureShared.fileSize(file.size));
     $(".itemStatus").html("Encrypting: 0% complete");
     $("#submit").removeClass('btn-primary').addClass('btn-inverse loading').attr('disabled', 'disabled');
     $("#uploadProgress").toggle();

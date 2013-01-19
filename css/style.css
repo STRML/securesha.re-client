@@ -110,6 +110,10 @@ textarea{
   display: none;
 }
 
+#downloaded-content .loading{
+  margin-bottom: 5px;
+}
+
 #upload-form{
   width: 500px;
   background: rgba(255,255,255,.15);
@@ -196,13 +200,14 @@ span.add-on{
 }
 #submit{
   float: left;
-  margin-right: 10px;
+  margin-right: 3px;
 }
 #submit.loading{
   opacity: .5;
 }
 progress{
   display:none;
+  float: left;
 }
 
 footer{
@@ -227,8 +232,11 @@ footer{
   clear: both;
 }
 
-.downloadLoader{
-  margin-top: 0;
+#downloadProgress{
+  margin: 5px 5px 0;
+}
+#uploadProgress {
+  margin: 9px 5px 0;
 }
 .itemStatus{
   margin-top: 10px;
@@ -239,5 +247,13 @@ footer{
   width: 24px;
   height: 24px;
   background: url("/img/ajax-loader-pacman.gif") no-repeat;
-  margin: 3px 10px;
+  margin: 3px 0px;
 }
+.downloadLoader{
+  margin: 0 3px;
+}
+
+.downloadStatusText{
+  float: left;
+}
+

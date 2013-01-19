@@ -186,7 +186,7 @@ $(function() {
       if(!/Safari/i.test(window.BrowserDetect.browser)){
         var URL = window.URL || window.webkitURL;
         var url = URL.createObjectURL(blob);
-        $("<a>").attr("href", url).attr("download", decryptedFile.fileName)
+        $("<a>").attr("href", url).attr("download", decryptedFile.fileName).addClass("button button-success")
           .text("Download").appendTo("#downloaded-content").hide().fadeIn();
       } else {
         // Safari can't open blobs, create a data URI
