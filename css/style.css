@@ -201,7 +201,7 @@ span.add-on{
 #submit.loading{
   opacity: .5;
 }
-#progressbar{
+progress{
   display:none;
 }
 
@@ -229,6 +229,9 @@ footer{
 
 .downloadLoader{
   margin-top: 0;
+}
+.itemStatus{
+  margin-top: 10px;
 }
 .ajaxLoader{
   display: none;

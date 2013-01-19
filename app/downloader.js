@@ -40,17 +40,15 @@ $(function() {
   function doDownload(url, cb){
     $("#downloaded-content").fadeIn();
     $(".downloadLoader").show();
-    $("progress").toggle();
-    $("#downloaded-content .loadingText").text("Downloading your file...");
+    $("#downloadProgress").toggle();
+    $(".downloadStatusText").text("Downloading your file...");
     var xhr = $.ajax({
       url: '/get/' + url,
       //server script to process data
       type: 'GET',
       xhr: function() { // custom xhr
         var myXhr = $.ajaxSettings.xhr();
-        if(myXhr.download) { // check if download property exists
-          myXhr.download.addEventListener('progress', progressHandler, false); // for handling the progress of the download
-        }
+        myXhr.onprogress = progressHandler; // for handling the progress of the download
         return myXhr;
       },
       //Ajax events
@@ -62,21 +60,27 @@ $(function() {
     function successHandler(response, wat){
       var fileMeta = JSON.parse(xhr.getResponseHeader("X-File-Stats"));
       cb(response, fileMeta);
-      $("progress").toggle();
+      $("#downloadProgress").toggle();
     }
 
     function errorHandler(){
-      $("#downloaded-content .loadingText").hide();
+      $(".downloadStatusText").hide();
       $("#downloaded-content .fileInfo").addClass('alert').addClass('alert-error').html("Sorry! File not found.");
       $(".downloadLoader").hide();
+      $("#downloadProgress").hide();
     }
 
     function progressHandler(e) {
       if(e.lengthComputable) {
-        $('progress').attr({
+        $('#downloadProgress').attr({
           value: e.loaded,
           max: e.total
         });
+        if(e.loaded != e.total){
+          $(".downloadStatusText").html("Downloading: " + ((e.loaded / e.total) * 100).toFixed(0) + "% complete.");
+        } else {
+          $(".downloadStatusText").html("Download complete. Generating link...");
+        }
       }
     }
   }
@@ -118,7 +122,7 @@ $(function() {
 
   // Decrypt file using worker.
   function decrypt(file, fileMeta, passphrase){
-    $("#downloaded-content .loadingText").text("Decrypting...");
+    $(".downloadStatusText").text("Decrypting...");
     window.isDecrypting = true;
     var workers = window.secureShared.spawnWorkers(window.secureShared.workerCount), i;
     for(i = 0; i < workers.length; i++){
@@ -140,8 +144,8 @@ $(function() {
 
     var decryptedFile = {fileData: []};
     var receivedCount = 0;
-    $("progress").toggle();
-    $('progress').attr({
+    $("#downloadProgress").toggle();
+    $('#downloadProgress').attr({
       value: 0,
       max: slices.length - 1
     });
@@ -151,7 +155,7 @@ $(function() {
       if(!_.isObject(e.data)){
         // error message
         var msg = "Incorrect password. Refresh this page to try again.";
-        $("#downloaded-content .loadingText").hide();
+        $(".downloadStatusText").hide();
         $("#downloaded-content .fileInfo").addClass('alert').addClass('alert-error').html(msg);
         $(".downloadLoader").hide();
         return;
@@ -166,10 +170,11 @@ $(function() {
     function onSliceReceived(slice){
       if(slice.fileName) decryptedFile.fileName = slice.fileName;
       decryptedFile.fileData[slice.index] = slice.fileData;
-      $('progress').attr({
+      $('#downloadProgress').attr({
         value: ++receivedCount,
         max: slices.length - 1
       });
+      $(".downloadStatusText").html("Decrypting: " + ((receivedCount / (slices.length - 1)) * 100).toFixed(0) + "% complete.");
     }
 
     function onFinish(){
@@ -198,7 +203,8 @@ $(function() {
       }
 
       window.isDecrypting = false;
-      $("#downloaded-content .loadingText").fadeIn().text("Done!");
+      $(".downloadStatusText").fadeIn().text("Done!");
+      $("#downloadProgress").hide();
       $(".downloadLoader").hide();
     }
   }

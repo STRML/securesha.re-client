@@ -12,18 +12,25 @@ $(function() {
   function encryptFile(){
     var me = this;
 
+    // Clear any errors
+    $(".itemStatus").add(".attachedFileInfo").html("");
+    $(".uploadLoader").hide();
+    $(".fileInfo").hide();
+    window.location.hash = "";
+
     // Check file
     var file = this.files[0]; // browser 'File' object
     if(!file) return window.alert("Please attach a file to share.");
     if(file.size > 10 * 1024 * 1024) return window.alert("File is too big. Please choose a file under 10MB");
     file.name = file.name + "?" + (Math.random() * 1000); // browser cache buster
 
-    // Change page styles to indicate encryption is in progress
+    // Change page styles to indicate encryption is in #uploadProgress
     window.isEncrypting = true;
-    $(".ajaxLoader").show();
-    $(".attachedFileInfo").css("opacity", "1").html("Encrypting: " + file.name + ". <br>Size: " + file.size);
+    $(".uploadLoader").show();
+    $(".attachedFileInfo").html("File attached: " + file.name + ". <br>Size: " + file.size);
+    $(".itemStatus").html("Encrypting: 0% complete");
     $("#submit").removeClass('btn-primary').addClass('btn-inverse loading').attr('disabled', 'disabled');
-    $("#progressbar").toggle();
+    $("#uploadProgress").toggle();
 
     // Create worker
     if(cryptoWorker) cryptoWorker.terminate();
@@ -79,7 +86,8 @@ $(function() {
       encryptedFile.fileData[e.data.index] = e.data.fileData;
       if(e.data.fileName) encryptedFile.fileName = e.data.fileName;
       finished++;
-      $("progress").attr({value: finished, max: slices.length + 1});
+      $("#uploadProgress").attr({value: finished, max: slices.length + 1});
+      $(".itemStatus").html("Encrypting: " + ((finished / (slices.length + 1))* 100).toFixed(0) + "% complete.");
     }
 
     function onUploadFinished(){
@@ -92,10 +100,10 @@ $(function() {
         workers[i].terminate();
       }
       window.isEncrypting = false;
-      $(".ajaxLoader").hide();
-      $(".attachedFileInfo").html("File attached: " + file.name + ". <br>Size: " + file.size);
+      $(".uploadLoader").hide();
+      $(".itemStatus").html("Encryption complete. Click \"Get Secure Link\" to upload.");
       $("#submit").addClass('btn-primary').removeClass('btn-inverse loading').removeAttr('disabled');
-      $("#progressbar").toggle();
+      $("#uploadProgress").toggle();
     }
   }
 
@@ -105,7 +113,7 @@ $(function() {
     if(!encryptedFile) return window.alert("Please attach a file to share.");
     if(!encryptedFile.fileData.length || window.isEncrypting) return window.alert("Still encrypting! Please wait...");
 
-    $("#progressbar").toggle();
+    $("#uploadProgress").toggle();
 
     // Get form params
     var formParams = $("form").serializeArray();
@@ -115,17 +123,20 @@ $(function() {
     });
     delete params.password; // IMPORTANT: don't send password to server!
 
+    // Set #uploadProgress bar to zero
+    $('#uploadProgress').attr({value: 0, total: 1});
     // Create params string in a worker to not freeze up the browser
     var xhrWorker = new Worker("app/xhrWorker.js");
     xhrWorker.postMessage(params);
 
-    // TODO: Show 'preparing upload' text
+    // Show 'preparing upload' text
+    $(".itemStatus").html("Preparing Upload...");
 
     // When the worker responds, send the returned data as form data
     xhrWorker.addEventListener('message', function(e){
       // Send ajax request
       xhrWorker.terminate();
-      $(".ajaxLoader").show();
+      $(".uploadLoader").show();
       $.ajax({
         url: '/putfile',
         //server script to process data
@@ -152,20 +163,26 @@ $(function() {
 
       function successHandler(response) {
         displayURL(response.url, passphrase);
-        $(".ajaxLoader").hide();
+        $(".uploadLoader").hide();
+        $(".itemStatus").html("");
       }
 
       function errorHandler() {
-        $(".status").append("<i>Error</i>");
-        $(".ajaxLoader").hide();
+        $(".itemStatus").html("<i>Error</i>");
+        $(".uploadLoader").hide();
       }
 
       function progressHandler(e) {
         if(e.lengthComputable) {
-          $('progress').attr({
+          $('#uploadProgress').attr({
             value: e.loaded,
             max: e.total
           });
+        }
+        if(e.loaded != e.total){
+          $(".itemStatus").html("Uploading: " + ((e.loaded / e.total) * 100).toFixed(0) + "% complete.");
+        } else {
+          $(".itemStatus").html("Upload complete. Generating URL...");
         }
       }
     }, false);
