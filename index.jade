@@ -1,0 +1,108 @@
+doctype 5
+html(lang="en")
+  head
+    include includes/head
+
+  body
+    #wrapper
+      header#main-header
+        hgroup
+          #logo
+            img(src='img/tsecret.png', height='80', width='80')
+          h1 securesha.re
+      #sidebar
+        nav#sidenav
+          h2
+            | Securesha.re: Encrypted file sharing
+          h5
+            | Self-destructing, secure file sharing. No logging. Even we can't access your data.
+          h3
+            | Imagine if they used securesha.re....
+
+          ul#bxSlider
+            li
+              img(src="img/people/anthony_weiner.jpg")
+            li
+              img(src="img/people/brett_favre.jpg")
+            li
+              img(src="img/people/petraeus.jpg")
+            li
+              img(src="img/people/facepalm.jpg")
+            li
+              img(src="img/people/julian_assange.jpg")
+
+      section#main-content.span6
+        article#link
+          .warning
+        article#downloaded-content
+          .loading
+            .loadingText
+            .downloadLoader.ajaxLoader
+            .clear
+          .fileInfo
+          button
+        header
+          h2 Upload a File
+        article#upload-form.row
+          form(enctype="multipart/form-data").form-horizontal
+            span.btn.btn-success.fileUpload
+              i.icon-plus.icon-white
+              span &nbsp;Choose Your File...
+              input#fileupload(type='file',name='file', placeholder='Choose your file', data-url='/putfile')
+
+            .attachedFileInfo
+            #outer-advanced
+              div
+                a#advance-toggle(href='javascript:void(0)') <i class="icon-white icon-chevron-right"></i>Advanced Options
+              .row
+                #inner-advanced.span6
+                  #password-field.input-append
+                    input#password.span3(type='text', name='password')
+                    span.add-on File Password
+                  p.passwordNotes
+                    | Change this password if you have shared it with the recipient previously. 
+                    | The default is secure and randomly generated;
+                    | keep it as-is for maximum security.
+                  .delete
+                    p Delete After
+                  #expiration-field.control-group
+                    .input-append
+                      input#views.span1(type='number', name='views', value='10', min='1', max='10')
+                      span.add-on Views
+                    span.or  OR
+                    .input-append
+                      input#days.span1(type='number', name='days', value='7', min='1', max='7')
+                      span.add-on Days
+                    .explain
+              .clear
+            .status
+              progress#progressbar
+              button#submit.btn.btn-primary(type='button', value='Upload')
+                i.icon-lock.icon-white
+                | &nbsp; Get Secure Link
+              .ajaxLoader
+            .clear
+        article#whyuse
+          header
+            h2 Why Use SecureShare?
+          section
+            ul
+              li 128-bit <b>client-side</b> <a href="https://tools.ietf.org/html/rfc4503">Rabbit</a> encryption
+              li We use very long, randomly generated URLs so your data cannot be found
+              li Auto-generated strong cipher passwords make brute-forcing infeasible
+              li Your data is automatically and securely deleted when you choose
+        article#howitworks
+          header
+            h2 How It Works
+          section
+            ul
+              li Your browser encrypts the file before handing it to us.
+              li You select how many times the file can be accessed or how long it should be available for.
+              li We give you a link to share with only the parties you want.
+              li They request the file and decrypt it in their browser.
+              li We delete the file once it reaches your chosen limits.
+              li We are never sent the cipher key - we cannot decrypt your data.
+              li No logs are kept.
+              li <b>All files are automatically deleted after 7 days.</b>
+      include includes/footer
+
