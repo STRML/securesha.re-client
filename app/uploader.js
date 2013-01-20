@@ -192,8 +192,8 @@ $(function() {
 
   // Display uploaded file URL on screen.
   function displayURL(url, passphrase) {
-    var fileURL = window.location.origin + '?#u=' + url + '&p=' + passphrase;
-    var fileURLNoPass = window.location.origin + '?#u=' + url;
+    var fileURL = window.location.protocol + "//" + window.location.host + '?#u=' + url + '&p=' + passphrase;
+    var fileURLNoPass = window.location.protocol + "//" + window.location.host + '?#u=' + url;
     var link = "Your file can be reached at: <textarea rows=\"2\" readonly>" + fileURL + "</textarea><br><br>" +
                "The above link is enough for a user to access the file. If you have sent the password separately, " +
                "use this URL instead: <textarea rows=\"2\" readonly>" + fileURLNoPass + "</textarea><br>" +
