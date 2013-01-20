@@ -147,7 +147,7 @@ $(function() {
     $("#downloadProgress").toggle();
     $('#downloadProgress').attr({
       value: 0,
-      max: slices.length - 1
+      max: slices.length
     });
     
     function onWorkerMessage(e){
@@ -172,9 +172,9 @@ $(function() {
       decryptedFile.fileData[slice.index] = slice.fileData;
       $('#downloadProgress').attr({
         value: ++receivedCount,
-        max: slices.length - 1
+        max: slices.length
       });
-      $(".downloadStatusText").html("Decrypting: " + ((receivedCount / (slices.length - 1)) * 100).toFixed(0) + "% complete.");
+      $(".downloadStatusText").html("Decrypting: " + ((receivedCount / (slices.length)) * 100).toFixed(0) + "% complete.");
     }
 
     function onFinish(){
