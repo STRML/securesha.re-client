@@ -1,7 +1,7 @@
 /*jshint worker:true*/
 /*global CryptoJS:true, FileReaderSync:true, Latin1Formatter:true, sjcl:true */
 
-importScripts('../lib/cryptoJS/rollups/rabbit.js');
+importScripts('../lib/cryptoJS/rollups/aes.js');
 importScripts('formatters.js'); // returns Latin1Formatter
 
 var encryptor;
@@ -29,19 +29,12 @@ function encrypt(oEvent){
   var encrypted = {index: oEvent.data.index}; // keep index for eventual rebuilding
 
   // Encrypt filename
-  if(fileName) encrypted.fileName = CryptoJS.Rabbit.encrypt(fileName, passphrase).toString();
+  if(fileName) encrypted.fileName = CryptoJS.AES.encrypt(fileName, passphrase).toString();
 
   // Encrypt filedata
   //time = new Date();
-  encrypted.fileData = CryptoJS.Rabbit.encrypt(fileData, passphrase).toString(Latin1Formatter);
+  encrypted.fileData = CryptoJS.AES.encrypt(fileData, passphrase).toString(Latin1Formatter);
   //postMessage("time to encrypt + format: " + (new Date() - time) + " size: " + encrypted.fileData.length);
-
-  // Encrypt with sjcl
-  // time = new Date();
-  // encrypted.fileData = lzw_encode(sjcl.encrypt(passphrase, fileData));
-  // postMessage("time to encrypt + format with sjcl: " + (new Date() - time) + " size: " + encrypted.fileData.length);
-
-  //debugger;
 
   postMessage(encrypted);
 }
@@ -54,9 +47,9 @@ function decrypt(oEvent){
   var passphrase = oEvent.data.passphrase;
   try{
     // Decrypt fileName if present
-    if(fileName) decrypted.fileName = CryptoJS.Rabbit.decrypt(fileName, passphrase).toString(CryptoJS.enc.Latin1);
+    if(fileName) decrypted.fileName = CryptoJS.AES.decrypt(fileName, passphrase).toString(CryptoJS.enc.Latin1);
     // Decrypt fileData
-    decrypted.fileData = CryptoJS.Rabbit.decrypt(fileData, passphrase).toString(CryptoJS.enc.Utf8);
+    decrypted.fileData = CryptoJS.AES.decrypt(fileData, passphrase).toString(CryptoJS.enc.Utf8);
     postMessage(decrypted);
   } catch (e){
     postMessage("Error"); // usually bad password
