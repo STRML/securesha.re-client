@@ -1,7 +1,7 @@
 /*global _:true, File:true */
 $(function() {
   var encryptedFile /* object */;
-  var passphrase = Math.uuid(16);
+  var passphrase = Math.uuid(24);
   $("#password").val(passphrase);
   var cryptoWorker;
 
