@@ -185,8 +185,9 @@ $(function() {
       if(!/Safari/i.test(window.BrowserDetect.browser)){
         var URL = window.URL || window.webkitURL;
         var url = URL.createObjectURL(blob);
-        $("<a>").attr("href", url).attr("download", decryptedFile.fileName).addClass("button button-success")
+        var link = $("<a>").attr("href", url).attr("download", decryptedFile.fileName).addClass("btn btn-success")
           .text("Download").appendTo("#downloaded-content").hide().fadeIn();
+        link.append($("<i>").addClass("icon-download-alt icon-white"));
       } else {
         // Safari can't open blobs, create a data URI
         // This will fail if the file is greater than ~200KB or so
