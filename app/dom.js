@@ -23,7 +23,7 @@ $(function() {
   }
 
   function adjustLabelText(days, views) {
-    $("#days").siblings('.add-on').text(views == 1 ? 'Day' : 'Days');
+    $("#days").siblings('.add-on').text(days == 1 ? 'Day' : 'Days');
     $("#views").siblings('.add-on').text(views == 1 ? 'View' : 'Views');
   }
 
