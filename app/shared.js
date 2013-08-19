@@ -19,15 +19,17 @@ window.secureShared = {
   // Generate a 256-bit key. 
   generatePassphrase: function() {
     // If window.crypto is available, use it.
+    var passphrase;
     if(window.crypto && typeof window.crypto.getRandomValues == "function"){
       var array = new Uint8Array(32);
       window.crypto.getRandomValues(array);
-      return window.secureShared.ab2str(array.buffer);
+      passphrase = window.secureShared.ab2str(array.buffer);
     }
     // Otherwise, use CryptoJS internals.
     else {
-      return CryptoJS.enc.Base64.stringify(CryptoJS.lib.WordArray.random(32));
+      passphrase = CryptoJS.enc.Base64.stringify(CryptoJS.lib.WordArray.random(32));
     }
+    return window.secureShared.urlSafeBase64encode(passphrase);
   },
 
   // Create url-safe base64 string from array buffer.
@@ -43,6 +45,16 @@ window.secureShared = {
       bufView[i] = str.charCodeAt(i);
     }
     return buf;
+  },
+
+  // Convert a base64 string into something url-safe.
+  urlSafeBase64encode: function(input) {
+    return input.replace(/\+/g, '-').replace(/\//, '_');
+  },
+
+  // Reverse the above process.
+  urlSafeBase64decode: function(input) {
+    return input.replace(/-/g, '+').replace(/_/, '/');
   },
 
   showStatusMessage: function(message){

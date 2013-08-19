@@ -1,18 +1,6 @@
 $(function() {
   // Basic page JS
 
-
-  // Gracefully handle page resizing & hide bxSlider if on a narrow viewpoert
-  resize();
-  $(window).on('resize',  resize);
-  function resize(){
-    // FIXME this math is pretty janky
-    var width = $(window).width() - ($("#main-content").outerWidth() + 100);
-    if(width < 180) $("#sidebar").fadeOut();
-    else $("#sidebar").fadeIn();
-    $("#sidebar").width(width);
-  }
-
   // advanced toggle
   $("#advance-toggle").click(function(){
     $("#inner-advanced").slideToggle();
@@ -27,10 +15,16 @@ $(function() {
   function explainAdvanced(){
     var $explain = $("#expiration-field .explain");
     var days = $("#days").val();
-    var expirationDate = new Date(new Date().getTime() + (86400000 * days));
     var views = $("#views").val();
+    adjustLabelText(days, views);
+    var expirationDate = new Date(new Date().getTime() + (86400000 * days));
     $explain.text("Your file will expire at " + expirationDate.toString() + " or after " + views + " view" +
       (views > 1 ? 's' : '') + ", " + "whichever comes first.");
+  }
+
+  function adjustLabelText(days, views) {
+    $("#days").siblings('.add-on').text(views == 1 ? 'Day' : 'Days');
+    $("#views").siblings('.add-on').text(views == 1 ? 'View' : 'Views');
   }
 
   // map fileupload
@@ -40,6 +34,4 @@ $(function() {
     });
     $("#fileupload").click();
   });
-
-  $("#bxSlider").bxSlider({auto: true, adaptiveHeight: true, pause: 10000});
 });

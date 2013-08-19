@@ -1,4 +1,30 @@
-footer
+footer.container-fluid
+  section#footer-content.row-fluid
+
+    article#whyuse.span4.offset2
+      header
+        h2 Why Use SecureShare?
+      section
+        ul
+          li 128-bit <b>client-side</b> <a href="http://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> encryption
+          li Sitewide SSL encryption
+          li We use very long, randomly generated URLs so your data cannot be found
+          li Auto-generated strong cipher passwords make brute-forcing infeasible
+          li Your data is automatically and securely deleted when you choose
+          li Supported in Chrome, Firefox, Safari, and Chrome for Android
+    article#howitworks.span4
+      header
+        h2 How It Works
+      section
+        ul
+          li Your browser encrypts the file before handing it to us.
+          li You select how many times the file can be accessed or how long it should be available for.
+          li We give you a link to share with only the parties you want.
+          li They request the file and decrypt it in their browser.
+          li We delete the file once it reaches your chosen limits.
+          li We are never sent the cipher key - we cannot decrypt your data.
+          li No logs are kept.
+          li <b>All files are automatically deleted after 7 days.</b>
   // modal
   #passwordModal.modal.hide.fade
     .modal-header(tabindex="-1", role="dialog", aria-labelledby="modalLabel", aria-hidden="true")

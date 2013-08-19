@@ -18,6 +18,8 @@ $(function() {
     $("#downloaded-content").hide();
     $(".fileInfo").hide();
     $("#link").hide();
+
+    // Remove hash from URL bar to avoid confusion.
     window.location.hash = "";
 
     // Check file
@@ -194,10 +196,10 @@ $(function() {
   function displayURL(url, passphrase) {
     var fileURL = window.location.protocol + "//" + window.location.host + '?#u=' + url + '&p=' + passphrase;
     var fileURLNoPass = window.location.protocol + "//" + window.location.host + '?#u=' + url;
-    var link = "Your file can be reached at: <textarea rows=\"2\" readonly>" + fileURL + "</textarea><br><br>" +
+    var link = "Your file can be reached at:<br> <textarea rows=\"2\" readonly>" + fileURL + "</textarea><br><br>" +
                "The above link is enough for a user to access the file. If you have sent the password separately, " +
-               "use this URL instead: <textarea rows=\"2\" readonly>" + fileURLNoPass + "</textarea><br>" +
-               "Your file's password: <input value=\"" + passphrase + "\"/>";
+               "use this URL instead:<br><textarea rows=\"2\" readonly>" + fileURLNoPass + "</textarea><br>" +
+               "Your file's password:<br> <input value=\"" + passphrase + "\"/>";
     $("#link").html(link).fadeIn();
     $("#warnings").show();
   }

@@ -1,11 +1,25 @@
 @import "compass"
 
+$contentWidth: 600px
+$titleOverflow: 100px
+
+*
+  +box-sizing(border-box)
+
+.input-prepend, .input-append
+  input, .add-on
+    +box-sizing(content-box) // this breaks in regular bootstrap styles otherwise
+
 h1, h2, h3, h4, h5, p, a, span, div, article, body
   color: white
 
+input, textarea
+  +border-radius(4px)
+
 html
   color: white
-  +box-sizing(border-box)
+  position: relative
+  min-height: 100%
 
 body
   background-color: #3366cc
@@ -13,13 +27,13 @@ body
   background-repeat: repeat
 
 #wrapper
-  min-height: 100%
+  height: 100%
 
-#intro
-  width: 100%
-  height: 900px
+#main
+  width: $contentWidth
+  margin: 0 auto
+  min-height: 500px
   text-align: center
-  z-index: 100
   position: relative
 
   .bg
@@ -27,59 +41,71 @@ body
     margin: 0 auto
     padding: 0
     position: absolute
-    z-index: 100
     width: 100%
-    height: 600px
 
   .title
-    position: fixed
     width: 100%
     text-align: center
-    z-index: 150
     padding-top: 70px
+    margin-left: -$titleOverflow / 2
 
     .intro-line
       position: relative
-      z-index: 150
       border-top: 1px solid #ededed
-      width: 670px
+      width: $contentWidth + $titleOverflow
       margin: 0 auto 25px auto
 
     h1
       color: #fff
-      font-size: 55px
+      font-size: 56px
       font-weight: 700
       position: relative
-      z-index: 150
       margin-bottom: 15px
+      width: $contentWidth + $titleOverflow
       &.small
         font-size: 17px
         margin-bottom: 20px
 
+      a
+        text-decoration: none
+        color: white
+        &:hover
+          text-decoration: none
+
   .file-uploader
-    position: fixed
     width: 100%
-    z-index: 150
-    padding-top: 250px
+    margin-bottom: 270px // 240px of this is for the footer
 
     #upload-form
       margin: 0 auto
       text-align: left
+      width: 100%
+      background: rgba(255, 255, 255, 0.15)
+      +box-shadow(1px 3px 5px 1px rgba(255, 255, 255, 0.3), 1px 3px 3px 1px rgba(255, 255, 255, 0.1) inset)
+      +border-radius(10px)
+      padding: 20px
 
-#main-content
+    // Nesting IDs is stupid but it helps me organize the layout in my mind a little nicer.
+    #password-field
+      width: 95%
+    #password
+      width: 100%
+
+
+
+#footer-content
   background: black
   width: 100%
   margin: 0
-  z-index: 300
-  position: relative
+  position: absolute
+  text-align: center
+  bottom: 0
+  left: 0
+  right: 0
 
   article
-    padding-left: 40px
+    text-align: left
 
-#tagline
-  font-size: 1.2em
-  font-weight: bold
-  color: #BE020F
 
 #main-content h2
   font-size: 2.5em
@@ -90,12 +116,6 @@ body
 #link, #downloaded-content, #inner-advanced
   display: none
 
-#link textarea
-  word-break: break-all
-
-textarea
-  cursor: text !important
-
 .loadingText
   float: left
 
@@ -104,11 +124,17 @@ textarea
   margin-top: 20px
 
 #link
-  margin-bottom: 20px
-  margin-top: 20px
+  margin: 20px auto
+  width: 100%
   textarea
-    width: 500px
+    width: 100%
     height: 60px
+    word-break: break-all
+    cursor: text !important
+  input
+    width: 100%
+  textarea, input
+    margin-top: 10px
 
 #downloaded-content
   button
@@ -116,13 +142,7 @@ textarea
   .loading
     margin-bottom: 5px
 
-#upload-form
-  width: 500px
-  background: rgba(255, 255, 255, 0.15)
-  +box-shadow(1px 3px 5px 1px rgba(255, 255, 255, 0.3), 1px 3px 3px 1px rgba(255, 255, 255, 0.1) inset)
-  +border-radius(10px)
-  +box-sizing(border-box)
-  padding: 20px
+
 
 input#fileupload
   position: absolute
@@ -195,10 +215,6 @@ progress
   display: none
   float: left
 
-footer
-  text-align: center
-  clear: both
-
 #passwordModal
   h3, h4
     color: black
@@ -233,3 +249,21 @@ footer
 
 .downloadStatusText
   float: left
+
+@media(max-width: 700px)
+  $contentWidth: 400px
+  $titleOverflow: 20px
+  #main 
+    width: $contentWidth
+    .title
+      margin-left: -$titleOverflow / 2
+      h1
+        width: $contentWidth + $titleOverflow
+        font-size: 35px
+        &.small
+          font-size: 16px
+          line-height: 25px
+      .intro-line
+        width: $contentWidth + $titleOverflow
+    .file-uploader
+      margin-bottom: 470px // 440px is footer
