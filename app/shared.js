@@ -1,4 +1,4 @@
-/*global _:true, escape: true */
+/*global _:true, escape: true, CryptoJS: true */
 window.secureShared = {
   chunkSize : 512 * 1024, // 512kb chunks
   chunkDelimiter : "/--delimiter--/",
@@ -16,6 +16,26 @@ window.secureShared = {
     return decodeURIComponent(escape(str));
   },
 
+  // Generate a 256-bit key. 
+  generatePassphrase: function() {
+    // If window.crypto is available, use it.
+    if(window.crypto && typeof window.crypto.getRandomValues == "function"){
+      var array = new Uint8Array(32);
+      window.crypto.getRandomValues(array);
+      return window.secureShared.ab2str(array.buffer);
+    }
+    // Otherwise, use CryptoJS internals.
+    else {
+      return CryptoJS.enc.Base64.stringify(CryptoJS.lib.WordArray.random(32));
+    }
+  },
+
+  // Create url-safe base64 string from array buffer.
+  ab2str: function(buf) {
+    return window.btoa(String.fromCharCode.apply(null, new Uint8Array(buf)));
+  },
+
+  // Create an array buffer from a string.
   str2ab : function(str) {
     var buf = new ArrayBuffer(str.length); // 2 bytes for each char
     var bufView = new Uint8Array(buf);
@@ -26,17 +46,16 @@ window.secureShared = {
   },
 
   showStatusMessage: function(message){
-    
   },
 
   fileSize: function(fileSizeInBytes) {
-      var i = -1;
-      var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
-      do {
-          fileSizeInBytes = fileSizeInBytes / 1024;
-          i++;
-      } while (fileSizeInBytes > 1024);
+    var i = -1;
+    var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+    do {
+      fileSizeInBytes = fileSizeInBytes / 1024;
+      i++;
+    } while (fileSizeInBytes > 1024);
 
-      return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
+    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
   }
 };

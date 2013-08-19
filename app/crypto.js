@@ -4,9 +4,6 @@
 importScripts('../lib/cryptoJS/rollups/aes.js');
 importScripts('formatters.js'); // returns Latin1Formatter
 
-var encryptor;
-var decryptor;
-
 self.onmessage = function (oEvent) {
   if (oEvent.data instanceof Object && oEvent.data.encrypt) {
     encrypt(oEvent);
@@ -54,21 +51,5 @@ function decrypt(oEvent){
   } catch (e){
     postMessage("Error"); // usually bad password
   }
-}
-
-
-// Using a static IV. Since the keys are randomly generated this is not a risk.
-// Using a static IV is only a problem if an attacker has multiple files encrypted with the same key,
-// something that is not likely to happen in this application.
-function createEncryptor(passphrase){
-  var iv  = CryptoJS.enc.Hex.parse('101112131415161718191a1b1c1d1e1f');
-  var passphraseArray = CryptoJS.enc.Utf8.parse(passphrase);
-  encryptor = CryptoJS.algo.Rabbit.createEncryptor(passphraseArray, {iv : iv});
-}
-
-function createDecryptor(passphrase){
-  var iv  = CryptoJS.enc.Hex.parse('101112131415161718191a1b1c1d1e1f');
-  var passphraseArray = CryptoJS.enc.Utf8.parse(passphrase);
-  decryptor = CryptoJS.algo.Rabbit.createDecryptor(passphraseArray, {iv: iv});
 }
 
