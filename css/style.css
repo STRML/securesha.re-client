@@ -1,130 +1,183 @@
-h1, h2, h3, h4, h5, p, a, span, div, article, body, html{
-  color:white;
-}
-html{
-  height: 100%;
-}
-body{
-  background-image: url('/img/bg-texture.png');
-  background-attachment:fixed;
-  margin:0;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-}
-#wrapper{
-  min-height: 100%;
-  background: transparent;
-  background: -webkit-gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,1))) rgba(255,255,255,0.1);
-  background: -mox-gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,1))) rgba(255,255,255,0.1);
-  background: -ms-gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,1))) rgba(255,255,255,0.1);
-  background: -o-gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,1))) rgba(255,255,255,0.1);
-  background: gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,1))) rgba(255,255,255,0.1);
-}
-#main-header{
-  width:100%;
-  height: 80px;
-  background: #000ba5; /* Old browsers */
-  background: -moz-linear-gradient(top, #000ba5 1%, #070c40 99%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#000ba5), color-stop(99%,#070c40)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #000ba5 1%,#070c40 99%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #000ba5 1%,#070c40 99%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #000ba5 1%,#070c40 99%); /* IE10+ */
-  background: linear-gradient(to bottom, #000ba5 1%,#070c40 99%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000ba5', endColorstr='#070c40',GradientType=0 ); /* IE6-9 */
-}
-#main-header hgroup{
-  max-width: 900px;
-  margin:auto;
-}
-#logo{
-  float:left;
-}
-#main-header hgroup h1{
-  float:left;
-  font-size: 4em;
-  margin: 4px 0 0 10px;
-  color: #C4C2C2;
-  line-height: 62px;
-}
-#sidebar{
-  padding-left: 50px;
-  font-weight: bold;
-  width: auto;
-  max-width: 700px;
-  float: left;
-  text-align: center;
-  word-wrap: break-word;
-}
-img{
-  max-width: auto;
-  height: auto;
-}
-#main-content{
-  min-width: 550px;
-  float:right;
-  padding-right: 20px;
-  box-sizing: border-box;
-}
-#tagline{
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #BE020F;
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\000033}}
+h1, h2, h3, h4, h5, p, a, span, div, article, body {
+  color: white;
 }
 
-#main-content h2{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\000036}}
+html {
+  color: white;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000310}}
+body {
+  background-color: #3366cc;
+  background-image: url("/img/bg-texture.png");
+  background-repeat: repeat;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000315}}
+#wrapper {
+  min-height: 100%;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000318}}
+#intro {
+  width: 100%;
+  height: 900px;
+  text-align: center;
+  z-index: 100;
+  position: relative;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000325}}
+#intro .bg {
+  background: black 0 0 repeat fixed;
+  margin: 0 auto;
+  padding: 0;
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  height: 600px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000334}}
+#intro .title {
+  position: fixed;
+  width: 100%;
+  text-align: center;
+  z-index: 150;
+  padding-top: 70px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000341}}
+#intro .title .intro-line {
+  position: relative;
+  z-index: 150;
+  border-top: 1px solid #ededed;
+  width: 670px;
+  margin: 0 auto 25px auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000348}}
+#intro .title h1 {
+  color: white;
+  font-size: 55px;
+  font-weight: 700;
+  position: relative;
+  z-index: 150;
+  margin-bottom: 15px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000355}}
+#intro .title h1.small {
+  font-size: 17px;
+  margin-bottom: 20px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000359}}
+#intro .file-uploader {
+  position: fixed;
+  width: 100%;
+  z-index: 150;
+  padding-top: 250px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000365}}
+#intro .file-uploader #upload-form {
+  margin: 0 auto;
+  text-align: left;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000369}}
+#main-content {
+  background: black;
+  width: 100%;
+  margin: 0;
+  z-index: 300;
+  position: relative;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000376}}
+#main-content article {
+  padding-left: 40px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000379}}
+#tagline {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #be020f;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000384}}
+#main-content h2 {
   font-size: 2.5em;
 }
 
-#outer-advanced{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000387}}
+#outer-advanced {
   margin-top: 10px;
 }
-#link, #downloaded-content, #inner-advanced{
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000390}}
+#link, #downloaded-content, #inner-advanced {
   display: none;
 }
-#link textarea{
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000393}}
+#link textarea {
   word-break: break-all;
 }
 
-textarea{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000396}}
+textarea {
   cursor: text !important;
 }
 
-.loadingText{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000399}}
+.loadingText {
   float: left;
 }
 
-#downloaded-content, #link{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003102}}
+#downloaded-content {
   margin-bottom: 20px;
   margin-top: 20px;
 }
 
-#link textarea{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003106}}
+#link {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003109}}
+#link textarea {
   width: 500px;
   height: 60px;
 }
 
-#downloaded-content button{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003114}}
+#downloaded-content button {
   display: none;
 }
-
-#downloaded-content .loading{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003116}}
+#downloaded-content .loading {
   margin-bottom: 5px;
 }
 
-#upload-form{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003119}}
+#upload-form {
   width: 500px;
-  background: rgba(255,255,255,.15);
-  box-shadow: 1px 3px 5px 1px rgba(255,255,255,.3), 1px 3px 3px 1px rgba(255,255,255,.1) inset;
-  -webkit-box-shadow: 1px 3px 5px 1px rgba(255,255,255,.3);
-  -moz-box-shadow: 1px 3px 5px 1px rgba(255,255,255,.3);
+  background: rgba(255, 255, 255, 0.15);
+  -webkit-box-shadow: 1px 3px 5px 1px rgba(255, 255, 255, 0.3), 1px 3px 3px 1px rgba(255, 255, 255, 0.1) inset;
+  -moz-box-shadow: 1px 3px 5px 1px rgba(255, 255, 255, 0.3), 1px 3px 3px 1px rgba(255, 255, 255, 0.1) inset;
+  box-shadow: 1px 3px 5px 1px rgba(255, 255, 255, 0.3), 1px 3px 3px 1px rgba(255, 255, 255, 0.1) inset;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
   border-radius: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 20px;
 }
-input#fileupload{
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003127}}
+input#fileupload {
   position: absolute;
   top: 0;
   right: 0;
@@ -132,116 +185,137 @@ input#fileupload{
   opacity: 0;
 }
 
-.passwordNotes, .explain{
-  font-size: .85em;
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003134}}
+.passwordNotes, .explain {
+  font-size: 0.85em;
   margin: 5px 0 5px 5px;
 }
-span.add-on{
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003138}}
+span.add-on {
   color: white;
   text-shadow: none !important;
-  background-color: #5BB75B;
-  background-image: -moz-linear-gradient(top, #62C462, #51A351);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62C462), to(#51A351));
-  background-image: -webkit-linear-gradient(top, #62C462, #51A351);
-  background-image: -o-linear-gradient(top, #62C462, #51A351);
-  background-image: linear-gradient(to bottom, #62C462, #51A351);
+  background-color: #5bb75b;
+  background: linear-gradient(to bottom, #62c462, #51a351);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff62c462', endColorstr='#ff51a351', GradientType=0);
-  border-color: #51A351 #51A351 #387038;
+  border-color: #51a351 #51a351 #387038;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 
-#expiration-field .or{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003148}}
+#expiration-field .or {
   margin: 0 7px 0 5px;
 }
-
-#expiration-field .explain{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003150}}
+#expiration-field .explain {
   margin-top: 8px;
 }
 
-#inner-advanced{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003153}}
+#inner-advanced {
   padding: 25px 10px;
-  background: rgba(255,255,255,.2);
+  background: rgba(255, 255, 255, 0.2);
   width: 90%;
   border-radius: 10px;
 }
 
-.delete{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003159}}
+.delete {
   margin: 10px 0 0 0;
 }
-.help{
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003162}}
+.help {
   margin-left: 4px;
   border: 1px black solid;
   height: 15px;
   width: 15px;
   border-radius: 15px;
   background-color: black;
-  color:white;
+  color: white;
   text-align: center;
   display: inline-block;
   font-weight: bolder;
   text-decoration: none;
 }
 
-#advance-toggle{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003175}}
+#advance-toggle {
   text-decoration: none;
   color: white;
   margin: 0 0 5px 0;
   display: block;
   font-weight: bolder;
 }
-#advanced-toggle:hover{
-  color: rgb(200,200,200);
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003182}}
+#advanced-toggle:hover {
+  color: #c8c8c8;
 }
 
-.status{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003185}}
+.status {
   margin: 20px 0 0 0;
 }
-#submit{
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003188}}
+#submit {
   float: left;
   margin-right: 3px;
 }
-#submit.loading{
-  opacity: .5;
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003191}}
+#submit.loading {
+  opacity: 0.5;
 }
-progress{
-  display:none;
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003194}}
+progress {
+  display: none;
   float: left;
 }
 
-footer{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003198}}
+footer {
   text-align: center;
-  clear:both;
+  clear: both;
 }
 
-#passwordModal h3, #passwordModal h4{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003203}}
+#passwordModal h3, #passwordModal h4 {
   color: black;
 }
-
-#passwordModal input{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003205}}
+#passwordModal input {
   width: 200px;
 }
-
-#passwordModal .modal-header{
-  background: #f5f5f5;
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003207}}
+#passwordModal .modal-header {
+  background: whitesmoke;
 }
 
-.clear{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003210}}
+.clear {
   float: none;
   clear: both;
 }
 
-#downloadProgress{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003214}}
+#downloadProgress {
   margin: 5px 5px 0;
 }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003217}}
 #uploadProgress {
   margin: 9px 5px 0;
 }
-.itemStatus{
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003220}}
+.itemStatus {
   margin-top: 10px;
 }
-.ajaxLoader{
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003223}}
+.ajaxLoader {
   display: none;
   float: left;
   width: 24px;
@@ -249,11 +323,13 @@ footer{
   background: url("/img/ajax-loader-pacman.gif") no-repeat;
   margin: 3px 0px;
 }
-.downloadLoader{
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003231}}
+.downloadLoader {
   margin: 0 3px;
 }
 
-.downloadStatusText{
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003234}}
+.downloadStatusText {
   float: left;
 }
-

@@ -1,0 +1,235 @@
+@import "compass"
+
+h1, h2, h3, h4, h5, p, a, span, div, article, body
+  color: white
+
+html
+  color: white
+  +box-sizing(border-box)
+
+body
+  background-color: #3366cc
+  background-image: url('/img/bg-texture.png')
+  background-repeat: repeat
+
+#wrapper
+  min-height: 100%
+
+#intro
+  width: 100%
+  height: 900px
+  text-align: center
+  z-index: 100
+  position: relative
+
+  .bg
+    background: black 0 0 repeat fixed
+    margin: 0 auto
+    padding: 0
+    position: absolute
+    z-index: 100
+    width: 100%
+    height: 600px
+
+  .title
+    position: fixed
+    width: 100%
+    text-align: center
+    z-index: 150
+    padding-top: 70px
+
+    .intro-line
+      position: relative
+      z-index: 150
+      border-top: 1px solid #ededed
+      width: 670px
+      margin: 0 auto 25px auto
+
+    h1
+      color: #fff
+      font-size: 55px
+      font-weight: 700
+      position: relative
+      z-index: 150
+      margin-bottom: 15px
+      &.small
+        font-size: 17px
+        margin-bottom: 20px
+
+  .file-uploader
+    position: fixed
+    width: 100%
+    z-index: 150
+    padding-top: 250px
+
+    #upload-form
+      margin: 0 auto
+      text-align: left
+
+#main-content
+  background: black
+  width: 100%
+  margin: 0
+  z-index: 300
+  position: relative
+
+  article
+    padding-left: 40px
+
+#tagline
+  font-size: 1.2em
+  font-weight: bold
+  color: #BE020F
+
+#main-content h2
+  font-size: 2.5em
+
+#outer-advanced
+  margin-top: 10px
+
+#link, #downloaded-content, #inner-advanced
+  display: none
+
+#link textarea
+  word-break: break-all
+
+textarea
+  cursor: text !important
+
+.loadingText
+  float: left
+
+#downloaded-content
+  margin-bottom: 20px
+  margin-top: 20px
+
+#link
+  margin-bottom: 20px
+  margin-top: 20px
+  textarea
+    width: 500px
+    height: 60px
+
+#downloaded-content
+  button
+    display: none
+  .loading
+    margin-bottom: 5px
+
+#upload-form
+  width: 500px
+  background: rgba(255, 255, 255, 0.15)
+  +box-shadow(1px 3px 5px 1px rgba(255, 255, 255, 0.3), 1px 3px 3px 1px rgba(255, 255, 255, 0.1) inset)
+  +border-radius(10px)
+  +box-sizing(border-box)
+  padding: 20px
+
+input#fileupload
+  position: absolute
+  top: 0
+  right: 0
+  margin: 0
+  opacity: 0
+
+.passwordNotes, .explain
+  font-size: .85em
+  margin: 5px 0 5px 5px
+
+span.add-on
+  color: white
+  text-shadow: none !important
+  background-color: #5BB75B
+  background: linear-gradient(top, #62c462, #51a351)
+  background-repeat: repeat-x
+  border-color: #51A351 #51A351 #387038
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)
+
+#expiration-field
+  .or
+    margin: 0 7px 0 5px
+  .explain
+    margin-top: 8px
+
+#inner-advanced
+  padding: 25px 10px
+  background: rgba(255, 255, 255, 0.2)
+  width: 90%
+  border-radius: 10px
+
+.delete
+  margin: 10px 0 0 0
+
+.help
+  margin-left: 4px
+  border: 1px black solid
+  height: 15px
+  width: 15px
+  border-radius: 15px
+  background-color: black
+  color: white
+  text-align: center
+  display: inline-block
+  font-weight: bolder
+  text-decoration: none
+
+#advance-toggle
+  text-decoration: none
+  color: white
+  margin: 0 0 5px 0
+  display: block
+  font-weight: bolder
+
+#advanced-toggle:hover
+  color: rgb(200, 200, 200)
+
+.status
+  margin: 20px 0 0 0
+
+#submit
+  float: left
+  margin-right: 3px
+  &.loading
+    opacity: .5
+
+progress
+  display: none
+  float: left
+
+footer
+  text-align: center
+  clear: both
+
+#passwordModal
+  h3, h4
+    color: black
+  input
+    width: 200px
+  .modal-header
+    background: #f5f5f5
+
+.clear
+  float: none
+  clear: both
+
+#downloadProgress
+  margin: 5px 5px 0
+
+#uploadProgress
+  margin: 9px 5px 0
+
+.itemStatus
+  margin-top: 10px
+
+.ajaxLoader
+  display: none
+  float: left
+  width: 24px
+  height: 24px
+  background: url("/img/ajax-loader-pacman.gif") no-repeat
+  margin: 3px 0px
+
+.downloadLoader
+  margin: 0 3px
+
+.downloadStatusText
+  float: left
