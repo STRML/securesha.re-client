@@ -5,7 +5,6 @@ html(lang="en")
 
   body
     #main
-      .bg1
       .title
         .intro-line
         h1
@@ -29,38 +28,38 @@ html(lang="en")
         article#upload-form
           form(enctype="multipart/form-data").form-horizontal
             span.btn.btn-success.fileUpload
-              i.icon-plus.icon-white
+              i.glyphicon.glyphicon-plus
               span &nbsp;Choose Your File...
               input#fileupload(type='file',name='file', placeholder='Choose your file', data-url='/putfile')
 
             .attachedFileInfo
             #outer-advanced
               div
-                a#advance-toggle(href='javascript:void(0)') <i class="icon-white icon-chevron-right"></i>Advanced Options
-              .row
-                #inner-advanced.span6
+                a#advance-toggle(href='javascript:void(0)') <i class="glyphicon glyphicon-chevron-right"></i>Advanced Options
+              #inner-advanced
+                #password-field
                   p File Password
-                  #password-field.input-append
-                    input#password.span5(type='text', name='password')
-                  p.passwordNotes
+                  input#password.form-control(type='text', name='password')
+                  .passwordNotes.help-block
                     | Change this password if you have shared it with the recipient previously. 
                     | The default is secure and randomly generated;
                     | keep it as-is for maximum security.
-                  .delete
-                    p Delete After
-                  #expiration-field.control-group
-                    .input-append
-                      input#views.span1(type='number', name='views', value='1', min='1', max='10')
-                      span.add-on View
-                    span.or  OR
-                    .input-append
-                      input#days.span1(type='number', name='days', value='7', min='1', max='7')
-                      span.add-on Days
-                    .explain
+                #expiration-field
+                  p Delete After
+                  .row
+                    .col-md-6
+                      .input-group
+                        input.form-control#views(type='number', name='views', value='1', min='1', max='10')
+                        span.input-group-addon View
+                    .col-md-6
+                      .input-group
+                        input.form-control#days(type='number', name='days', value='7', min='1', max='7')
+                        span.input-group-addon Days
+                  .help-block.explain
               .clear
             .status
               button#submit.btn.btn-primary(type='button', value='Upload')
-                i.icon-lock.icon-white
+                span.glyphicon.glyphicon-lock
                 | &nbsp; Get Secure Link
               progress#uploadProgress
               .uploadLoader.ajaxLoader

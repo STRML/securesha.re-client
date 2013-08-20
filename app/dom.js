@@ -4,7 +4,7 @@ $(function() {
   // advanced toggle
   $("#advance-toggle").click(function(){
     $("#inner-advanced").slideToggle();
-    $(this).find("i").toggleClass("icon-chevron-down");
+    $(this).find("i").toggleClass("glyphicon-chevron-down");
     explainAdvanced();
   });
 
@@ -13,7 +13,7 @@ $(function() {
 
   // Change explanation text
   function explainAdvanced(){
-    var $explain = $("#expiration-field .explain");
+    var $explain = $("#upload-form .explain");
     var days = $("#days").val();
     var views = $("#views").val();
     adjustLabelText(days, views);

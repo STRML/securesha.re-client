@@ -13,9 +13,6 @@ $titleOverflow: 100px
 h1, h2, h3, h4, h5, p, a, span, div, article, body
   color: white
 
-input, textarea
-  +border-radius(4px)
-
 html
   color: white
   position: relative
@@ -76,6 +73,7 @@ body
     width: 100%
     margin-bottom: 270px // 240px of this is for the footer
 
+    // Nesting IDs is stupid but it helps me organize the layout in my mind a little nicer.
     #upload-form
       margin: 0 auto
       text-align: left
@@ -85,11 +83,24 @@ body
       +border-radius(10px)
       padding: 20px
 
-    // Nesting IDs is stupid but it helps me organize the layout in my mind a little nicer.
-    #password-field
+    #password-field, #expiration-field
+      margin: 0 auto
       width: 95%
+      > p
+        text-align: center
+        font-weight: bold
+
+    #inner-advanced
+      padding: 25px 10px
+      background: rgba(255, 255, 255, 0.2)
+      width: 100%
+      border-radius: 10px
+
     #password
       width: 100%
+
+    .help-block
+      color: white
 
 
 
@@ -155,26 +166,16 @@ input#fileupload
   font-size: .85em
   margin: 5px 0 5px 5px
 
-span.add-on
+span.input-group-addon
   color: white
   text-shadow: none !important
   background-color: #5BB75B
   background: linear-gradient(top, #62c462, #51a351)
   background-repeat: repeat-x
   border-color: #51A351 #51A351 #387038
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)
 
-#expiration-field
-  .or
-    margin: 0 7px 0 5px
-  .explain
-    margin-top: 8px
 
-#inner-advanced
-  padding: 25px 10px
-  background: rgba(255, 255, 255, 0.2)
-  width: 90%
-  border-radius: 10px
+
 
 .delete
   margin: 10px 0 0 0

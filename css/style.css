@@ -18,32 +18,25 @@ h1, h2, h3, h4, h5, p, a, span, div, article, body {
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000316}}
-input, textarea {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-}
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000319}}
 html {
   color: white;
   position: relative;
   min-height: 100%;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000324}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000321}}
 body {
   background-color: #3366cc;
   background-image: url("/img/bg-texture.png");
   background-repeat: repeat;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000329}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000326}}
 #wrapper {
   height: 100%;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000332}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000329}}
 #main {
   width: 600px;
   margin: 0 auto;
@@ -51,7 +44,7 @@ body {
   text-align: center;
   position: relative;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000339}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000336}}
 #main .bg {
   background: black 0 0 repeat fixed;
   margin: 0 auto;
@@ -59,21 +52,21 @@ body {
   position: absolute;
   width: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000346}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000343}}
 #main .title {
   width: 100%;
   text-align: center;
   padding-top: 70px;
   margin-left: -50px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000352}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000349}}
 #main .title .intro-line {
   position: relative;
   border-top: 1px solid #ededed;
   width: 700px;
   margin: 0 auto 25px auto;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000358}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000355}}
 #main .title h1 {
   color: white;
   font-size: 56px;
@@ -82,26 +75,26 @@ body {
   margin-bottom: 15px;
   width: 700px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000365}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000362}}
 #main .title h1.small {
   font-size: 17px;
   margin-bottom: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000369}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000366}}
 #main .title h1 a {
   text-decoration: none;
   color: white;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000372}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000369}}
 #main .title h1 a:hover {
   text-decoration: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000375}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000372}}
 #main .file-uploader {
   width: 100%;
   margin-bottom: 270px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000379}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000377}}
 #main .file-uploader #upload-form {
   margin: 0 auto;
   text-align: left;
@@ -115,16 +108,33 @@ body {
   border-radius: 10px;
   padding: 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000389}}
-#main .file-uploader #password-field {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000386}}
+#main .file-uploader #password-field, #main .file-uploader #expiration-field {
+  margin: 0 auto;
   width: 95%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000391}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000389}}
+#main .file-uploader #password-field > p, #main .file-uploader #expiration-field > p {
+  text-align: center;
+  font-weight: bold;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000393}}
+#main .file-uploader #inner-advanced {
+  padding: 25px 10px;
+  background: rgba(255, 255, 255, 0.2);
+  width: 100%;
+  border-radius: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000399}}
 #main .file-uploader #password {
   width: 100%;
 }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003102}}
+#main .file-uploader .help-block {
+  color: white;
+}
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000396}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003107}}
 #footer-content {
   background: black;
   width: 100%;
@@ -135,68 +145,68 @@ body {
   left: 0;
   right: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003106}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003117}}
 #footer-content article {
   text-align: left;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003110}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003121}}
 #main-content h2 {
   font-size: 2.5em;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003113}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003124}}
 #outer-advanced {
   margin-top: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003116}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003127}}
 #link, #downloaded-content, #inner-advanced {
   display: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003119}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003130}}
 .loadingText {
   float: left;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003122}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003133}}
 #downloaded-content {
   margin-bottom: 20px;
   margin-top: 20px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003126}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003137}}
 #link {
   margin: 20px auto;
   width: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003129}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003140}}
 #link textarea {
   width: 100%;
   height: 60px;
   word-break: break-all;
   cursor: text !important;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003134}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003145}}
 #link input {
   width: 100%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003136}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003147}}
 #link textarea, #link input {
   margin-top: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003140}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003151}}
 #downloaded-content button {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003142}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003153}}
 #downloaded-content .loading {
   margin-bottom: 5px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003147}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003158}}
 input#fileupload {
   position: absolute;
   top: 0;
@@ -205,46 +215,28 @@ input#fileupload {
   opacity: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003154}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003165}}
 .passwordNotes, .explain {
   font-size: 0.85em;
   margin: 5px 0 5px 5px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003158}}
-span.add-on {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003169}}
+span.input-group-addon {
   color: white;
   text-shadow: none !important;
   background-color: #5bb75b;
   background: linear-gradient(to bottom, #62c462, #51a351);
   background-repeat: repeat-x;
   border-color: #51a351 #51a351 #387038;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003168}}
-#expiration-field .or {
-  margin: 0 7px 0 5px;
-}
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003170}}
-#expiration-field .explain {
-  margin-top: 8px;
-}
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003173}}
-#inner-advanced {
-  padding: 25px 10px;
-  background: rgba(255, 255, 255, 0.2);
-  width: 90%;
-  border-radius: 10px;
-}
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003179}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003180}}
 .delete {
   margin: 10px 0 0 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003182}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003183}}
 .help {
   margin-left: 4px;
   border: 1px black solid;
@@ -259,7 +251,7 @@ span.add-on {
   text-decoration: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003195}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003196}}
 #advance-toggle {
   text-decoration: none;
   color: white;
@@ -268,67 +260,67 @@ span.add-on {
   font-weight: bolder;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003202}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003203}}
 #advanced-toggle:hover {
   color: #c8c8c8;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003205}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003206}}
 .status {
   margin: 20px 0 0 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003208}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003209}}
 #submit {
   float: left;
   margin-right: 3px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003211}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003212}}
 #submit.loading {
   opacity: 0.5;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003214}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003215}}
 progress {
   display: none;
   float: left;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003219}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003220}}
 #passwordModal h3, #passwordModal h4 {
   color: black;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003221}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003222}}
 #passwordModal input {
   width: 200px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003223}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003224}}
 #passwordModal .modal-header {
   background: whitesmoke;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003226}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003227}}
 .clear {
   float: none;
   clear: both;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003230}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003231}}
 #downloadProgress {
   margin: 5px 5px 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003233}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003234}}
 #uploadProgress {
   margin: 9px 5px 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003236}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003237}}
 .itemStatus {
   margin-top: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003239}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003240}}
 .ajaxLoader {
   display: none;
   float: left;
@@ -338,12 +330,12 @@ progress {
   margin: 3px 0px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003247}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003248}}
 .downloadLoader {
   margin: 0 3px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003250}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\00003251}}
 .downloadStatusText {
   float: left;
 }
