@@ -25,15 +25,17 @@ footer.container
           li We are never sent the cipher key - we cannot decrypt your data.
           li No logs are kept.
           li <b>All files are automatically deleted after 7 days.</b>
-  // modal
-  #passwordModal.modal.hide.fade
-    .modal-header(tabindex="-1", role="dialog", aria-labelledby="modalLabel", aria-hidden="true")
-      button.close(type="button", data-dismiss="modal", aria-hidden="true") x
-      h3#modalLabel Enter Password
-    .modal-body
-      h4
-        | Someone has shared a secured file with you. Please enter the file's password in the box below
-        | to download it.
-      input#decryptPassphrase.span1(type='text', name='decryptPassphrase')
-    .modal-footer
-      button.btn.btn-success.download(data-dismiss="modal", aria-hidden="true") Download
+// modal
+#passwordModal.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header(tabindex="-1", role="dialog", aria-labelledby="modalLabel", aria-hidden="true")
+        button.close(type="button", data-dismiss="modal", aria-hidden="true") x
+        h4.modal-title#modalLabel Enter Password
+      .modal-body
+        h4
+          | Someone has shared a secured file with you. Please enter the file's password in the box below
+          | to download it.
+        input#decryptPassphrase.span1(type='text', name='decryptPassphrase')
+      .modal-footer
+        button.btn.btn-success.download(data-dismiss="modal", aria-hidden="true") Download

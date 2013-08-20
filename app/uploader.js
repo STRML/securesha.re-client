@@ -198,7 +198,7 @@ $(function() {
     var fileURLNoPass = window.location.protocol + "//" + window.location.host + '?#u=' + url;
     var link = "Your file can be reached at:<br> <textarea rows=\"2\" readonly>" + fileURL + "</textarea><br><br>" +
                "The above link is enough for a user to access the file. If you have sent the password separately, " +
-               "use this URL instead:<br><textarea rows=\"2\" readonly>" + fileURLNoPass + "</textarea><br>" +
+               "use this URL instead:<br><textarea rows=\"2\" readonly>" + fileURLNoPass + "</textarea><br><br>" +
                "Your file's password:<br> <input value=\"" + passphrase + "\"/>";
     $("#link").html(link).fadeIn();
     $("#warnings").show();

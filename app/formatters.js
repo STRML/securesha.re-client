@@ -1,7 +1,7 @@
 /*jshint worker:true*/
 /*global CryptoJS:true, lzw_encode:true, lzw_decode:true */
 
-importScripts('lzw.js'); // returns lzw_encode, lzw_decode functions
+importScripts('../vendor/lzw.js'); // returns lzw_encode, lzw_decode functions
 
 // Must be included after cryptoJS
 

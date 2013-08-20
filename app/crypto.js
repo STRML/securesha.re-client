@@ -1,7 +1,7 @@
 /*jshint worker:true*/
 /*global CryptoJS:true, FileReaderSync:true, Latin1Formatter:true, sjcl:true */
 
-importScripts('../lib/cryptoJS/rollups/aes.js');
+importScripts('../vendor/cryptoJS/rollups/aes.js');
 importScripts('formatters.js'); // returns Latin1Formatter
 
 self.onmessage = function (oEvent) {

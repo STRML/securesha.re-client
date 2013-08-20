@@ -49,7 +49,7 @@ window.secureShared = {
 
   // Convert a base64 string into something url-safe.
   urlSafeBase64encode: function(input) {
-    return input.replace(/\+/g, '-').replace(/\//, '_');
+    return input.replace(/\+/g, '-').replace(/\//, '_').replace(/\=/g, ''); // '=' is padding char and can be removed
   },
 
   // Reverse the above process.

@@ -65,7 +65,7 @@ $(function() {
 
     function errorHandler(){
       $(".downloadStatusText").hide();
-      $("#downloaded-content .fileInfo").addClass('alert').addClass('alert-error').html("Sorry! File not found.");
+      $("#downloaded-content .fileInfo").addClass('alert').addClass('alert-danger').html("Sorry! File not found.");
       $(".downloadLoader").hide();
       $("#downloadProgress").hide();
     }
@@ -94,7 +94,7 @@ $(function() {
       "comes first.";
     var expiredText = "This file has expired and has been deleted. You hold the last copy. Good luck.";
     var isExpired = remainingViews < 1;
-    if(isExpired) $("#downloaded-content .fileInfo").addClass('alert-error');
+    if(isExpired) $("#downloaded-content .fileInfo").addClass('alert-danger');
     $("#downloaded-content .fileInfo").addClass('alert').html(isExpired ? expiredText : expiringSoonText);
   }
 
@@ -201,7 +201,7 @@ $(function() {
       }
 
       window.isDecrypting = false;
-      $(".downloadStatusText").fadeIn().text("Done!");
+      $(".downloadStatusText").hide();
       $("#downloadProgress").hide();
       $(".downloadLoader").hide();
     }
