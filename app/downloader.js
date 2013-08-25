@@ -58,7 +58,13 @@ $(function() {
     });
 
     function successHandler(response, wat){
-      var fileMeta = JSON.parse(xhr.getResponseHeader("X-File-Stats"));
+      var fileMeta = {
+        views: xhr.getResponseHeader('X-File-Views'),
+        maxViews: xhr.getResponseHeader('X-File-Max-Views'),
+        fileName: xhr.getResponseHeader('X-File-Name'),
+        expiration: xhr.getResponseHeader('X-File-Expiration'),
+        contentType: xhr.getResponseHeader('X-File-Content-Type')
+      };
       cb(response, fileMeta);
       $("#downloadProgress").toggle();
     }
