@@ -1,0 +1,11 @@
+{
+  "name": "securesha-re-ember",
+  "version": "0.0.0",
+  "dependencies": {
+    "jquery": "~1.9.1",
+    "bootstrap-sass": "~2.3.1"
+  },
+  "devDependencies": {
+    "ember-mocha-adapter": "0.1.1"
+  }
+}

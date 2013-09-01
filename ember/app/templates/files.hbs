@@ -1,0 +1,9 @@
+<h1>Files</h1>
+
+<ul>
+ {{#each model}}
+ <li>{{#linkTo 'file' this}}{{this.id}}{{/linkTo}}</li>
+  {{/each}}
+</ul>
+
+{{outlet}}

@@ -1,0 +1,18 @@
+<h1>File</h1>
+
+<table>
+  {{#each model.attributes}}
+  <tr>
+    <td>
+      <strong>{{this.key}}:</strong>
+    </td>
+    <td>
+      {{view SecureShare.BoundTextFieldView contentBinding="this"}}
+    </td>
+  </tr>
+  {{/each}}
+</table>
+
+<button {{action 'save'}}>Update</button>
+
+{{outlet}}
