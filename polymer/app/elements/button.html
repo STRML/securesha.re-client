@@ -1,0 +1,25 @@
+<polymer-element name="button-element"  attributes="">
+  <template>
+    <style>
+      @host { 
+        :scope {
+          display: block;
+          background: green;
+          color: white;
+        }
+      }
+    </style>
+    <div id="foobar">Button foobar</div>
+    <span>I'm <b>button-element</b>. This is my Shadow DOM.</span>
+  </template>
+  <script>
+    Polymer('button-element', {
+      applyAuthorStyles: false,
+      resetStyleInheritance: false,
+      created: function() { },
+      enteredView: function() { },
+      leftView: function() { },
+      attributeChanged: function(attrName, oldVal, newVal) { }
+    });
+  </script>
+</polymer-element>

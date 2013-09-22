@@ -1,0 +1,79 @@
+<polymer-element name="footer-element" attributes="">
+  <template>
+    <style>
+      @host { :scope {display: block;} }
+      article {
+        text-align: left;
+        color: white;
+      }
+    </style>
+    <section id="footer-content" class="row">
+      <article id="whyuse" class="col-md-4 col-md-offset-2">
+        <header>
+          <h2>
+            Why Use SecureShare?
+          </h2>
+        </header>
+        <section>
+          <ul>
+            <li>Files are encrypted with 128-bit <b>client-side</b> <a href="http://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> encryption.
+            </li>
+            <li>We don't have the key - it is generated in your browser. <b>We cannot read your files.</b>
+            </li>
+            <li>All communications are verified &amp; encrypted with SSL.
+            </li>
+            <li>We use very long, randomly generated URLs so your data cannot be found.
+            </li>
+            <li>Auto-generated strong cipher passwords make brute-forcing infeasible.
+            </li>
+            <li>Your data is automatically and securely deleted after use.
+            </li>
+            <li>Supported in Chrome, Firefox, Safari, and Chrome for Android.
+            </li>
+            <li>
+              <a href="https://github.com/STRML/securesha.re-client">Open Source</a> - if you don't trust us, read the code.
+            </li>
+          </ul>
+        </section>
+      </article>
+      <article id="howitworks" class="col-md-4">
+        <header>
+          <h2>
+            How It Works
+          </h2>
+        </header>
+        <section>
+          <ul>
+            <li>Your browser encrypts the file before handing it to us.
+            </li>
+            <li>You select how many times the file can be accessed.
+            </li>
+            <li>Your browser uploads the file. Before it is sent to us, it is encrypted by your browser.
+            </li>
+            <li>We give you a link to share the file. This link is unique and cannot be guessed.
+            </li>
+            <li>The recipient requests the file and decrypts it in his/her browser.
+            </li>
+            <li>We are never sent the cipher key - we cannot decrypt your data.
+            </li>
+            <li>No logs are kept.
+            </li>
+            <li>
+              <b>All files are automatically deleted after 7 days.</b>
+            </li>
+          </ul>
+        </section>
+      </article>
+    </section>
+  </template>
+  <script>
+  Polymer('footer-element', {
+    //applyAuthorStyles: true,
+    //resetStyleInheritance: true,
+    created: function() { },
+    enteredView: function() { },
+    leftView: function() { },
+    attributeChanged: function(attrName, oldVal, newVal) { }
+  });
+  </script>
+</polymer-element>
