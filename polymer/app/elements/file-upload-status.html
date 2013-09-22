@@ -1,15 +1,32 @@
-<polymer-element name="file-upload-status"  attributes="">
+<link rel="import" href="../bower_components/polymer-elements/polymer-signals/polymer-signals.html">
+<polymer-element name="file-upload-status" attributes="">
   <template>
     <style>
       @host { :scope {display: block;} }
     </style>
-    <span>I'm <b>fileUploadStatus</b>. This is my Shadow DOM.</span>
+    <progress hidden?="{{!totalSlices}}" value="{{slicesFinished}}" max="{{totalSlices}}"></progress>
+    <div hidden?="{{!statusMessage}}">
+      {{statusMessage}}
+    </div>
+    <div 
+    <polymer-signals on-polymer-signal-slice-finished="onSliceFinished" 
+                     on-polymer-signal-encryption-finished="onEncryptionFinished"></polymer-signals>
   </template>
   <script>
     Polymer('file-upload-status', {
       //applyAuthorStyles: true,
       //resetStyleInheritance: true,
-      created: function() { },
+      onEncryptionFinished: function() {
+        this.statusMessage = "Encryption Complete.";
+      },
+      onSliceFinished: function(e) {
+        debugger;
+        this.totalSlices = e.detail.total;
+        this.slicesFinished++;
+      },
+      created: function() {
+        this.slicesFinished = 0;
+      },
       enteredView: function() { },
       leftView: function() { },
       attributeChanged: function(attrName, oldVal, newVal) { }

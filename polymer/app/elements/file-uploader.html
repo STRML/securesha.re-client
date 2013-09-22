@@ -2,6 +2,8 @@
 <link rel="import" href="file-advanced-options.html">
 <link rel="import" href="file-upload-status.html">
 <link rel="import" href="file-encryptor.html">
+<link rel="import" href="webworker-xhr.html">
+<link rel="import" href="../bower_components/polymer-elements/polymer-ajax/polymer-ajax.html">
 <polymer-element name="file-uploader" attributes="">
   <template>
     <style>
@@ -15,9 +17,15 @@
     <article>
       <form class="form-horizontal" enctype="multipart/form-data">
         <file-chooser-button file="{{file}}"></file-chooser-button>
-        <file-encryptor file="{{file}}" key="{{key}}"></file-encryptor>
-        <file-advanced-options></file-advanced-options>
+        <file-encryptor file="{{file}}" passphrase="{{fileOptions.passphrase}}" on-encryption-finished="prepareXHR"></file-encryptor>
+        <webworker-xhr on-xhr-prepared="uploadFile"></webworker-xhr>
+        <file-advanced-options closed="true" fileOptions="{{fileOptions}}"></file-advanced-options>
         <file-upload-status></file-upload-status>
+        <polymer-ajax id="ajaxUploader" url="/putfile" 
+            params='{"alt":"json", "q":"chrome"}'
+            handleAs="json"
+            on-polymer-response="handleResponse">
+        </polymer-ajax>
       </form>
     </article>
   </template>
@@ -26,8 +34,18 @@
       //applyAuthorStyles: true,
       //resetStyleInheritance: true,
       created: function() {
-        // Create file password
-        this.key = window.secureShared.generatePassphrase();
+        // Create default file options
+        this.fileOptions = {
+          passphrase: window.secureShared.generatePassphrase(),
+          days: 7,
+          views: 1
+        };
+      },
+      prepareXHR: function(e) {
+        //this.$.xhrPreparer.prepareXHR(e.detail);
+      },
+      uploadFile: function(e) {
+
       },
       enteredView: function() { },
       leftView: function() { },

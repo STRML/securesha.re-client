@@ -1,15 +1,74 @@
-<polymer-element name="file-advanced-options"  attributes="">
+<link rel="import" href="../bower_components/polymer-elements/polymer-collapse/polymer-collapse.html">
+<polymer-element name="file-advanced-options"  attributes="fileOptions closed">
   <template>
     <style>
       @host { :scope {display: block;} }
     </style>
-    <span>I'm <b>fileAdvancedOptions</b>. This is my Shadow DOM.</span>
+    <link rel="stylesheet" href="/styles/advancedOptions.css" />
+
+    <polymer-collapse id="collapse" targetId="inner-advanced" closed="{{closed}}"></polymer-collapse>
+
+    <div id="outer-advanced">
+      <div>
+        <span id="advance-toggle" on-click="toggle">
+          <i class="glyphicon {{closed ? 'glyphicon-chevron-right' : 'glyphicon-chevron-down'}}"></i>
+          Advanced Options
+        </span>
+      </div>
+      <div id="inner-advanced">
+        <div class="field-wrapper">
+          <div class="field-label">
+            File Password
+          </div>
+          <input id="password" type="text" name="password" class="form-control" value="{{fileOptions.passphrase}}">
+          <div class="passwordNotes help-block">
+            Change this password if you have shared it with the recipient previously. The default is secure and randomly generated; keep it as-is for maximum security.
+          </div>
+        </div>
+        <div class="field-wrapper">
+          <div class="field-label">
+            Delete After
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-group">
+                <input id="views" type="number" name="views" value="{{fileOptions.views}}" min="1" max="10" class="form-control">
+                <span class="input-group-addon">
+                  View<span hidden?="{{fileOptions.views === 1}}">s</span>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group">
+                <input id="days" type="number" name="days" value="{{fileOptions.days}}" min="1" max="7" class="form-control">
+                <span class="input-group-addon">
+                  Day<span hidden?="{{fileOptions.days === 1}}">s</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="help-block explain">
+            Your file will expire at Sun Sep 29 2013 15:45:47 GMT+0800 (HKT) or after 1 view, whichever comes first.
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
   </template>
   <script>
     Polymer('file-advanced-options', {
       //applyAuthorStyles: true,
       //resetStyleInheritance: true,
-      created: function() { },
+      created: function() { 
+        this.fileOptions = this.fileOptions || {
+          days: 7,
+          views: 1
+        };
+        this.closed = true;
+      },
+      toggle: function() {
+        this.closed = !this.closed;
+      },
       enteredView: function() { },
       leftView: function() { },
       attributeChanged: function(attrName, oldVal, newVal) { }

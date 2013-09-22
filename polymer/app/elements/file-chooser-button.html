@@ -12,7 +12,7 @@
     </style>
     <polymer-file id="file" readas="arraybuffer" auto blob="{{blob}}"
                   result="{{file}}"></polymer-file>
-    <span class="btn btn-success fileUpload">
+    <span class="btn btn-success fileUpload" on-click="selectFile">
       <i class="glyphicon glyphicon-plus"></i>
       <span>&nbsp;Choose Your File...</span>
       <input id="fileupload" type="file" name="file" on-change="onFileSelected">
@@ -28,6 +28,9 @@
         if(file.size > window.secureShared.fileSizeLimit) return window.alert("File is too big. Please choose a file under 10MB.");
         file.name = file.name + "?" + (Math.random() * 1000); // browser cache buster
         this.file = file;
+      },
+      selectFile: function() {
+        this.$.fileupload.click(); // wow this works?
       },
       enteredView: function() { },
       leftView: function() { },

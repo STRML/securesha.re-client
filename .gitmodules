@@ -1,3 +1,0 @@
-[submodule "polymer/app/scripts/polymer"]
-	path = polymer/app/scripts/polymer
-	url = git@github.com:Polymer/polymer.git

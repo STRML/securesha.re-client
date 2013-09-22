@@ -1,0 +1,31 @@
+<link rel="import" href="webworker-crypto.html">
+<polymer-element name="webworker-xhr"  attributes="">
+  <template>
+    <style>
+      @host { :scope {display: none;} }
+    </style>
+    <webworker-base src="/scripts/xhrWorker.js" on-message="onMessage" on-error"onError" worker="{{worker}}"></webworker-base>
+  </template>
+  <script>
+    Polymer('webworker-xhr', {
+      created: function() { 
+      },
+      prepareXHR: function(data) {
+
+      },
+      onMessage: function(e) {
+        if(typeof e.data === 'string'){
+          // message (debug)
+          return console.log(e.data);
+        }
+        this.fire('xhr-prepared', e);
+      },
+      onError: function(e) {
+        console.error(e.data);
+      },
+      _validate: function(data) {
+        if (data.passphrase) throw new Error("Don't send passphrases to the server!");
+      }
+    });
+  </script>
+</polymer-element>

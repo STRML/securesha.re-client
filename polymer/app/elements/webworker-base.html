@@ -1,0 +1,29 @@
+<polymer-element name="webworker-base" attributes="src worker">
+  <template>
+    <style>
+      @host { :scope {display: none;} }
+    </style>
+  </template>
+  <script>
+    Polymer('webworker-base', {
+      created: function() { 
+      },
+      _onMessage: function(e) {
+        this.fire('message', e);
+      },
+      _onError: function(e) {
+        this.fire('error', e);
+      },
+      enteredView: function() {
+        // Spawn worker when added to DOM
+        this.worker = new Worker(this.src);
+        this.worker.addEventListener('message', this._onMessage.bind(this), false);
+        this.worker.addEventListener('error', this._onError.bind(this), false);
+      },
+      leftView: function() {
+        // Terminate worker when removed from DOM
+        this.worker.terminate();
+      }
+    });
+  </script>
+</polymer-element>

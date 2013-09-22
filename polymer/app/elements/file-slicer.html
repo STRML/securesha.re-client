@@ -4,9 +4,8 @@
 <polymer-element name="file-slicer" attributes="input output chunkSize">
   <template>
     <style>
-      @host { :scope {display: block;} }
+      @host { :scope {display: none;} }
     </style>
-    <span>I'm <b>fileSlicer-element</b>. This is my Shadow DOM.</span>
   </template>
   <script>
     Polymer('file-slicer', {
@@ -14,6 +13,7 @@
       //resetStyleInheritance: true,
       inputChanged: function() {
         // slice & dice
+        if (!this.input) return;
         var file = this.input;
         file.slice = file.mozSlice || file.webkitSlice || file.slice; // compatibility
         var pos = 0;

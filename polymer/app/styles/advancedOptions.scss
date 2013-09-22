@@ -1,0 +1,55 @@
+#outer-advanced {
+  margin-top: 10px;
+}
+
+#inner-advanced{
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.2);
+  width: 100%;
+  border-radius: 10px;
+  color: white
+}
+
+#advance-toggle {
+  text-decoration: none;
+  color: white;
+  margin: 0 0 5px 0;
+  display: block;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.field-wrapper{
+  margin: 0 auto;
+  width: 95%;
+}
+
+// Using margins on inner elements rather than paddings on #inner-advanced.
+// polymer-collapse is a little retarded and doesn't handle paddings well
+.field-wrapper:first-of-type{
+  margin-top: 25px;
+}
+
+.field-wrapper:last-of-type{
+  margin-bottom: 25px;
+}
+
+.field-label{
+  margin-bottom: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.help-block{
+  color: inherit;
+  font-size: 0.85em;
+}
+
+.input-group-addon{
+  color: white;
+  text-shadow: none !important;
+  background-color: #5bb75b;
+  background: linear-gradient(to bottom, #62c462, #51a351);
+  background-repeat: repeat-x;
+  border-color: #51a351 #51a351 #387038;
+}

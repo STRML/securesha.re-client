@@ -1,10 +1,10 @@
 <link rel="import" href="file-slicer.html">
-<polymer-element name="file-encryptor" attributes="file key workerCount chunkSize chunkDelimiter">
+<link rel="import" href="webworker-crypto.html">
+<polymer-element name="file-encryptor" attributes="file passphrase workerCount chunkSize chunkDelimiter encryptedFile">
   <template>
     <style>
-      @host { :scope {display: block;} }
+      @host { :scope {display: none;} }
     </style>
-    <span>I'm <b>fileEncryptor-element</b>. This is my Shadow DOM.</span>
     <file-slicer input="{{file}}" output="{{slices}}" chunkSize="{{chunkSize}}"></file-slicer>
     <template repeat="{{worker in workers}}" id="workers">
       <webworker-crypto id="worker-{{worker.id}}" on-slice="_onWorkerSlice"></webworker-crypto>
@@ -14,7 +14,7 @@
   <script>
     Polymer('file-encryptor', {
       created: function() {
-        this._spawnWorkers();
+        window.encryptor = this;
       },
       // These can be overridden by the parent
       chunkSize: window.secureShared.chunkSize,
@@ -24,9 +24,11 @@
       //resetStyleInheritance: true,
       slicesChanged: function() {
         // We have our slices, now encrypt them
-        this.encrypt(this.slices);
+        if (!this.slices || !this.slices.length) return;
+        this._spawnWorkers();
+        this.asyncMethod(this.encrypt.bind(this));
       },
-      encrypt: function(slices) {
+      encrypt: function() {
         // Create internal encrypted file container
         this.encryptedFile = {
           fileData : [],
@@ -35,42 +37,69 @@
           chunkDelimiter: this.chunkDelimiter
         };
 
+        // Progress counter
+        this.slicesComplete = 0;
+
+        // New file size, for logging purposes
+        this.encryptedSize = 0;
+
         // Encrypt slices (post to workers)
-        for(i = 0; i < slices.length; i++){
-          var msg = {slice: slices[i], passphrase: passphrase, index: i};
+        // Don't forget shadowRoot here (that's easy to miss)
+        // XXX why doesn't this.$['worker-' + i] work here?
+        var workers = this.shadowRoot.querySelectorAll('webworker-crypto');
+        for(i = 0; i < this.slices.length; i++){
+          var msg = {slice: this.slices[i], passphrase: this.passphrase, index: i};
           if(i === 0) msg.fileName = this.file.name; // don't send filename past the first slice
-          this.$["worker-" + i].encrypt(msg);
+          workers[i].encrypt(msg);
         }
       },
       // Create worker manifests
       _spawnWorkers: function() {
         var workers = [];
-        for(var i = 0; i < workerCount; i++){
+        for(var i = 0; i < this.workerCount; i++){
           workers.push({id: i});
         }
         this.workers = workers;
       },
       _onEncryptionFinished: function() {
         console.log("File Size: " + this.file.size);
-        console.log("Total: " + this.total);
+        console.log("Encrypted Size: " + this.encryptedSize);
 
         // Terminate workers. This will clear out the above template, which will cause
         // the worker elements to destruct.
         this.workers = [];
 
-        this.fire('encryption-finished', this.file);
+        // For status elements
+        this.fire('polymer-signal', {
+          name: 'encryption-finished', 
+          data: {file: this.encryptedFile}
+        });
+
+        // Fire directly so listeners can be bound
+        this.fire('encryption-finished', this.encryptedFile);
       },
       _onWorkerSlice: function(e) {
         var data = e.detail;
-        this.total += data.fileData.length;
+        this.slicesComplete++;
+        this.encryptedSize += data.fileData.length;
         this.encryptedFile.fileData[data.index] = data.fileData;
-        if(data.fileName) encryptedFile.fileName = data.fileName;
+        if(data.fileName) this.encryptedFile.fileName = data.fileName;
 
         // Fire a nice event
-        this.fire('slice-finished', {value: data.index, total: this.slices.length, fileName: this.file.fileName});
+        var data = {
+          value: data.index, 
+          total: this.slices.length, 
+          fileName: this.file.fileName
+        }
+        // Fire a signal so status listeners can listen in 
+        this.fire('polymer-signal', {
+          name: 'slice-finished', 
+          data: data
+        });
+        // Fire the event right here too in case the parent wants a go at it
+        this.fire('slice-finished', data);
 
-        // When our total number of bytes processed equals the size of the file, we're done.
-        if (this.total === this.file.length) {
+        if (this.slicesComplete === this.slices.length) {
           this._onEncryptionFinished();
         }
       },

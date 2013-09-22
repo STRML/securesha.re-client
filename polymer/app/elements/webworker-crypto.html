@@ -1,14 +1,13 @@
-<polymer-element name="webworker-crypto-element"  attributes="">
+<link rel="import" href="webworker-base.html">
+<polymer-element name="webworker-crypto" attributes="">
   <template>
     <style>
-      @host { :scope {display: block;} }
+      @host { :scope {display: none;} }
     </style>
-    <span>I'm <b>webworkerCrypto-element</b>. This is my Shadow DOM.</span>
+    <webworker-base src="/scripts/crypto.js" on-message="onMessage" on-error"onError" worker="{{worker}}"></webworker-base>
   </template>
   <script>
-    Polymer('webworker-crypto-element', {
-      //applyAuthorStyles: true,
-      //resetStyleInheritance: true,
+    Polymer('webworker-crypto', {
       created: function() { 
       },
       encrypt: function(data) {
@@ -21,34 +20,24 @@
         data.decrypt = true;
         this.worker.postMessage(data);
       },
-      _onMessage: function(e) {
-        if(_.isString(e.data)){
+      onMessage: function(e) {
+        var data = e.detail.data;
+        if(typeof data === 'string'){
           // message (debug)
-          return console.log(e.data);
+          return console.log(data);
         }
-        // console.log(e.data.fileData.length);
-        this.fire('slice', e);
+        console.log(data.fileData.length);
+        this.fire('slice', data);
       },
-      _onError: function(e) {
-        console.error(e.data);
+      onError: function(e) {
+        console.error(e.detail.data);
       },
       // Fake strong typing
       _validate: function(data) {
-        if (!(data.slice instanceof Blob)) throw new Error("Slice must be a Blob.");
-        if (typeof data.passphrase !== "string") throw new Error("Passphrase must be a String.");
-        if (typeof data.index !== "number") throw new Error("Index must be a Number.");
-      },
-      enteredView: function() {
-        // Spawn worker when added to DOM
-        this.worker = new Worker("/scripts/crypto.js");
-        this.worker.addEventListener('message', this._onMessage, false);
-        this.worker.addEventListener('error', this._onError, false);
-      },
-      leftView: function() {
-        // Terminate worker when removed from DOM
-        this.worker.terminate();
-      },
-      attributeChanged: function(attrName, oldVal, newVal) { }
+        if (!(data.slice instanceof Blob)) throw new Error('Slice must be a Blob.');
+        if (typeof data.passphrase !== 'string') throw new Error('Passphrase must be a String.');
+        if (typeof data.index !== 'number') throw new Error('Index must be a Number.');
+      }
     });
   </script>
 </polymer-element>

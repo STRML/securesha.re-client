@@ -1,16 +1,10 @@
-/*global _:true, escape: true, CryptoJS: true */
+/*global escape: true, CryptoJS: true */
+'use strict';
 window.secureShared = {
   chunkSize : 512 * 1024, // 512kb chunks
-  chunkDelimiter : "/--delimiter--/",
+  chunkDelimiter : '/--delimiter--/',
   fileSizeLimit: 10 * 1024 * 1024,
   workerCount : 4,
-  spawnWorkers : function(workerCount){
-    var workers = [];
-    for(var i = 0; i < workerCount; i++){
-      workers.push(new Worker("app/crypto.js"));
-    }
-    return workers;
-  },
 
   convertLatin1ToUtf8 : function(str){
     return decodeURIComponent(escape(str));
@@ -20,7 +14,7 @@ window.secureShared = {
   generatePassphrase: function() {
     // If window.crypto is available, use it.
     var passphrase;
-    if(window.crypto && typeof window.crypto.getRandomValues == "function"){
+    if(window.crypto && typeof window.crypto.getRandomValues === 'function'){
       var array = new Uint8Array(32);
       window.crypto.getRandomValues(array);
       passphrase = window.secureShared.ab2str(array.buffer);
@@ -55,9 +49,6 @@ window.secureShared = {
   // Reverse the above process.
   urlSafeBase64decode: function(input) {
     return input.replace(/-/g, '+').replace(/_/, '/');
-  },
-
-  showStatusMessage: function(message){
   },
 
   fileSize: function(fileSizeInBytes) {
