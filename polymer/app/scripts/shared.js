@@ -3,7 +3,7 @@
 window.secureShared = {
   chunkSize : 512 * 1024, // 512kb chunks
   chunkDelimiter : '/--delimiter--/',
-  fileSizeLimit: 10 * 1024 * 1024,
+  fileSizeLimit: 20 * 1024 * 1024,
   workerCount : 4,
 
   convertLatin1ToUtf8 : function(str){

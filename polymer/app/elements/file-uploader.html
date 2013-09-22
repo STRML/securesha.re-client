@@ -15,19 +15,14 @@
       <h2>Upload a File</h2>
     </header>
     <article>
-      <form class="form-horizontal" enctype="multipart/form-data">
+      <form class="form-horizontal">
         <file-chooser-button file="{{file}}"></file-chooser-button>
-        <file-encryptor file="{{file}}" passphrase="{{fileOptions.passphrase}}" on-encryption-finished="prepareXHR"></file-encryptor>
-        <webworker-xhr id="xhrPreparer" on-xhr-prepared="uploadFile"></webworker-xhr>
         <file-advanced-options closed="true" fileOptions="{{fileOptions}}"></file-advanced-options>
-        <file-upload-status></file-upload-status>
-        <ajax-raw id="ajaxUploader" url="/putfile" method="POST"
-            params="{{ajaxParams}}"
-            handleAs="json"
-            on-polymer-response="handleResponse">
-        </polymer-ajax>
+        <file-upload-status file="{{file}}"></file-upload-status>
       </form>
     </article>
+    <file-encryptor file="{{file}}" passphrase="{{fileOptions.passphrase}}" on-encryption-finished="prepareXHR"></file-encryptor>
+    <webworker-xhr id="xhrPreparer" on-xhr-prepared="uploadFile"></webworker-xhr>
   </template>
   <script>
     Polymer('file-uploader', {
@@ -41,7 +36,12 @@
           views: 1
         };
       },
+      // We farm off XHR prep to a web worker since it can freeze up the browser for a while.
+      // It's a long string.
       prepareXHR: function(e) {
+        this.fire('polymer-signal', {
+          name: 'upload-preparing'
+        });
         this.$.xhrPreparer.prepareXHR(e.detail);
       },
       // Forgoing polymer-ajax here, it expects JSON input & attempts to querystring
@@ -49,6 +49,10 @@
       // that just creates a qs. We'll just make an xhr ourselves.
       uploadFile: function(e) {
         var xhr = new XMLHttpRequest();
+        
+        // Attach handlers
+        xhr.onload = this.handleResponse.bind(this, xhr);
+        xhr.onerror = this.handleError.bind(this, xhr);
         // Attach progress handler, if possible
         if (xhr.upload) {
           xhr.upload.addEventListener('progress', this.handleUploadProgress.bind(this), false);
@@ -62,20 +66,33 @@
 
         // Open xhr
         xhr.open(method, url, async);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4) {
-            this.handleResponse(xhr.response, xhr);
-          }
-        }.bind(this);
-        xhr.send(params);
+
+        // Set headers
+        xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+        xhr.setRequestHeader('X-File-Expiration-Days', this.fileOptions.days);
+        xhr.setRequestHeader('X-File-Name', params.fileName);
+        xhr.setRequestHeader('X-File-Max-Views', this.fileOptions.views);
+        xhr.setRequestHeader('X-File-Content-Type', params.contentType);
+
+        // We're only sending the actual file data up the pipe as a binary stream.
+        xhr.send(params.fileData);
       },
-      handleResponse: function(response, xhr) {
+      handleResponse: function(xhr, event) {
         try {
-          response = JSON.parse(response);
+          var response = JSON.parse(xhr.responseText);
         } catch(e) {
           console.error("Unable to parse server response.");
         }
-        console.dir(response);
+        this.fire('polymer-signal', {
+          name: 'upload-complete', 
+          data: {
+            fileName: response.url,
+            passphrase: this.fileOptions.passphrase
+          }
+        });
+      },
+      handleError: function(xhr, event) {
+        console.error("Error when uploading file:", event);
       },
       // Fire a signal whenever we get a progress report
       handleUploadProgress: function(e) {

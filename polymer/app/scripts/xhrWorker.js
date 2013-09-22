@@ -1,21 +1,23 @@
 /*jshint worker:true*/
+'use strict';
 
+// This simple worker joins the fileData together and encodes the part.
+// With large files, this gets really slow, so I put it here instead.
 self.onmessage = function (oEvent) {
-  createParams(oEvent);
+  encodeFileData(oEvent);
 };
 
-function createParams(oEvent){
-  oEvent.data.fileData = oEvent.data.fileData.join(oEvent.data.chunkDelimiter);
-  delete oEvent.data.chunkDelimiter; // don't need to send this
-  postMessage(buildParams(oEvent.data));
-}
-
-// based on jquery.param, removed 'traditional'
-function buildParams(obj){
+function encodeFileData(oEvent){
   var r20 = /%20/g;
-  var s = [], prefix;
-  for(prefix in obj){
-    s.push(encodeURIComponent( prefix ) + "=" + encodeURIComponent( obj[prefix] ));
+  // Join chunks on chunk delimiter
+  var fileData = oEvent.data.fileData;
+  for(var i = 0; i < fileData.length; i++) {
+    fileData[i] = encodeURIComponent(fileData[i]).replace(r20, '+');
   }
-  return s.join( "&" ).replace( r20, "+" );
+  // Join file chunks by the delimiter. This is intentional - the chunks need to be decrypted
+  // the same way they were encrypted, so this delimiter allows us to split the chunks again
+  // when they come back down.
+  oEvent.data.fileData = new Blob([fileData.join(oEvent.data.chunkDelimiter)]);
+
+  postMessage(oEvent.data);
 }

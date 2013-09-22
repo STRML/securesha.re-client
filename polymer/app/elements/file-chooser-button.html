@@ -25,6 +25,7 @@
       created: function() { },
       onFileSelected: function() {
         var file = this.$.fileupload.files[0];
+        if (!file) return;
         if(file.size > window.secureShared.fileSizeLimit) return window.alert("File is too big. Please choose a file under 10MB.");
         file.name = file.name + "?" + (Math.random() * 1000); // browser cache buster
         this.file = file;

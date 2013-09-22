@@ -47,10 +47,10 @@
         // Don't forget shadowRoot here (that's easy to miss)
         // XXX why doesn't this.$['worker-' + i] work here?
         var workers = this.shadowRoot.querySelectorAll('webworker-crypto');
-        for(i = 0; i < this.slices.length; i++){
+        for(var i = 0; i < this.slices.length; i++){
           var msg = {slice: this.slices[i], passphrase: this.passphrase, index: i};
           if(i === 0) msg.fileName = this.file.name; // don't send filename past the first slice
-          workers[i].encrypt(msg);
+          workers[i % workers.length].encrypt(msg);
         }
       },
       // Create worker manifests

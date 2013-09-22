@@ -1,30 +1,69 @@
 <link rel="import" href="../bower_components/polymer-elements/polymer-signals/polymer-signals.html">
-<polymer-element name="file-upload-status" attributes="">
+<polymer-element name="file-upload-status" attributes="file">
   <template>
     <style>
       @host { :scope {display: block;} }
     </style>
-    <progress hidden?="{{!totalSlices}}" value="{{slicesFinished}}" max="{{totalSlices}}"></progress>
-    <div hidden?="{{!statusMessage}}">
+    
+    <div id="encryptionProgress" hidden?="{{!totalSlices}}" hidden?="{{slicesFinished === totalSlices}}">
+      Encrypting...
+      <progress value="{{slicesFinished}}" max="{{totalSlices}}"></progress>
+    </div>
+
+    <div id="uploadProgress" hidden?="{{!uploadMax}}">
+      Uploading...
+      <progress value="{{uploadProgress}}" max="{{uploadMax}}"></progress>
+      <img src="/images/ajax-loader-pacman-inverse.gif" />   
+    </div>
+
+    <div hidden?="{{!statusMessage.length}}">
       {{statusMessage}}
     </div>
-    <div 
-    <polymer-signals on-polymer-signal-slice-finished="onSliceFinished" 
-                     on-polymer-signal-encryption-finished="onEncryptionFinished"></polymer-signals>
+
+    <polymer-signals 
+      on-polymer-signal-slice-finished="onSliceFinished" 
+      on-polymer-signal-encryption-finished="onEncryptionFinished"
+      on-polymer-signal-upload-preparing="onUploadPreparing"
+      on-polymer-signal-upload-progress="onUploadProgress"
+      on-polymer-signal-upload-complete="onUploadComplete">
+    </polymer-signals>
   </template>
   <script>
     Polymer('file-upload-status', {
       //applyAuthorStyles: true,
       //resetStyleInheritance: true,
+      fileChanged: function() {
+        this.reset();
+      },
       onEncryptionFinished: function() {
+        this.reset();
         this.statusMessage = "Encryption Complete.";
       },
       onSliceFinished: function(e) {
         this.totalSlices = e.detail.total;
         this.slicesFinished++;
       },
+      onUploadComplete: function(e) {
+        this.reset();
+        this.statusMessage = "Upload Complete. Your file is at url " + e.detail.fileName;
+      },
+      onUploadPreparing: function() {
+        this.statusMessage = "Preparing Upload...";
+      },
+      onUploadProgress: function(e) {
+        this.uploadProgress = e.detail.value;
+        this.uploadMax = e.detail.max;
+        this.statusMessage = "";
+      },
       created: function() {
+        this.reset();
+      },
+      reset: function() {
         this.slicesFinished = 0;
+        this.totalSlices = 0;
+        this.statusMessage = "";
+        this.uploadProgress = 0;
+        this.uploadMax = 0;
       },
       enteredView: function() { },
       leftView: function() { },
