@@ -17,6 +17,10 @@
       <span>&nbsp;Choose Your File...</span>
       <input id="fileupload" type="file" name="file" on-change="onFileSelected">
     </span>
+    <div hidden?="{{!file}}">
+      <div>File Attached: {{file.name}}.</div>
+      <div>Size: {{readableFileSize}}.
+    </div>
   </template>
   <script>
     Polymer('file-chooser-button', {
@@ -29,9 +33,13 @@
         if(file.size > window.secureShared.fileSizeLimit) return window.alert("File is too big. Please choose a file under 10MB.");
         file.name = file.name + "?" + (Math.random() * 1000); // browser cache buster
         this.file = file;
+        this.readableFileSize = this.getReadableFileSize();
       },
       selectFile: function() {
         this.$.fileupload.click(); // wow this works?
+      },
+      getReadableFileSize: function() {
+        return window.secureShared.fileSize(this.file.size);
       },
       enteredView: function() { },
       leftView: function() { },

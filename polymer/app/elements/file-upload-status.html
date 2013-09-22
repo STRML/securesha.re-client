@@ -3,6 +3,18 @@
   <template>
     <style>
       @host { :scope {display: block;} }
+      textarea {
+        height: 60px;
+      }
+      textarea, input {
+        width: 100%;
+        margin-top: 10px;
+        word-break: break-all;
+        cursor: text !important;
+      }
+      #uploadInfo div {
+        margin-top: 10px;
+      }
     </style>
     
     <div id="encryptionProgress" hidden?="{{!totalSlices}}" hidden?="{{slicesFinished === totalSlices}}">
@@ -19,6 +31,28 @@
     <div hidden?="{{!statusMessage.length}}">
       {{statusMessage}}
     </div>
+
+    <template bind="{{uploadDetails}}" if="{{uploadDetails}}">
+      <article id="uploadInfo" style="display: block;">
+        <hr></hr>
+        <div>
+          Your file can be reached at this URL:
+          <small>(drag to select &amp; {{isMac ? 'cmd-c' : 'ctrl-c'}} to copy)</small>
+        </div>
+        <textarea rows="2" readonly>{{urlWithPassword}}</textarea>
+        <div>
+          The above link is enough for a user to access the file. 
+          If you have sent the password separately, use this URL instead:
+        </div>
+        <textarea rows="2" readonly>{{urlWithoutPassword}}</textarea>
+        <div>Your file's password:</div> 
+        <input value="{{filePassword}}" readonly>
+        <div>
+          You're done! You can upload another file above if you like, but be sure to copy the URL of this one.
+          If you don't copy it now, it will be lost.
+        </div>
+      </article>
+    </template>
 
     <polymer-signals 
       on-polymer-signal-slice-finished="onSliceFinished" 
@@ -45,7 +79,15 @@
       },
       onUploadComplete: function(e) {
         this.reset();
-        this.statusMessage = "Upload Complete. Your file is at url " + e.detail.fileName;
+        var url = e.detail.fileName;
+        var passphrase = e.detail.passphrase;
+        var fileURL = window.location.protocol + "//" + window.location.host + '?#u=' + url + '&p=' + passphrase;
+        var fileURLNoPass = window.location.protocol + "//" + window.location.host + '?#u=' + url;
+        this.uploadDetails = {
+          urlWithPassword: fileURL,
+          urlWithoutPassword: fileURLNoPass,
+          filePassword: passphrase
+        };
       },
       onUploadPreparing: function() {
         this.statusMessage = "Preparing Upload...";
@@ -57,6 +99,7 @@
       },
       created: function() {
         this.reset();
+        this.isMac = navigator.userAgent.indexOf('Mac OS X') != -1;
       },
       reset: function() {
         this.slicesFinished = 0;
@@ -64,6 +107,7 @@
         this.statusMessage = "";
         this.uploadProgress = 0;
         this.uploadMax = 0;
+        this.uploadDetails = false;
       },
       enteredView: function() { },
       leftView: function() { },

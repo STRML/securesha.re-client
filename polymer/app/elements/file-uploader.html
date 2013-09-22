@@ -78,10 +78,11 @@
         xhr.send(params.fileData);
       },
       handleResponse: function(xhr, event) {
+        var response;
         try {
-          var response = JSON.parse(xhr.responseText);
+          response = JSON.parse(xhr.responseText);
         } catch(e) {
-          console.error("Unable to parse server response.");
+          return console.error("Unable to parse server response.");
         }
         this.fire('polymer-signal', {
           name: 'upload-complete', 
