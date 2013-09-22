@@ -21,6 +21,7 @@
     <!-- endbuild -->
 
     <!-- build:js scripts/secureshare.js -->
+    <script src="scripts/vendor/BrowserDetect.js"></script>
     <script src="scripts/page.js"></script>
     <script src="scripts/shared.js"></script>
     <!-- endbuild -->
@@ -30,13 +31,16 @@
     <link rel="import" href="elements/footer.html">
     <link rel="import" href="elements/file-downloader.html">
     <link rel="import" href="elements/file-uploader.html">
+    <link rel="import" href="elements/secureshare-app.html">
   </head>
   <body>
-    <main>
-      <header-element></header-element>
-      <file-uploader></file-uploader>
-      <file-downloader></file-downloader>
-    </main>
-    <footer-element></footer-element>
+    <secureshare-app>
+      <main>
+        <header-element></header-element>
+        <file-uploader></file-uploader>
+        <file-downloader></file-downloader>
+      </main>
+      <footer-element></footer-element>
+    </secureshare-app>
   </body>
 </html>

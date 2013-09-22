@@ -1,0 +1,32 @@
+<polymer-element name="secureshare-app"  attributes="">
+  <template>
+    <style>
+      @host { :scope {display: block;} }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    // This element is essentially just a passthrough. We can add some nice init
+    // methods here though.
+    Polymer('secureshare-app', {
+      created: function() {
+        // Look for download fragment. If it exists, switch to downloading view.
+        var hash = window.secureShared.getHash();
+        if (hash && hash.u) {
+          // Send a polymer signal
+          var data = {
+            url: hash.u,
+            passphrase: hash.p
+          };
+          this.asyncFire('polymer-signal', {
+            name: 'download-active',
+            data: data
+          });
+        }
+      },
+      enteredView: function() { },
+      leftView: function() { },
+      attributeChanged: function(attrName, oldVal, newVal) { }
+    });
+  </script>
+</polymer-element>

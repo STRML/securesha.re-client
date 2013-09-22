@@ -10,6 +10,22 @@ window.secureShared = {
     return decodeURIComponent(escape(str));
   },
 
+  getHash: function() {
+    // parse hash
+    var hash = (function(a) {
+      if (a === '') return {};
+      var b = {};
+      for (var i = 0; i < a.length; ++i)
+      {
+        var p=a[i].split('=');
+        if (p.length !== 2) continue;
+        b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, ' '));
+      }
+      return b;
+    })(window.location.hash.substr(1).split('&'));
+    return hash;
+  },
+
   // Generate a 256-bit key. 
   generatePassphrase: function() {
     // If window.crypto is available, use it.

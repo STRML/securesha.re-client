@@ -1,4 +1,4 @@
-<link rel="import" href="../bower_components/polymer-elements/polymer-signals/polymer-signals.html">
+<link rel="import" href="vendor/polymer-signals.html">
 <polymer-element name="file-upload-status" attributes="file">
   <template>
     <style>
@@ -25,7 +25,7 @@
     <div id="uploadProgress" hidden?="{{!uploadMax}}">
       Uploading...
       <progress value="{{uploadProgress}}" max="{{uploadMax}}"></progress>
-      <img src="/images/ajax-loader-pacman-inverse.gif" />   
+      <img src="/images/ajax-loader-pacman.gif" />   
     </div>
 
     <div hidden?="{{!statusMessage.length}}">
@@ -81,6 +81,9 @@
         this.reset();
         var url = e.detail.fileName;
         var passphrase = e.detail.passphrase;
+        // You might think I'm a tard for adding a ? here. Well, there's a very good reason -
+        // without it, if a user copy pastes the URL right back into the app, it won't refresh & start downloading.
+        // FIXME: sub to hashchanged?
         var fileURL = window.location.protocol + "//" + window.location.host + '?#u=' + url + '&p=' + passphrase;
         var fileURLNoPass = window.location.protocol + "//" + window.location.host + '?#u=' + url;
         this.uploadDetails = {

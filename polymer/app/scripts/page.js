@@ -1,3 +1,3 @@
+'use strict';
 document.addEventListener('WebComponentsReady', function() {
-  // Perform some behaviour
 });

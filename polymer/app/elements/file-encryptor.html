@@ -1,6 +1,6 @@
 <link rel="import" href="file-slicer.html">
 <link rel="import" href="webworker-crypto.html">
-<polymer-element name="file-encryptor" attributes="file passphrase workerCount chunkSize chunkDelimiter encryptedFile">
+<polymer-element name="file-encryptor" attributes="file passphrase workerCount chunkSize chunkDelimiter">
   <template>
     <style>
       @host { :scope {display: none;} }
@@ -14,7 +14,6 @@
   <script>
     Polymer('file-encryptor', {
       created: function() {
-        window.encryptor = this;
       },
       // These can be overridden by the parent
       chunkSize: window.secureShared.chunkSize,
@@ -26,7 +25,7 @@
         // We have our slices, now encrypt them
         if (!this.slices || !this.slices.length) return;
         this._spawnWorkers();
-        this.asyncMethod(this.encrypt.bind(this));
+        this.async(this.encrypt); // async so the template can create the <webworker-crypto> tags
       },
       encrypt: function() {
         // Create internal encrypted file container

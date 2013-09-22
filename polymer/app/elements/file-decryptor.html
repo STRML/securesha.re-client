@@ -1,18 +1,72 @@
-<polymer-element name="file-decryptor"  attributes="">
+<polymer-element name="file-decryptor" attributes="file passphrase chunkSize workerCount chunkDelimiter">
   <template>
     <style>
-      @host { :scope {display: block;} }
+      @host { :scope {display: none;} }
     </style>
-    <span>I'm <b>fileDecryptor-element</b>. This is my Shadow DOM.</span>
+    <template repeat="{{worker in workers}}" id="workers">
+      <webworker-crypto id="worker-{{worker.id}}" on-slice="_onWorkerSlice"></webworker-crypto>
+    </template>
   </template>
   <script>
     Polymer('file-decryptor', {
-      //applyAuthorStyles: true,
-      //resetStyleInheritance: true,
       created: function() { },
-      enteredView: function() { },
-      leftView: function() { },
-      attributeChanged: function(attrName, oldVal, newVal) { }
+      // These can be overridden by the parent
+      chunkSize: window.secureShared.chunkSize,
+      workerCount: window.secureShared.workerCount, // usually 4
+      chunkDelimiter: window.secureShared.chunkDelimiter,
+      fileChanged: function() {
+        this._spawnWorkers();
+        this.async(this.decrypt);
+      },
+      decrypt: function() {
+        // Create internal encrypted file container
+        this.decryptedFile = {
+          fileData : [],
+          fileName : ''
+        };
+
+        // Progress counter
+        var slices = this.file.data.split(window.secureShared.chunkDelimiter);
+        this.slicesComplete = 0;
+        this.totalSlices = slices.length;
+
+        // Encrypt slices (post to workers)
+        // Don't forget shadowRoot here (that's easy to miss)
+        // XXX why doesn't this.$['worker-' + i] work here?
+        var workers = this.shadowRoot.querySelectorAll('webworker-crypto');
+        for(var i = 0; i < slices.length; i++){
+          var msg = {slice: slices[i], passphrase: this.passphrase, index: i};
+          if(i === 0) msg.fileName = this.file.name; // don't send filename past the first slice
+          workers[i % workers.length].decrypt(msg);
+        }
+      },
+      _onWorkerSlice: function(e) {
+        debugger;
+        var slice = e && e.detail;
+        // This will happen when the password is bad
+        if (!slice instanceof Object) {
+          this.fire('decryption-error');
+        }
+        // Insert slice into decrypted file container
+        if (slice.fileName) this.decryptedFile.fileName = slice.fileName;
+        this.decryptedFile.fileData[slice.index] = slice.fileData;
+
+        this.slicesComplete++;
+
+        if (this.slicesComplete === this.totalSlices){
+          // Create Blob object from decrypted file & pass it back
+          this.decryptedFile.fileData = new Blob(this.decryptedFile.fileData);
+          this.fire('decryption-finished', this.decryptedFile);
+        }
+      },
+      // Create worker manifests
+      _spawnWorkers: function() {
+        var workers = [];
+        for(var i = 0; i < this.workerCount; i++){
+          workers.push({id: i});
+        }
+        this.workers = workers;
+      }
     });
   </script>
 </polymer-element>

@@ -4,6 +4,7 @@
 <link rel="import" href="file-encryptor.html">
 <link rel="import" href="webworker-xhr.html">
 <link rel="import" href="../bower_components/polymer-elements/polymer-ajax/polymer-ajax.html">
+<link rel="import" href="vendor/polymer-signals.html">
 <polymer-element name="file-uploader" attributes="">
   <template>
     <style>
@@ -11,6 +12,7 @@
     </style>
     <link rel="stylesheet" href="/styles/fileUploader.css" />
 
+    <polymer-signals on-polymer-signal-download-active="onDownloadActive"></polymer-signals>
     <header>
       <h2>Upload a File</h2>
     </header>
@@ -105,6 +107,10 @@
             max: e.total
           }
         });
+      },
+      // When a download is active, hide this view.
+      onDownloadActive: function() {
+        this.setAttribute('hidden', '');
       },
       enteredView: function() { },
       leftView: function() { },

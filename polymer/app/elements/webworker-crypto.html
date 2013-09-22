@@ -16,6 +16,7 @@
         this.worker.postMessage(data);
       },
       decrypt: function(data) {
+        debugger;
         this._validate(data);
         data.decrypt = true;
         this.worker.postMessage(data);
@@ -34,7 +35,7 @@
       },
       // Fake strong typing
       _validate: function(data) {
-        if (!(data.slice instanceof Blob)) throw new Error('Slice must be a Blob.');
+        if (!(data.slice instanceof Blob) && typeof data.slice !== 'string') throw new Error('Slice must be a Blob or string..');
         if (typeof data.passphrase !== 'string') throw new Error('Passphrase must be a String.');
         if (typeof data.index !== 'number') throw new Error('Index must be a Number.');
       }

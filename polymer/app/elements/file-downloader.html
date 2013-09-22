@@ -1,18 +1,156 @@
-<polymer-element name="file-downloader"  attributes="">
+<link rel="import" href="vendor/polymer-signals.html">
+<link rel="import" href="file-decryptor.html">
+
+<polymer-element name="file-downloader" attributes="">
   <template>
     <style>
       @host { :scope {display: block;} }
     </style>
-    <span>I'm <b>fileDownloader</b>. This is my Shadow DOM.</span>
+
+    <polymer-signals on-polymer-signal-download-active="onDownloadActive"></polymer-signals>
+    <polymer-ajax id="getFile" url="/get/{{hash.url}}" 
+        on-polymer-response="handleAjaxSuccess"
+        on-polymer-error="handleAjaxError">
+    </polymer-ajax>
+    <file-decryptor file="{{file}}" passphrase="{{hash.passphrase}}" 
+      on-decryption-finished="showDownloadPrompt" on-decryption-error="showBadPassword"></file-decryptor>
+
+    <template if="{{downloadStatus}}" bind="{{downloadStatus}}">
+      <div id="downloadStatus">
+        <div hidden?="{{complete}}">
+          <div>Downloading... {{percent}}% complete.</div>
+          <progress value="{{value}" max="{{max}}"></progress>
+        </div>
+        <div hidden?="{{!complete}}">
+          Complete!
+        </div>
+      </div>
+    </template>
+
+    <template if="{{fileMeta}}" bind="{{fileMeta}}">
+      <div hidden?="{{views === 0}}" class="fileInfo alert">
+        This file has {{maxViews - views}} {{maxViews - views === 1 ? 'view' : 'views'}} remaining.
+        The file will be destroyed on {{expiration}} or when the views are exhausted, whichever comes first.
+      </div>
+
+      <div hidden?="{{views > 0}}" class="fileInfo alert-danger alert">
+        This file has expired and has been deleted. You hold the last copy. Good luck.
+      </div>
+    </template>
+
+    <div hidden?="{{file !== false}}" class="fileInfo alert-danger alert">
+      Sorry! File not found.
+    </div>
+
+    <!-- Wrapping this because .btn style sets display:inline-block and that's lame -->
+    <template if="{{decryptedFile.url}}">
+      <a href="{{decryptedFile.url}}" download="{{decryptedFile.name}}" class="btn btn-success">
+        <i class="icon-download-alt icon-white"></i> Download
+      </a>
+    </template>
+
+
+    <div hidden?="{{decryptedFile !== false}}" class="fileInfo alert-danger alert">
+      Incorrect password. The file cannot be decrypted. Refresh the page to try again.
+    </div>
+
   </template>
   <script>
     Polymer('file-downloader', {
       //applyAuthorStyles: true,
       //resetStyleInheritance: true,
-      created: function() { },
-      enteredView: function() { },
-      leftView: function() { },
-      attributeChanged: function(attrName, oldVal, newVal) { }
+      created: function() {
+        this.reset();
+      },
+      // Called when the browser realizes it has a hash
+      onDownloadActive: function(e) {
+        if (!this._checkBrowser()) return;
+        this.hash = e.detail;
+        this.async(this.createXHR); // async so URL can update
+      },
+      createXHR: function() {
+        var xhr = this.$.getFile.go();
+        xhr.onProgress = this.progressHandler.bind(this);
+      },
+      handleAjaxSuccess: function(e) {
+        var response = e.detail.response;
+        var xhr = e.detail.xhr;
+
+        this.fileMeta = {
+          views: xhr.getResponseHeader('X-File-Views'),
+          maxViews: xhr.getResponseHeader('X-File-Max-Views'),
+          fileName: xhr.getResponseHeader('X-File-Name'),
+          expiration: xhr.getResponseHeader('X-File-Expiration'),
+          contentType: xhr.getResponseHeader('X-File-Content-Type')
+        };
+
+        this.file = {
+          data: response,
+          name: this.fileMeta.fileName
+        };
+      },
+      handleAjaxError: function(e) {
+        var response = e.detail.response;
+        var xhr = e.detail.xhr;
+        this.file = false;
+      },
+
+      progressHandler: function(e) {
+        if(!e.lengthComputable) return;
+        this.downloadStatus = {
+          value: e.loaded,
+          max: e.total,
+          percent: ((e.loaded / e.total) * 100).toFixed(0),
+          complete: e.loaded == e.total
+        };
+      },
+      reset: function() {
+        this.downloadStatus = null;
+        this.file = null;
+        this.decryptedFile = null;
+        this.hash = null;
+      },
+      showDownloadPrompt: function(e) {
+        // Create download URL and place into decryptedFile.url
+        this.decryptedFile = {
+          name: e.detail.fileName,
+          url: this._createURL(e.detail.fileData),
+        };
+      },
+      showBadPassword: function(e) {
+        this.decryptedFile = false;
+      },
+      _checkBrowser: function() {
+        var isOkay = false;
+        if(/Chrome/i.test(window.BrowserDetect.browser)) isOkay = true;
+        if(/Firefox/i.test(window.BrowserDetect.browser)) isOkay = true;
+        if(/Safari/i.test(window.BrowserDetect.browser)) isOkay = true; // ehh that's kind of a lie, safari is not great
+        if(!isOkay){
+          window.alert("We're sorry, but " + window.BrowserDetect.browser + " does not support the HTML5 " +
+                       "File APIs this application requires. Please try opening this file in the latest versions of "+
+                       "Chrome or Firefox.");
+        }
+        return isOkay;
+      },
+      _createURL: function(blob) {
+        // Most browsers are fine, safari is not.
+        if(!/Safari/i.test(window.BrowserDetect.browser)){
+          var URL = window.URL || window.webkitURL;
+          return URL.createObjectURL(blob);
+        } else {
+          // Safari can't open blobs, create a data URI
+          // This will fail if the file is greater than ~200KB or so
+          // TODO figure out what's wrong with the blob size in safari
+          // TODO Why doesn't safari want a dataview here?
+          // FIXME WTF
+          if(blob.size > 200000) return window.alert("Sorry, this file is too big for Safari. Please try to open it in Chrome.");
+          var fileReader = new FileReader();
+          fileReader.onload = function (event) {
+            this.decryptedFile.url = event.target.result;
+          }.bind(this);
+          fileReader.readAsDataURL(blob);
+        }
+      }
     });
   </script>
 </polymer-element>
