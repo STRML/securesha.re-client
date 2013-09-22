@@ -31,11 +31,11 @@ header-element {
 
 footer-element {
   background: black;
-  width: 100%;
   margin: 0;
   position: absolute;
   text-align: center;
   bottom: 0;
   left: 0;
   right: 0;
+  overflow: hidden;
 }

@@ -1,0 +1,37 @@
+<link rel="import" href="../bower_components/polymer-elements/polymer-file/polymer-file.html">
+<polymer-element name="file-chooser-button"  attributes="file">
+  <template>
+    <style>
+      @host { :scope {display: block;} }
+      #fileupload {
+        display: none;
+      }
+      i {
+        font-size: 1em;
+      }
+    </style>
+    <polymer-file id="file" readas="arraybuffer" auto blob="{{blob}}"
+                  result="{{file}}"></polymer-file>
+    <span class="btn btn-success fileUpload">
+      <i class="glyphicon glyphicon-plus"></i>
+      <span>&nbsp;Choose Your File...</span>
+      <input id="fileupload" type="file" name="file" on-change="onFileSelected">
+    </span>
+  </template>
+  <script>
+    Polymer('file-chooser-button', {
+      //applyAuthorStyles: true,
+      //resetStyleInheritance: true,
+      created: function() { },
+      onFileSelected: function() {
+        var file = this.$.fileupload.files[0];
+        if(file.size > window.secureShared.fileSizeLimit) return window.alert("File is too big. Please choose a file under 10MB.");
+        file.name = file.name + "?" + (Math.random() * 1000); // browser cache buster
+        this.file = file;
+      },
+      enteredView: function() { },
+      leftView: function() { },
+      attributeChanged: function(attrName, oldVal, newVal) { }
+    });
+  </script>
+</polymer-element>

@@ -1,0 +1,54 @@
+<polymer-element name="webworker-crypto-element"  attributes="">
+  <template>
+    <style>
+      @host { :scope {display: block;} }
+    </style>
+    <span>I'm <b>webworkerCrypto-element</b>. This is my Shadow DOM.</span>
+  </template>
+  <script>
+    Polymer('webworker-crypto-element', {
+      //applyAuthorStyles: true,
+      //resetStyleInheritance: true,
+      created: function() { 
+      },
+      encrypt: function(data) {
+        this._validate(data);
+        data.encrypt = true;
+        this.worker.postMessage(data);
+      },
+      decrypt: function(data) {
+        this._validate(data);
+        data.decrypt = true;
+        this.worker.postMessage(data);
+      },
+      _onMessage: function(e) {
+        if(_.isString(e.data)){
+          // message (debug)
+          return console.log(e.data);
+        }
+        // console.log(e.data.fileData.length);
+        this.fire('slice', e);
+      },
+      _onError: function(e) {
+        console.error(e.data);
+      },
+      // Fake strong typing
+      _validate: function(data) {
+        if (!(data.slice instanceof Blob)) throw new Error("Slice must be a Blob.");
+        if (typeof data.passphrase !== "string") throw new Error("Passphrase must be a String.");
+        if (typeof data.index !== "number") throw new Error("Index must be a Number.");
+      },
+      enteredView: function() {
+        // Spawn worker when added to DOM
+        this.worker = new Worker("/scripts/crypto.js");
+        this.worker.addEventListener('message', this._onMessage, false);
+        this.worker.addEventListener('error', this._onError, false);
+      },
+      leftView: function() {
+        // Terminate worker when removed from DOM
+        this.worker.terminate();
+      },
+      attributeChanged: function(attrName, oldVal, newVal) { }
+    });
+  </script>
+</polymer-element>

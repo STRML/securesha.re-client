@@ -1,0 +1,34 @@
+<!--
+  Given a blob object, file-slicer chops it up into chunks of chunkSize bytes.
+-->
+<polymer-element name="file-slicer" attributes="input output chunkSize">
+  <template>
+    <style>
+      @host { :scope {display: block;} }
+    </style>
+    <span>I'm <b>fileSlicer-element</b>. This is my Shadow DOM.</span>
+  </template>
+  <script>
+    Polymer('file-slicer', {
+      //applyAuthorStyles: true,
+      //resetStyleInheritance: true,
+      inputChanged: function() {
+        // slice & dice
+        var file = this.input;
+        file.slice = file.mozSlice || file.webkitSlice || file.slice; // compatibility
+        var pos = 0;
+        var slices = [];
+        while(pos < file.size){
+          slices.push(file.slice(pos, pos += this.chunkSize));
+        }
+        // Set output - rather then pushing to this.output itself, this ensures
+        // we only have one changed event
+        this.output = slices;
+      },
+      created: function() { },
+      enteredView: function() { },
+      leftView: function() { },
+      attributeChanged: function(attrName, oldVal, newVal) { }
+    });
+  </script>
+</polymer-element>

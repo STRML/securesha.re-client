@@ -67,7 +67,7 @@ $(function() {
     var time = new Date();
 
     function onWorkerError(e){
-      console.error(event.data);
+      console.error(e.data);
     }
     function onWorkerMessage(e){
       // received a slice.
@@ -81,8 +81,11 @@ $(function() {
       total += e.data.fileData.length;
 
       // If finished
+      // This seems brittle, if the last chunk finishes before another does, the upload will be considered
+      // finished & the workers terminated.
+      // FIXME: Check `total` === file.size
       if(e.data.index == slices.length - 1){
-        onUploadFinished();
+        onEncryptFinished();
       }
     }
 
@@ -94,7 +97,7 @@ $(function() {
       $(".itemStatus").html("Encrypting: " + ((finished / (slices.length + 1))* 100).toFixed(0) + "% complete.");
     }
 
-    function onUploadFinished(){
+    function onEncryptFinished(){
       // console.log("File Size: " + file.size);
       // console.log("Total: " + total);
       // console.log("Time elapsed: " + (new Date() - time));

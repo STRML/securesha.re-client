@@ -25,6 +25,8 @@ module.exports = function (grunt) {
     grunt.initConfig({
         yeoman: yeomanConfig,
         watch: {
+            // Note that watch is 'exclusive' - if a file is watched under
+            // two sections, the later one wins and the first does not execute.
             options: {
                 nospawn: true,
                 livereload: true
@@ -34,6 +36,14 @@ module.exports = function (grunt) {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
                 tasks: ['compass']
             },
+
+            elements: {
+                options: {
+                    livereload: LIVERELOAD_PORT
+                },
+                files: ['<%= yeoman.app %>/elements/**/*.html'],
+                tasks: ['inlinelint']
+            },
             
             livereload: {
                 options: {
@@ -41,11 +51,10 @@ module.exports = function (grunt) {
                 },
                 files: [
                     '<%= yeoman.app %>/*.html',
-                    '<%= yeoman.app %>/elements/**/*.html',
                     '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
                     '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
                     '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}'
-                ]
+                ],
             }
         },
         connect: {
@@ -104,6 +113,12 @@ module.exports = function (grunt) {
                 '<%= yeoman.app %>/scripts/{,*/}*.js',
                 '!<%= yeoman.app %>/scripts/vendor/*',
                 'test/spec/{,*/}*.js'
+            ]
+        },
+        inlinelint: {
+            html: [
+                '<%= yeoman.app %>/index.html',
+                '<%= yeoman.app %>/elements/*.html'
             ]
         },
         mocha: {
@@ -229,10 +244,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
-        
         'compass',
-        
-        
         'connect:test',
         'mocha'
     ]);
@@ -253,6 +265,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'jshint',
+        'inlinelint',
         'test',
         'build'
     ]);

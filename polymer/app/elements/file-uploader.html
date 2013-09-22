@@ -1,0 +1,37 @@
+<link rel="import" href="file-chooser-button.html">
+<link rel="import" href="file-advanced-options.html">
+<link rel="import" href="file-upload-status.html">
+<link rel="import" href="file-encryptor.html">
+<polymer-element name="file-uploader" attributes="">
+  <template>
+    <style>
+      @host { :scope {display: block;} }
+    </style>
+    <link rel="stylesheet" href="/styles/fileUploader.css" />
+
+    <header>
+      <h2>Upload a File</h2>
+    </header>
+    <article>
+      <form class="form-horizontal" enctype="multipart/form-data">
+        <file-chooser-button file="{{file}}"></file-chooser-button>
+        <file-encryptor file="{{file}}" key="{{key}}"></file-encryptor>
+        <file-advanced-options></file-advanced-options>
+        <file-upload-status></file-upload-status>
+      </form>
+    </article>
+  </template>
+  <script>
+    Polymer('file-uploader', {
+      //applyAuthorStyles: true,
+      //resetStyleInheritance: true,
+      created: function() {
+        // Create file password
+        this.key = window.secureShared.generatePassphrase();
+      },
+      enteredView: function() { },
+      leftView: function() { },
+      attributeChanged: function(attrName, oldVal, newVal) { }
+    });
+  </script>
+</polymer-element>
