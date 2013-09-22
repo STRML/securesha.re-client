@@ -1,0 +1,51 @@
+<polymer-element name="header-element"  constructor="HeaderElement" attributes="">
+  <template>
+    <style>
+      @host { :scope {display: block;} }
+      .intro-line {
+        position: relative;
+        border-top: 1px solid #ededed;
+        width: 700px;
+        margin: 0 auto 25px auto;
+      }
+      h1 {
+        color: white;
+        font-size: 56px;
+        font-weight: 700;
+        position: relative;
+        margin-bottom: 15px;
+        width: 700px;
+      }
+      h1.small {
+        font-size: 17px;
+        margin-bottom: 20px;
+      }
+      a {
+        color: white;
+        text-decoration: none;
+      }
+      a:hover{
+        color: white;
+        text-decoration: none;
+      }
+    </style>
+    <div class="intro-line"></div>
+    <h1>
+      Welcome to <a href="/">Securesha.re</a>
+    </h1>
+    <h1 class="small">
+      Self-destructing, single-use file sharing. No logging. Even we can't access your data.
+    </h1>
+    <div class="intro-line"></div>
+  </template>
+  <script>
+    Polymer('header-element', {
+      //applyAuthorStyles: true,
+      //resetStyleInheritance: true,
+      created: function() { },
+      enteredView: function() { },
+      leftView: function() { },
+      attributeChanged: function(attrName, oldVal, newVal) { }
+    });
+  </script>
+</polymer-element>

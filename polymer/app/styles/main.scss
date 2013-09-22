@@ -1,9 +1,32 @@
 $iconSpritePath: '/images/glyphicons-halflings.png';
 @import 'sass-bootstrap/lib/bootstrap';
 
+body {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: white;
+  background-image: url("/images/bg-texture.png");
+  background-repeat: repeat;
+}
+
+main {
+  width: 600px;
+  margin: 0 auto;
+  min-height: 500px;
+  text-align: center;
+  position: relative;
+}
 .hero-unit {
     margin: 50px auto 0 auto;
     width: 300px;
+}
+
+header-element {
+  width: 100%;
+  text-align: center;
+  padding-top: 70px;
+  margin-left: -50px;
 }
 
 footer-element {

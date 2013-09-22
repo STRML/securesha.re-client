@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>Securesha.re: Self-Destructing, Single-Use File Sharing</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -19,33 +19,23 @@
     <script src="bower_components/polymer/polymer.min.js"></script>
     <!-- endbuild -->
 
+    <!-- build:js scripts/secureshare.js -->
+    <script src="scripts/page.js"></script>
+    <!-- endbuild -->
+
     <!-- Place your HTML imports here -->
     <link rel="import" href="elements/panel.html">
+    <link rel="import" href="elements/header.html">
     <link rel="import" href="elements/footer.html">
   </head>
   <body>
-    <div class="container">
-      <div class="hero-unit">
-        <h1>'Allo, 'Allo!</h1>
-        <p>You now have</p>
-        <ul>
-          <li>HTML5 Boilerplate</li>
-          <li>Polymer</li>
-          <li>Bootstrap</li>
-        </ul>
-        <p>installed.</p>
-        <h3>Enjoy coding! - Yeoman</h3>
-      </div>
-    </div>
+    <main>
+      <header-element></header-element>
+    </main>
 
 
-    <script>
-      document.addEventListener('WebComponentsReady', function() {
-        // Perform some behaviour
-      });
-    </script>
 
-<!--     <panel-element>
+<!--<panel-element>
       <div>hrhrhrhrh</div>
       <button-element></button-element>
     </panel-element>
