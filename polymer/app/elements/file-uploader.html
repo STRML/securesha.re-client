@@ -18,11 +18,11 @@
       <form class="form-horizontal" enctype="multipart/form-data">
         <file-chooser-button file="{{file}}"></file-chooser-button>
         <file-encryptor file="{{file}}" passphrase="{{fileOptions.passphrase}}" on-encryption-finished="prepareXHR"></file-encryptor>
-        <webworker-xhr on-xhr-prepared="uploadFile"></webworker-xhr>
+        <webworker-xhr id="xhrPreparer" on-xhr-prepared="uploadFile"></webworker-xhr>
         <file-advanced-options closed="true" fileOptions="{{fileOptions}}"></file-advanced-options>
         <file-upload-status></file-upload-status>
-        <polymer-ajax id="ajaxUploader" url="/putfile" 
-            params='{"alt":"json", "q":"chrome"}'
+        <ajax-raw id="ajaxUploader" url="/putfile" method="POST"
+            params="{{ajaxParams}}"
             handleAs="json"
             on-polymer-response="handleResponse">
         </polymer-ajax>
@@ -42,10 +42,51 @@
         };
       },
       prepareXHR: function(e) {
-        //this.$.xhrPreparer.prepareXHR(e.detail);
+        this.$.xhrPreparer.prepareXHR(e.detail);
       },
+      // Forgoing polymer-ajax here, it expects JSON input & attempts to querystring
+      // params (in polymer-xhr). Takes too long, that's why we have the webworker
+      // that just creates a qs. We'll just make an xhr ourselves.
       uploadFile: function(e) {
+        var xhr = new XMLHttpRequest();
+        // Attach progress handler, if possible
+        if (xhr.upload) {
+          xhr.upload.addEventListener('progress', this.handleUploadProgress.bind(this), false);
+        }
 
+        // Create xhr data
+        var params = e.detail;
+        var url = '/putfile';
+        var method = 'POST';
+        var async = true;
+
+        // Open xhr
+        xhr.open(method, url, async);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4) {
+            this.handleResponse(xhr.response, xhr);
+          }
+        }.bind(this);
+        xhr.send(params);
+      },
+      handleResponse: function(response, xhr) {
+        try {
+          response = JSON.parse(response);
+        } catch(e) {
+          console.error("Unable to parse server response.");
+        }
+        console.dir(response);
+      },
+      // Fire a signal whenever we get a progress report
+      handleUploadProgress: function(e) {
+        if (!e.lengthComputable) return;        
+        this.fire('polymer-signal', {
+          name: 'upload-progress',
+          data: {
+            value: e.loaded,
+            max: e.total
+          }
+        });
       },
       enteredView: function() { },
       leftView: function() { },

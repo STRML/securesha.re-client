@@ -11,14 +11,11 @@
       created: function() { 
       },
       prepareXHR: function(data) {
-
+        this.worker.postMessage(data);
       },
       onMessage: function(e) {
-        if(typeof e.data === 'string'){
-          // message (debug)
-          return console.log(e.data);
-        }
-        this.fire('xhr-prepared', e);
+        var data = e.detail.data;
+        this.fire('xhr-prepared', data);
       },
       onError: function(e) {
         console.error(e.data);

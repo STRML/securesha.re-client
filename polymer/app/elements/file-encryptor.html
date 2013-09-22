@@ -86,18 +86,18 @@
         if(data.fileName) this.encryptedFile.fileName = data.fileName;
 
         // Fire a nice event
-        var data = {
+        var eventData = {
           value: data.index, 
           total: this.slices.length, 
           fileName: this.file.fileName
-        }
+        };
         // Fire a signal so status listeners can listen in 
         this.fire('polymer-signal', {
           name: 'slice-finished', 
-          data: data
+          data: eventData
         });
         // Fire the event right here too in case the parent wants a go at it
-        this.fire('slice-finished', data);
+        this.fire('slice-finished', eventData);
 
         if (this.slicesComplete === this.slices.length) {
           this._onEncryptionFinished();
