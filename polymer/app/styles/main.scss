@@ -1,6 +1,10 @@
 $iconSpritePath: '/images/glyphicons-halflings.png';
 @import 'sass-bootstrap/lib/bootstrap';
 
+html {
+  position: relative;
+  min-height: 100%;
+}
 body {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 14px;
@@ -16,6 +20,7 @@ main {
   min-height: 500px;
   text-align: center;
   position: relative;
+  margin-bottom: 270px; // Pushes footer when page needs to scroll
 }
 .hero-unit {
     margin: 50px auto 0 auto;
