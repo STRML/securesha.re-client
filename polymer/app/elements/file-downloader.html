@@ -75,6 +75,7 @@
       handleAjaxSuccess: function(e) {
         var response = e.detail.response;
         var xhr = e.detail.xhr;
+        debugger;
 
         this.fileMeta = {
           views: xhr.getResponseHeader('X-File-Views'),

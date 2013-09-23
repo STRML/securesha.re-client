@@ -75,6 +75,7 @@
         xhr.setRequestHeader('X-File-Name', params.fileName);
         xhr.setRequestHeader('X-File-Max-Views', this.fileOptions.views);
         xhr.setRequestHeader('X-File-Content-Type', params.contentType);
+        debugger;
 
         // We're only sending the actual file data up the pipe as a binary stream.
         xhr.send(params.fileData);
