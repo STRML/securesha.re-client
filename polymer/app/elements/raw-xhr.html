@@ -1,4 +1,4 @@
-<polymer-element name="raw-xhr-element"  attributes="">
+<polymer-element name="raw-xhr-element"  attributes="url headers async method mode data">
   <template>
     <style>
       @host { :scope {display: block;} }
@@ -9,9 +9,109 @@
     Polymer('raw-xhr-element', {
       // TODO: Create raw XHR that both sends & receives binary XHRs, see
       // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
-      //applyAuthorStyles: true,
-      //resetStyleInheritance: true,
-      created: function() { },
+      // Set to false to do a synchronous xhr.
+      async: true,
+      // Body to be sent. If mode = 'binary', this will be sent as a raw binary blob
+      // (see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data),
+      // otherwise it will be sent in the way you would expect (json, string, etc.)
+      body: {},
+      // Options: 'binary' | 'traditional'
+      mode: 'binary',
+      method: 'GET',
+      headers: {},
+      url: '',
+      // no 'auto' configuration here, that's for the birds
+
+      created: function() {
+      },
+      go: function() {
+        if (!this.url) throw new Error("XHRs must have a URL, puff puff pass.");
+        var xhr = new XMLHttpRequest();
+        
+        // Attach handlers
+        xhr.onload = this.handleResponse.bind(this, xhr);
+        xhr.onerror = this.handleError.bind(this, xhr);
+
+        // Attach progress handler, if possible
+        if (xhr.upload) {
+          xhr.upload.addEventListener('progress', this.handleUploadProgress.bind(this), false);
+        }
+        xhr.onprogress = this.handleDownloadProgress.bind(this);
+
+        // Open xhr
+        xhr.open(this.method, this.url, this.async);
+
+        // Normalize inputted content type so we can use it in the blob constructor.
+        this._injectContentType();
+
+        // Set headers
+        Object.getOwnPropertyNames(this.headers).forEach(function(value, key) {
+          xhr.setRequestHeader(key, value);
+        });
+
+        // Convert body to blob if possible, but don't modify it
+        var body = this.mode === 'binary' ? this._convertToBlob(this.body) : this.body;
+
+        if (this.method === 'GET' && this.mode === 'binary') {
+          //XHR binary charset opt by Marcus Granado 2006 [http://mgran.blogspot.com]
+          req.overrideMimeType('text\/plain; charset=x-user-defined');
+          req.responseType = 'blob';
+        }
+
+        // HEADSHOT
+        xhr.send(body);
+        return xhr;
+      }.
+      handleUploadProgress: function(e) {
+        this.fire('upload-progress', e);
+      },
+      handleDownloadProgress: function(e) {
+        this.fire('download-progress', e);
+      },
+      handleResponse: function(xhr, response) {
+        this.response = response;
+        this.fire('response', {xhr: xhr, response: response});
+      },
+      handleError: function(xhr, error) {
+        this.fire('error', {xhr: xhr, error: error});
+      },
+      _convertToBlob: function(body) {
+        if (!body) return null;
+        if (Object.prototype.toString.call(body) !== '[object Blob]') {
+          // Convert to Array, as Blob expects
+          if (!Array.isArray(this.body)) {
+            body = [body];
+          }
+          // Since we ran _injectContentType, we know what type the blob should be.
+          body = new Blob(body, {type: this.headers['Content-Type']})
+        }
+        return body;
+      },
+      // Look through headers (case insensitively) for a content-type.
+      // If it exists, use it - otherwise, infer one based on the body
+      _injectContentType: function() {
+        var contentType;
+        // Normalize content-type
+        Object.getOwnPropertyNames(this.headers).forEach(function(key, value, coll){
+          if (key.toLowerCase() === 'content-type'){
+            delete coll[key];
+            coll['Content-Type'] = value;
+          }
+        });
+        if (this.headers['Content-Type']) return;
+        // No content-type exists, have to infer one.
+        if (this.mode === 'binary') {
+          this.headers['Content-Type'] = 'application/octet-stream';
+        } else {
+          // In non-binary mode, it can be text or JSON. That's all you get.
+          // If you have a problem with that, pass one in, geez
+          if (typeof this.body === 'string') {
+            this.headers['Content-Type'] = 'text/plain';
+          } else {
+            this.headers['Content-Type'] = 'application/json';
+          }
+        }
+      },
       enteredView: function() { },
       leftView: function() { },
       attributeChanged: function(attrName, oldVal, newVal) { }
