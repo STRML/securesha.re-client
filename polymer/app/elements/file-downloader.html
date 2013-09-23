@@ -86,7 +86,8 @@
 
         this.file = {
           data: response,
-          name: this.fileMeta.fileName
+          name: this.fileMeta.fileName,
+          contentType: this.fileMeta.contentType
         };
       },
       handleAjaxError: function(e) {

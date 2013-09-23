@@ -9,6 +9,9 @@
   </template>
   <script>
     Polymer('file-decryptor', {
+      // Incoming object 'file' should have data, name, and contentType attrs
+      // data is an array of encrypted strings, name is a single encrypted string, contentType
+      // is an unencrypted string used for creating the blob object.
       created: function() { },
       // These can be overridden by the parent
       chunkSize: window.secureShared.chunkSize,
@@ -17,7 +20,7 @@
       fileChanged: function() {
         this._spawnWorkers();
         this.async(this.decrypt);
-    },
+      },
       decrypt: function() {
         // Create internal encrypted file container
         this.decryptedFile = {
@@ -40,6 +43,14 @@
           workers[i % workers.length].decrypt(msg);
         }
       },
+      _onDecryptionFinished: function() {
+        // Create Blob object from decrypted file & pass it back
+        // For whatever reason, I need to use str2ab here rather than passing the strings
+        // into the blob constructor directly (why?)
+        var fileData = this.decryptedFile.fileData.join("");
+        this.decryptedFile.fileData = new Blob([window.secureShared.str2ab(fileData)], {type: this.file.contentType});
+        this.fire('decryption-finished', this.decryptedFile);
+      },
       _onWorkerSlice: function(e) {
         var slice = e && e.detail;
         // This will happen when the password is bad
@@ -53,10 +64,7 @@
         this.slicesComplete++;
 
         if (this.slicesComplete === this.totalSlices){
-          // Create Blob object from decrypted file & pass it back
-          var fileData = this.decryptedFile.fileData.join("");
-          this.decryptedFile.fileData = new Blob([window.secureShared.str2ab(fileData)]);
-          this.fire('decryption-finished', this.decryptedFile);
+          this._onDecryptionFinished();
         }
       },
       // Create worker manifests
