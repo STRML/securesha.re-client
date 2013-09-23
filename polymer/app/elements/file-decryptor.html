@@ -17,7 +17,7 @@
       fileChanged: function() {
         this._spawnWorkers();
         this.async(this.decrypt);
-      },
+    },
       decrypt: function() {
         // Create internal encrypted file container
         this.decryptedFile = {
@@ -41,7 +41,6 @@
         }
       },
       _onWorkerSlice: function(e) {
-        debugger;
         var slice = e && e.detail;
         // This will happen when the password is bad
         if (!slice instanceof Object) {
@@ -55,7 +54,8 @@
 
         if (this.slicesComplete === this.totalSlices){
           // Create Blob object from decrypted file & pass it back
-          this.decryptedFile.fileData = new Blob(this.decryptedFile.fileData);
+          var fileData = this.decryptedFile.fileData.join("");
+          this.decryptedFile.fileData = new Blob([window.secureShared.str2ab(fileData)]);
           this.fire('decryption-finished', this.decryptedFile);
         }
       },
