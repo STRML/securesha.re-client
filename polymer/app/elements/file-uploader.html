@@ -69,8 +69,8 @@
         var response = data.response;
         try {
           response = JSON.parse(xhr.responseText);
-        } catch(e) {
-          return console.error("Unable to parse server response.");
+        } catch(err) {
+          return console.error("Unable to parse server response." + err);
         }
         this.fire('polymer-signal', {
           name: 'upload-complete', 
