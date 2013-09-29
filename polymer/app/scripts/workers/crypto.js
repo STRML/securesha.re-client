@@ -1,7 +1,7 @@
 /*jshint worker:true*/
 /*global CryptoJS:true, FileReaderSync:true, Latin1Formatter:true */
 'use strict';
-importScripts('../bower_components/crypto-js/rollups/aes.js');
+importScripts('/bower_components/crypto-js/rollups/aes.js');
 importScripts('vendor/lib-typedarrays.js');
 importScripts('vendor/formatters.js'); // returns Latin1Formatter
 

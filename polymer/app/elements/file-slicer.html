@@ -9,6 +9,7 @@
   </template>
   <script>
     Polymer('file-slicer', {
+      output: [],
       // This slicer is useful for distributing file operations among multiple workers,
       // so we can use multiple cores. Since switching to Typed Arrays the whole operation
       // has gotten much faster so I've turned this off for now. Maybe later on it would be 
@@ -23,7 +24,7 @@
       inputChanged: function() {
         // slice & dice
         if (!this.input) return;
-        if (true) {
+        if (true) { // jshint workaround
           this.output = [this.input.slice()]; // disabled for now
           return;
         }

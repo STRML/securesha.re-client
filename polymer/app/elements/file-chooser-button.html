@@ -1,4 +1,4 @@
-<link rel="import" href="../bower_components/polymer-elements/polymer-file/polymer-file.html">
+<link rel="import" href="/bower_components/polymer-elements/polymer-file/polymer-file.html">
 <polymer-element name="file-chooser-button"  attributes="file">
   <template>
     <style>
@@ -10,8 +10,7 @@
         font-size: 1em;
       }
     </style>
-    <polymer-file id="file" readas="arraybuffer" auto blob="{{blob}}"
-                  result="{{file}}"></polymer-file>
+    <polymer-file id="file" blob="{{blob}}" result="{{file}}"></polymer-file>
     <span class="btn btn-success fileUpload" on-click="selectFile">
       <i class="glyphicon glyphicon-plus"></i>
       <span>&nbsp;Choose Your File...</span>

@@ -4,9 +4,12 @@
   "dependencies": {
     "sass-bootstrap": "~3.0.0",
     "modernizr": "~2.6.2",
-    "polymer": "latest",
+    "polymer": "~0.0.20130912",
     "crypto-js": "http://crypto-js.googlecode.com/files/CryptoJS%20v3.1.2.zip",
     "polymer-elements": "~0.0.20130912"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {
+    "polymer": "~0.0.20130912"
+  }
 }
