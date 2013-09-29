@@ -21,21 +21,17 @@ self.onmessage = function (oEvent) {
 // If the browser supports XHR2 (it pretty much has to, to get to this point anyway),
 // we output a typed array instead of a string.
 function encrypt(data){
-  var fileName = data.fileName;
-  var passphrase = data.passphrase;
-  var slice = data.slice;
-  var useTypedArrays = data.useTypedArrays;
   var encrypted = {index: data.index}; // keep index for eventual rebuilding
   var cipherParams;
 
   // Encrypt filename
-  if (fileName) {
-    encrypted.fileName = CryptoJS.AES.encrypt(fileName, passphrase).toString();
+  if (data.fileName) {
+    encrypted.fileName = CryptoJS.AES.encrypt(data.fileName, data.passphrase).toString();
   }
 
-  if (slice) {
-    cipherParams = CryptoJS.AES.encrypt(_getWordArrayFromSlice(slice, useTypedArrays), passphrase);
-    if (useTypedArrays) {
+  if (data.slice) {
+    cipherParams = CryptoJS.AES.encrypt(_getWordArrayFromSlice(data.slice, data.useTypedArrays), data.passphrase);
+    if (data.useTypedArrays) {
       encrypted.fileData = _createArrayBufferFromCipherParams(cipherParams);
     } else {
       encrypted.fileData = cipherParams.toString(Latin1Formatter);
@@ -49,25 +45,23 @@ function encrypt(data){
 // Blob or ArrayBuffer in newer browsers.
 function decrypt(data){
   var decrypted = {index: data.index};
-  var slice = data.slice;
   var fileData, cipherParams;
-  var fileName = data.fileName;
-  var passphrase = data.passphrase;
-  var useTypedArrays = data.useTypedArrays;
 
   // Wrap the decryption in a try/catch. If the password is wrong or the data garbled, it will throw.
   try{
     // Decrypt fileName if present
-    if(fileName) decrypted.fileName = CryptoJS.AES.decrypt(fileName, passphrase).toString(CryptoJS.enc.Latin1);
+    if(data.fileName){
+      decrypted.fileName = CryptoJS.AES.decrypt(data.fileName, data.passphrase).toString(CryptoJS.enc.Latin1);
+    }
 
     // Decrypt fileData
-    if (useTypedArrays) {
-      fileData = _getWordArrayFromSlice(slice, useTypedArrays);
+    if (data.useTypedArrays) {
+      fileData = _getWordArrayFromSlice(data.slice, data.useTypedArrays);
       cipherParams = _createCipherParamsFromWordArray(fileData);
-      decrypted.fileData = CryptoJS.AES.decrypt(cipherParams, passphrase).toArrayBuffer();
+      decrypted.fileData = CryptoJS.AES.decrypt(cipherParams, data.passphrase).toArrayBuffer();
     } else {
-      fileData = Latin1Formatter.parse(slice); // create wordArray from encrypted Latin1
-      decrypted.fileData = CryptoJS.AES.decrypt(fileData, passphrase).toString(CryptoJS.enc.Utf8);
+      fileData = Latin1Formatter.parse(data.slice); // create wordArray from encrypted Latin1
+      decrypted.fileData = CryptoJS.AES.decrypt(fileData, data.passphrase).toString(CryptoJS.enc.Utf8);
     }
 
     postMessage(decrypted);

@@ -10,13 +10,14 @@
     Polymer('webworker-crypto', {
       created: function() { 
       },
+      // FYI, no need to use transferable object syntax as Blobs are immutable and transfered
+      // by an internal URL AFAIK. If this is wrong, please let me know
       encrypt: function(data) {
         this._validate(data);
         data.encrypt = true;
         this.worker.postMessage(data);
       },
       decrypt: function(data) {
-        debugger;
         this._validate(data);
         data.decrypt = true;
         this.worker.postMessage(data);
