@@ -43,30 +43,30 @@
       },
       // We farm off XHR prep to a web worker since it can freeze up the browser for a while.
       // It's a long string.
-      prepareXHR: function(e) {
+      prepareXHR: function(e, data) {
         this.fire('polymer-signal', {
           name: 'upload-preparing'
         });
-        this.$.xhrPreparer.prepareXHR(e.detail);
+        this.$.xhrPreparer.prepareXHR(data);
       },
       // Forgoing polymer-ajax here, it expects JSON input & attempts to querystring
       // params (in polymer-xhr). Takes too long, that's why we have the webworker
       // that just creates a qs. We'll just make an xhr ourselves - abstracted this out
       // to raw-xhr now.
-      uploadFile: function(e) {
-        this.xhrBody = e.detail.fileData;
+      uploadFile: function(e, data) {
+        this.xhrBody = data.fileData;
         this.xhrHeaders = {
           'X-File-Expiration-Days': this.fileOptions.days,
-          'X-File-Name': e.detail.fileName,
+          'X-File-Name': data.fileName,
           'X-File-Max-Views': this.fileOptions.views,
-          'X-File-Content-Type': e.detail.contentType
+          'X-File-Content-Type': data.contentType
         };
 
         this.$.ajaxUpload.go();
       },
-      handleResponse: function(e) {
-        var xhr = e.detail.xhr;
-        var response = e.detail.response;
+      handleResponse: function(e, data) {
+        var xhr = data.xhr;
+        var response = data.response;
         try {
           response = JSON.parse(xhr.responseText);
         } catch(e) {
@@ -84,13 +84,13 @@
         console.error("Error when uploading file:", event);
       },
       // Fire a signal whenever we get a progress report
-      handleUploadProgress: function(e) {
-        if (!e.lengthComputable) return;        
+      handleUploadProgress: function(e, data) {
+        if (!data.lengthComputable) return;        
         this.fire('polymer-signal', {
           name: 'upload-progress',
           data: {
-            value: e.loaded,
-            max: e.total
+            value: data.loaded,
+            max: data.total
           }
         });
       },
