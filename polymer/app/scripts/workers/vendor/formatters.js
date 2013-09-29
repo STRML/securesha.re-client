@@ -1,7 +1,6 @@
 /*jshint worker:true*/
-/*global CryptoJS:true, lzw_encode:true, lzw_decode:true */
-
-importScripts('vendor/lzw.js'); // returns lzw_encode, lzw_decode functions
+/*global CryptoJS:true */
+'use strict';
 
 // Must be included after cryptoJS
 
@@ -28,7 +27,6 @@ var Latin1Formatter = {
     }
     var output = wordArray.toString(CryptoJS.enc.Latin1);
 
-    //return lzw_encode(output);
     return output;
   },
 
@@ -42,11 +40,10 @@ var Latin1Formatter = {
    */
   parse: function (str) {
     // Parse base64
-    //var ciphertext = CryptoJS.enc.Latin1.parse(lzw_decode(str)), salt;
     var ciphertext = CryptoJS.enc.Latin1.parse(str), salt;
 
     // Test for salt
-    if (ciphertext.words[0] == 0x53616c74 && ciphertext.words[1] == 0x65645f5f) {
+    if (ciphertext.words[0] === 0x53616c74 && ciphertext.words[1] === 0x65645f5f) {
       // Extract salt
       salt = CryptoJS.lib.WordArray.create(ciphertext.words.slice(2, 4));
 

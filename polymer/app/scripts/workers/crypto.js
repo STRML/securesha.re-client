@@ -3,7 +3,7 @@
 'use strict';
 importScripts('../bower_components/crypto-js/rollups/aes.js');
 importScripts('vendor/lib-typedarrays.js');
-importScripts('formatters.js'); // returns Latin1Formatter
+importScripts('vendor/formatters.js'); // returns Latin1Formatter
 
 // shortcut
 var WordArray = CryptoJS.lib.WordArray;

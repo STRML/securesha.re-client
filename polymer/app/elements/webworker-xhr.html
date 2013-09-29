@@ -4,7 +4,7 @@
     <style>
       @host { :scope {display: none;} }
     </style>
-    <webworker-base src="/scripts/xhrWorker.js" on-message="onMessage" on-error"onError" worker="{{worker}}"></webworker-base>
+    <webworker-base src="/scripts/workers/xhrWorker.js" on-message="onMessage" on-error"onError" worker="{{worker}}"></webworker-base>
   </template>
   <script>
     Polymer('webworker-xhr', {

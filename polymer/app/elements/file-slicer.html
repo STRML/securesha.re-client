@@ -23,9 +23,10 @@
       inputChanged: function() {
         // slice & dice
         if (!this.input) return;
-        debugger;
-        this.output = [this.input.slice()]; // disabled for now
-        return;
+        if (true) {
+          this.output = [this.input.slice()]; // disabled for now
+          return;
+        }
         var file = this.input;
         file.slice = file.mozSlice || file.webkitSlice || file.slice; // compatibility
         var pos = 0;
