@@ -43,6 +43,11 @@
         // New file size, for logging purposes
         this.encryptedSize = 0;
 
+        // For status elements
+        this.fire('polymer-signal', {
+          name: 'encryption-started'
+        });
+
         // Encrypt slices (post to workers)
         // Don't forget shadowRoot here (that's easy to miss)
         // XXX why doesn't this.$['worker-' + i] work here?
