@@ -9,11 +9,23 @@
   </template>
   <script>
     Polymer('file-slicer', {
-      //applyAuthorStyles: true,
-      //resetStyleInheritance: true,
+      // This slicer is useful for distributing file operations among multiple workers,
+      // so we can use multiple cores. Since switching to Typed Arrays the whole operation
+      // has gotten much faster so I've turned this off for now. Maybe later on it would be 
+      // fun to figure out how to get it working again.
+
+      // The sticky point is slicing the output file exactly the same way the input file was sliced.
+      // AES adds a bit of padding so we should measure that and figure out where to slice the incoming file
+      // after downloading. E.g. slice uploads at 512KB, slice downloads at 512KB + padding (16 bytes, I think?)
+      // In any case it really doesn't seem like encyrption is the bottleneck. The other nice thing
+      // about slicing is that we can do worthwhile progress indicators, though. So it might be worth
+      // slicing on 128kb or so.
       inputChanged: function() {
         // slice & dice
         if (!this.input) return;
+        debugger;
+        this.output = [this.input.slice()]; // disabled for now
+        return;
         var file = this.input;
         file.slice = file.mozSlice || file.webkitSlice || file.slice; // compatibility
         var pos = 0;
