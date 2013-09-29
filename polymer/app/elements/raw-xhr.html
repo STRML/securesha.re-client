@@ -1,4 +1,4 @@
-<polymer-element name="raw-xhr-element"  attributes="url headers async method mode data">
+<polymer-element name="raw-xhr-element"  attributes="url headers async method mode data xhr">
   <template>
     <style>
       @host { :scope {display: block;} }
@@ -9,24 +9,38 @@
     Polymer('raw-xhr-element', {
       // TODO: Create raw XHR that both sends & receives binary XHRs, see
       // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
+
       // Set to false to do a synchronous xhr.
       async: true,
+
       // Body to be sent. If mode = 'binary', this will be sent as a raw binary blob
       // (see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data),
       // otherwise it will be sent in the way you would expect (json, string, etc.)
       body: {},
+
       // Options: 'binary' | 'traditional'
       mode: 'binary',
+
+      // HTTP Method
       method: 'GET',
+
+      // Map of headers. Note that security prevents manual setting of Content-Length.
+      // The Content-Type used here will be used in the Blob constructor in binary mode,
+      // if you've passed an array of data, etc.
       headers: {},
+
+      // Target URL
       url: '',
+
+      // XHR object, don't set this, but it's available to you as a getter.
+      xhr: null,
       // no 'auto' configuration here, that's for the birds
 
       created: function() {
       },
       go: function() {
         if (!this.url) throw new Error("XHRs must have a URL, puff puff pass.");
-        var xhr = new XMLHttpRequest();
+        var xhr = this.xhr = new XMLHttpRequest();
         
         // Attach handlers
         xhr.onload = this.handleResponse.bind(this, xhr);
@@ -49,12 +63,13 @@
           xhr.setRequestHeader(key, value);
         });
 
-        // Convert body to blob if possible, but don't modify it
+        // Convert body to blob if possible, but don't modify `this.blob` so we don't
+        // fire change handlers
         var body = this.mode === 'binary' ? this._convertToBlob(this.body) : this.body;
 
         if (this.method === 'GET' && this.mode === 'binary') {
           //XHR binary charset opt by Marcus Granado 2006 [http://mgran.blogspot.com]
-          req.overrideMimeType('text\/plain; charset=x-user-defined');
+          req.overrideMimeType('text/plain; charset=x-user-defined');
           req.responseType = 'blob';
         }
 
@@ -75,14 +90,18 @@
       handleError: function(xhr, error) {
         this.fire('error', {xhr: xhr, error: error});
       },
+      // We want to send binary data here, so if we don't have a Blob or ArrayBuffer,
+      // make one.
       _convertToBlob: function(body) {
         if (!body) return null;
-        if (Object.prototype.toString.call(body) !== '[object Blob]') {
+        if (Object.prototype.toString.call(body) !== '[object Blob]' && 
+            Object.prototype.toString.call(body) !== '[object ArrayBuffer]') {
           // Convert to Array, as Blob expects
           if (!Array.isArray(this.body)) {
             body = [body];
           }
           // Since we ran _injectContentType, we know what type the blob should be.
+          // XXX: does this content-type actually get read anywhere?
           body = new Blob(body, {type: this.headers['Content-Type']})
         }
         return body;
@@ -104,7 +123,7 @@
           this.headers['Content-Type'] = 'application/octet-stream';
         } else {
           // In non-binary mode, it can be text or JSON. That's all you get.
-          // If you have a problem with that, pass one in, geez
+          // If you have a problem with that, pass a content-type in, geez
           if (typeof this.body === 'string') {
             this.headers['Content-Type'] = 'text/plain';
           } else {
