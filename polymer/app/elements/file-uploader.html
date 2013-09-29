@@ -3,6 +3,7 @@
 <link rel="import" href="file-upload-status.html">
 <link rel="import" href="file-encryptor.html">
 <link rel="import" href="webworker-xhr.html">
+<link rel="import" href="raw-xhr.html">
 <link rel="import" href="../bower_components/polymer-elements/polymer-ajax/polymer-ajax.html">
 <link rel="import" href="vendor/polymer-signals.html">
 <polymer-element name="file-uploader" attributes="">
@@ -23,8 +24,10 @@
         <file-upload-status file="{{file}}"></file-upload-status>
       </form>
     </article>
-    <file-encryptor file="{{file}}" passphrase="{{fileOptions.passphrase}}" on-encryption-finished="prepareXHR"></file-encryptor>
+    <file-encryptor file="{{file}}" passphrase="{{fileOptions.passphrase}}" on-encryption-finished="uploadFile"></file-encryptor>
     <webworker-xhr id="xhrPreparer" on-xhr-prepared="uploadFile"></webworker-xhr>
+    <raw-xhr id="ajaxUpload" on-error="handleError" on-response="handleResponse" on-upload-progress="handleUploadProgress"
+      body="{{xhrBody}}" headers="{{xhrHeaders}}" method="POST" url="/putfile" mode="binary"></raw-xhr> 
   </template>
   <script>
     Polymer('file-uploader', {
@@ -48,40 +51,22 @@
       },
       // Forgoing polymer-ajax here, it expects JSON input & attempts to querystring
       // params (in polymer-xhr). Takes too long, that's why we have the webworker
-      // that just creates a qs. We'll just make an xhr ourselves.
+      // that just creates a qs. We'll just make an xhr ourselves - abstracted this out
+      // to raw-xhr now.
       uploadFile: function(e) {
-        var xhr = new XMLHttpRequest();
-        
-        // Attach handlers
-        xhr.onload = this.handleResponse.bind(this, xhr);
-        xhr.onerror = this.handleError.bind(this, xhr);
-        // Attach progress handler, if possible
-        if (xhr.upload) {
-          xhr.upload.addEventListener('progress', this.handleUploadProgress.bind(this), false);
-        }
+        this.xhrBody = e.detail.fileData;
+        this.xhrHeaders = {
+          'X-File-Expiration-Days': this.fileOptions.days,
+          'X-File-Name': e.detail.fileName,
+          'X-File-Max-Views': this.fileOptions.views,
+          'X-File-Content-Type': e.detail.contentType
+        };
 
-        // Create xhr data
-        var params = e.detail;
-        var url = '/putfile';
-        var method = 'POST';
-        var async = true;
-
-        // Open xhr
-        xhr.open(method, url, async);
-
-        // Set headers
-        xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-        xhr.setRequestHeader('X-File-Expiration-Days', this.fileOptions.days);
-        xhr.setRequestHeader('X-File-Name', params.fileName);
-        xhr.setRequestHeader('X-File-Max-Views', this.fileOptions.views);
-        xhr.setRequestHeader('X-File-Content-Type', params.contentType);
-        debugger;
-
-        // We're only sending the actual file data up the pipe as a binary stream.
-        xhr.send(params.fileData);
+        this.$.ajaxUpload.go();
       },
-      handleResponse: function(xhr, event) {
-        var response;
+      handleResponse: function(e) {
+        var xhr = e.detail.xhr;
+        var response = e.detail.response;
         try {
           response = JSON.parse(xhr.responseText);
         } catch(e) {

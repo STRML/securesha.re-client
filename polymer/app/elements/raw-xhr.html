@@ -1,12 +1,11 @@
-<polymer-element name="raw-xhr-element"  attributes="url headers async method mode data xhr">
+<polymer-element name="raw-xhr"  attributes="async body headers method mode url xhr">
   <template>
     <style>
-      @host { :scope {display: block;} }
+      @host { :scope {display: none;} }
     </style>
-    <span>I'm <b>rawXhr-element</b>. This is my Shadow DOM.</span>
   </template>
   <script>
-    Polymer('raw-xhr-element', {
+    Polymer('raw-xhr', {
       // TODO: Create raw XHR that both sends & receives binary XHRs, see
       // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
 
@@ -59,9 +58,9 @@
         this._injectContentType();
 
         // Set headers
-        Object.getOwnPropertyNames(this.headers).forEach(function(value, key) {
-          xhr.setRequestHeader(key, value);
-        });
+        Object.keys(this.headers).forEach(function(key) {
+          xhr.setRequestHeader(key, this.headers[key]);
+        }.bind(this));
 
         // Convert body to blob if possible, but don't modify `this.blob` so we don't
         // fire change handlers
@@ -76,7 +75,7 @@
         // HEADSHOT
         xhr.send(body);
         return xhr;
-      }.
+      },
       handleUploadProgress: function(e) {
         this.fire('upload-progress', e);
       },
@@ -84,7 +83,7 @@
         this.fire('download-progress', e);
       },
       handleResponse: function(xhr, response) {
-        this.response = response;
+        this.response = xhr.response;
         this.fire('response', {xhr: xhr, response: response});
       },
       handleError: function(xhr, error) {
@@ -102,7 +101,7 @@
           }
           // Since we ran _injectContentType, we know what type the blob should be.
           // XXX: does this content-type actually get read anywhere?
-          body = new Blob(body, {type: this.headers['Content-Type']})
+          body = new Blob(body, {type: this.headers['Content-Type']});
         }
         return body;
       },
