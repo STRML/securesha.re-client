@@ -49,12 +49,10 @@
         // Create Blob object from decrypted file & pass it back
         // For whatever reason, I need to use str2ab here rather than passing the strings
         // into the blob constructor directly (why?)
-        debugger;
         this.decryptedFile.fileData = new Blob(this.decryptedFile.fileData, {type: this.file.contentType});
         this.fire('decryption-finished', this.decryptedFile);
       },
       _onWorkerSlice: function(e, slice) {
-        debugger;
         // This will happen when the password is bad
         if (!slice instanceof Object) {
           this.fire('decryption-error');
