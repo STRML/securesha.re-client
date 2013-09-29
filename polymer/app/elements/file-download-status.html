@@ -1,0 +1,60 @@
+<polymer-element name="file-download-status"  attributes="downloadStatus fileMeta file decryptedFile downloadActive">
+  <template>
+    <style>
+      @host { :scope {display: block;} }
+    </style>
+    
+    <div hidden?="{{!downloadActive || downloadStatus}}" class="findingFile alert">
+      Finding your file...
+    </div>
+
+    <template if="{{downloadStatus}}" bind="{{downloadStatus}}">
+      <div id="downloadStatus">
+        <div hidden?="{{complete}}">
+          <div>Downloading... {{percent}}% complete.</div>
+          <progress value="{{value}}" max="{{max}}"></progress>
+        </div>
+        <div hidden?="{{!complete}}">
+          Complete!
+        </div>
+      </div>
+    </template>
+
+    <template if="{{fileMeta}}" bind="{{fileMeta}}">
+      <div hidden?="{{maxViews - views === 0}}" class="fileInfo alert">
+        This file has {{maxViews - views}} {{maxViews - views === 1 ? 'view' : 'views'}} remaining.
+        The file will be destroyed on {{expiration}} or when the views are exhausted, whichever comes first.
+      </div>
+
+      <div hidden?="{{maxViews - views > 0}}" class="fileInfo alert-danger alert">
+        This file has expired and has been deleted. You hold the last copy. Good luck.
+      </div>
+    </template>
+
+    <div hidden?="{{file !== false}}" class="fileInfo alert-danger alert">
+      Sorry! File not found.
+    </div>
+
+    <!-- Wrapping this because .btn style sets display:inline-block and that's lame -->
+    <template if="{{decryptedFile.url}}">
+      <a href="{{decryptedFile.url}}" download="{{decryptedFile.name}}" class="btn btn-success">
+        <i class="icon-download-alt icon-white"></i> Download
+      </a>
+    </template>
+
+    <div hidden?="{{decryptedFile !== false}}" class="fileInfo alert-danger alert">
+      Incorrect password. The file cannot be decrypted. Refresh the page to try again.
+    </div>
+
+  </template>
+  <script>
+    Polymer('file-download-status', {
+      //applyAuthorStyles: true,
+      //resetStyleInheritance: true,
+      created: function() { },
+      enteredView: function() { },
+      leftView: function() { },
+      attributeChanged: function(attrName, oldVal, newVal) { }
+    });
+  </script>
+</polymer-element>
