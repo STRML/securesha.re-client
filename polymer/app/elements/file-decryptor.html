@@ -18,6 +18,7 @@
       workerCount: window.secureShared.workerCount, // usually 4
       chunkDelimiter: window.secureShared.chunkDelimiter,
       fileChanged: function() {
+        if (!this.file) return;
         this._spawnWorkers();
         this.async(this.decrypt);
       },
@@ -29,7 +30,8 @@
         };
 
         // Progress counter
-        var slices = this.file.data.split(window.secureShared.chunkDelimiter);
+        // var slices = this.file.data.split(window.secureShared.chunkDelimiter);
+        var slices = [this.file.data];
         this.slicesComplete = 0;
         this.totalSlices = slices.length;
 
@@ -38,7 +40,7 @@
         // XXX why doesn't this.$['worker-' + i] work here?
         var workers = this.shadowRoot.querySelectorAll('webworker-crypto');
         for(var i = 0; i < slices.length; i++){
-          var msg = {slice: slices[i], passphrase: this.passphrase, index: i};
+          var msg = {slice: slices[i], passphrase: this.passphrase, index: i, useTypedArrays: true};
           if(i === 0) msg.fileName = this.file.name; // don't send filename past the first slice
           workers[i % workers.length].decrypt(msg);
         }
@@ -47,12 +49,12 @@
         // Create Blob object from decrypted file & pass it back
         // For whatever reason, I need to use str2ab here rather than passing the strings
         // into the blob constructor directly (why?)
-        var fileData = this.decryptedFile.fileData.join("");
-        this.decryptedFile.fileData = new Blob([window.secureShared.str2ab(fileData)], {type: this.file.contentType});
+        debugger;
+        this.decryptedFile.fileData = new Blob(this.decryptedFile.fileData, {type: this.file.contentType});
         this.fire('decryption-finished', this.decryptedFile);
       },
-      _onWorkerSlice: function(e) {
-        var slice = e && e.detail;
+      _onWorkerSlice: function(e, slice) {
+        debugger;
         // This will happen when the password is bad
         if (!slice instanceof Object) {
           this.fire('decryption-error');

@@ -68,13 +68,17 @@
 
         if (this.method === 'GET' && this.mode === 'binary') {
           //XHR binary charset opt by Marcus Granado 2006 [http://mgran.blogspot.com]
-          req.overrideMimeType('text/plain; charset=x-user-defined');
-          req.responseType = 'blob';
+          xhr.overrideMimeType('text/plain; charset=x-user-defined');
+          xhr.responseType = 'blob';
         }
 
         // HEADSHOT
         xhr.send(body);
         return xhr;
+      },
+      isSuccess: function(xhr) {
+        var status = xhr.status || 0;
+        return !status || (status >= 200 && status < 300);
       },
       handleUploadProgress: function(e) {
         this.fire('upload-progress', e);
@@ -82,9 +86,15 @@
       handleDownloadProgress: function(e) {
         this.fire('download-progress', e);
       },
-      handleResponse: function(xhr, response) {
-        this.response = xhr.response;
-        this.fire('response', {xhr: xhr, response: response});
+      handleResponse: function(xhr) {
+        if (this.isSuccess(xhr)){
+          this.response = xhr.response;
+          this.fire('response', {xhr: xhr, response: this.response});
+        } else {
+          var error = xhr.status;
+          if (this.mode !== 'binary') error += ': ' + xhr.responseText;
+          this.handleError(xhr, error);
+        }
       },
       handleError: function(xhr, error) {
         this.fire('error', {xhr: xhr, error: error});

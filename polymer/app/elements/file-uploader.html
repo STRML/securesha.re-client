@@ -25,7 +25,7 @@
       </form>
     </article>
     <file-encryptor file="{{file}}" passphrase="{{fileOptions.passphrase}}" on-encryption-finished="uploadFile"></file-encryptor>
-    <webworker-xhr id="xhrPreparer" on-xhr-prepared="uploadFile"></webworker-xhr>
+    <!-- <webworker-xhr id="xhrPreparer" on-xhr-prepared="uploadFile"></webworker-xhr> -->
     <raw-xhr id="ajaxUpload" on-error="handleError" on-response="handleResponse" on-upload-progress="handleUploadProgress"
       body="{{xhrBody}}" headers="{{xhrHeaders}}" method="POST" url="/putfile" mode="binary"></raw-xhr> 
   </template>

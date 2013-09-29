@@ -26,7 +26,7 @@ function encrypt(data){
   var slice = data.slice;
   var useTypedArrays = data.useTypedArrays;
   var encrypted = {index: data.index}; // keep index for eventual rebuilding
-  var cryptoContainer;
+  var cipherParams;
 
   // Encrypt filename
   if (fileName) {
@@ -34,11 +34,11 @@ function encrypt(data){
   }
 
   if (slice) {
-    cryptoContainer = CryptoJS.AES.encrypt(_getWordArrayFromSlice(slice, useTypedArrays), passphrase);
+    cipherParams = CryptoJS.AES.encrypt(_getWordArrayFromSlice(slice, useTypedArrays), passphrase);
     if (useTypedArrays) {
-      encrypted.fileData = cryptoContainer.ciphertext.toArrayBuffer();
+      encrypted.fileData = _createArrayBufferFromCipherParams(cipherParams);
     } else {
-      encrypted.fileData = cryptoContainer.toString(Latin1Formatter);
+      encrypted.fileData = cipherParams.toString(Latin1Formatter);
     }
   }
 
@@ -50,7 +50,7 @@ function encrypt(data){
 function decrypt(data){
   var decrypted = {index: data.index};
   var slice = data.slice;
-  var fileData;
+  var fileData, cipherParams;
   var fileName = data.fileName;
   var passphrase = data.passphrase;
   var useTypedArrays = data.useTypedArrays;
@@ -62,8 +62,9 @@ function decrypt(data){
 
     // Decrypt fileData
     if (useTypedArrays) {
-      fileData = _getWordArrayFromSlice(slice);
-      decrypted.fileData = CryptoJS.AES.decrypt(fileData, passphrase).ciphertext.toArrayBuffer();
+      fileData = _getWordArrayFromSlice(slice, useTypedArrays);
+      cipherParams = _createCipherParamsFromWordArray(fileData);
+      decrypted.fileData = CryptoJS.AES.decrypt(cipherParams, passphrase).toArrayBuffer();
     } else {
       fileData = Latin1Formatter.parse(slice); // create wordArray from encrypted Latin1
       decrypted.fileData = CryptoJS.AES.decrypt(fileData, passphrase).toString(CryptoJS.enc.Utf8);
@@ -94,3 +95,27 @@ function _getWordArrayFromSlice(slice, useTypedArrays) {
   return WordArray.create(data);
 }
 
+// These parsing functions are similar to the Latin1Formatter.
+// Append magical salt value to outgoing ArrayBuffer.
+function _createArrayBufferFromCipherParams(cipherParams) {
+  var wordArray = WordArray.create([0x53616c74, 0x65645f5f])
+    .concat(cipherParams.salt).concat(cipherParams.ciphertext);
+  return wordArray.toArrayBuffer();
+}
+
+// Pretty much copy/paste from Latin1Formatter
+function _createCipherParamsFromWordArray(wordArray) {
+  var salt;
+
+  // Test for salt
+  if (wordArray.words[0] === 0x53616c74 && wordArray.words[1] === 0x65645f5f) {
+    // Extract salt
+    salt = CryptoJS.lib.WordArray.create(wordArray.words.slice(2, 4));
+
+    // Remove salt from ciphertext
+    wordArray.words.splice(0, 4);
+    wordArray.sigBytes -= 16;
+  }
+
+  return CryptoJS.lib.CipherParams.create({ ciphertext: wordArray, salt: salt });
+}
