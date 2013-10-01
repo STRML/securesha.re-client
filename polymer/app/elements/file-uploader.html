@@ -2,6 +2,7 @@
 <link rel="import" href="file-advanced-options.html">
 <link rel="import" href="file-upload-status.html">
 <link rel="import" href="file-encryptor.html">
+<link rel="import" href="passphrase-generator.html">
 <link rel="import" href="webworker-xhr.html">
 <link rel="import" href="raw-xhr.html">
 <link rel="import" href="/bower_components/polymer-elements/polymer-ajax/polymer-ajax.html">
@@ -24,6 +25,7 @@
         <file-upload-status file="{{file}}"></file-upload-status>
       </form>
     </article>
+    <passphrase-generator passphrase="{{fileOptions.passphrase}}"></passphrase-generator>
     <file-encryptor file="{{file}}" passphrase="{{fileOptions.passphrase}}" on-encryption-finished="uploadFile"></file-encryptor>
     <!-- <webworker-xhr id="xhrPreparer" on-xhr-prepared="uploadFile"></webworker-xhr> -->
     <raw-xhr id="ajaxUpload" on-error="handleError" on-response="handleResponse" on-upload-progress="handleUploadProgress"
@@ -36,7 +38,7 @@
       created: function() {
         // Create default file options
         this.fileOptions = {
-          passphrase: window.secureShared.generatePassphrase(),
+          passphrase: '',
           days: 7,
           views: 1
         };
