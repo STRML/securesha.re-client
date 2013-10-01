@@ -58,6 +58,7 @@ $(function() {
     });
 
     function successHandler(response, wat){
+      var fileData = response;
       var fileMeta = {
         views: xhr.getResponseHeader('X-File-Views'),
         maxViews: xhr.getResponseHeader('X-File-Max-Views'),
@@ -65,7 +66,7 @@ $(function() {
         expiration: xhr.getResponseHeader('X-File-Expiration'),
         contentType: xhr.getResponseHeader('X-File-Content-Type')
       };
-      cb(response, fileMeta);
+      cb(fileData, fileMeta);
       $("#downloadProgress").toggle();
     }
 

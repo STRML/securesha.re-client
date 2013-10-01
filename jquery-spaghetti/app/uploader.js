@@ -1,4 +1,4 @@
-/*global _:true, File:true */
+/*global _:true, File:true, window:true */
 $(function() {
   var encryptedFile /* object */;
   var passphrase = window.secureShared.generatePassphrase();
@@ -132,67 +132,67 @@ $(function() {
 
     // Set #uploadProgress bar to zero
     $('#uploadProgress').attr({value: 0, total: 1});
-    // Create params string in a worker to not freeze up the browser
-    var xhrWorker = new Worker("app/xhrWorker.js");
-    xhrWorker.postMessage(params);
 
     // Show 'preparing upload' text
     $(".itemStatus").html("Preparing Upload...");
 
-    // When the worker responds, send the returned data as form data
-    xhrWorker.addEventListener('message', function(e){
-      // Send ajax request
-      xhrWorker.terminate();
-      $(".uploadLoader").show();
-      $.ajax({
-        url: '/putfile',
-        //server script to process data
-        type: 'POST',
-        xhr: function() { // custom xhr
-          var myXhr = $.ajaxSettings.xhr();
-          if(myXhr.upload) { // check if upload property exists
-            myXhr.upload.addEventListener('progress', progressHandler, false); // for handling the progress of the upload
-          }
-          return myXhr;
-        },
-        //Ajax events
-        //beforeSend: beforeSendHandler,
-        success: successHandler,
-        error: errorHandler,
-        // Form data
-        data: e.data,
-        cache: false
-      });
-
-      function beforeSendHandler(xhr) {
-        // TODO: Show 'uploading' text
-      }
-
-      function successHandler(response) {
-        displayURL(response.url, passphrase);
-        $(".uploadLoader").hide();
-        $(".itemStatus").html("");
-      }
-
-      function errorHandler() {
-        $(".itemStatus").html("<i>Error</i>");
-        $(".uploadLoader").hide();
-      }
-
-      function progressHandler(e) {
-        if(e.lengthComputable) {
-          $('#uploadProgress').attr({
-            value: e.loaded,
-            max: e.total
-          });
+    $(".uploadLoader").show();
+    $.ajax({
+      url: '/putfile',
+      //server script to process data
+      type: 'POST',
+      xhr: function() { // custom xhr
+        var myXhr = $.ajaxSettings.xhr();
+        if(myXhr.upload) { // check if upload property exists
+          myXhr.upload.addEventListener('progress', progressHandler, false); // for handling the progress of the upload
         }
-        if(e.loaded != e.total){
-          $(".itemStatus").html("Uploading: " + ((e.loaded / e.total) * 100).toFixed(0) + "% complete.");
-        } else {
-          $(".itemStatus").html("Upload complete. Generating URL...");
-        }
+        return myXhr;
+      },
+      contentType: 'text/plain',
+      //Ajax events
+      //beforeSend: beforeSendHandler,
+      success: successHandler,
+      error: errorHandler,
+      // Form data
+      headers: {
+        'X-File-Expiration-Days' : params.days,
+        'X-File-Max-Views': params.views,
+        'X-File-Content-Type': params.contentType,
+        'X-File-Name': params.fileName
+      },
+      data: params.fileData,
+      processData: false,
+      cache: false
+    });
+
+    function beforeSendHandler(xhr) {
+      // TODO: Show 'uploading' text
+    }
+
+    function successHandler(response) {
+      displayURL(response.url, passphrase);
+      $(".uploadLoader").hide();
+      $(".itemStatus").html("");
+    }
+
+    function errorHandler() {
+      $(".itemStatus").html("<i>Error</i>");
+      $(".uploadLoader").hide();
+    }
+
+    function progressHandler(e) {
+      if(e.lengthComputable) {
+        $('#uploadProgress').attr({
+          value: e.loaded,
+          max: e.total
+        });
       }
-    }, false);
+      if(e.loaded != e.total){
+        $(".itemStatus").html("Uploading: " + ((e.loaded / e.total) * 100).toFixed(0) + "% complete.");
+      } else {
+        $(".itemStatus").html("Upload complete. Generating URL...");
+      }
+    }
   }
 
   // Display uploaded file URL on screen.
