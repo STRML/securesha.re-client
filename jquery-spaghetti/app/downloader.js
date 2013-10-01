@@ -1,17 +1,17 @@
-/*global _:true, escape: true */
+/*global _:true */
 $(function() {
 
   // parse hash
   var hash = (function(a) {
-      if (a === "") return {};
-      var b = {};
-      for (var i = 0; i < a.length; ++i)
-      {
-          var p=a[i].split('=');
-          if (p.length != 2) continue;
-          b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
-      }
-      return b;
+    if (a === "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i)
+    {
+      var p=a[i].split('=');
+      if (p.length !== 2) continue;
+      b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
   })(window.location.hash.substr(1).split('&'));
 
   // Check if url & passphrase are present
@@ -57,7 +57,7 @@ $(function() {
       error: errorHandler
     });
 
-    function successHandler(response, wat){
+    function successHandler(response){
       var fileData = response;
       var fileMeta = {
         views: xhr.getResponseHeader('X-File-Views'),
@@ -83,7 +83,7 @@ $(function() {
           value: e.loaded,
           max: e.total
         });
-        if(e.loaded != e.total){
+        if(e.loaded !== e.total){
           $(".downloadStatusText").html("Downloading: " + ((e.loaded / e.total) * 100).toFixed(0) + "% complete.");
         } else {
           $(".downloadStatusText").html("Download complete. Generating link...");
@@ -119,7 +119,7 @@ $(function() {
 
     // Get enter keypress
     $("#decryptPassphrase").keypress(function(e){
-      if(e.which == 13){
+      if(e.which === 13){
         $("#passwordModal").modal('hide');
         $("#passwordModal button.download").click();
         return false;
@@ -168,7 +168,7 @@ $(function() {
         return;
       }
       onSliceReceived(e.data);
-      if(e.data.index == slices.length - 1){
+      if(e.data.index === slices.length - 1){
         // last slice, finalize
         onFinish();
       }
@@ -192,7 +192,7 @@ $(function() {
       if(!/Safari/i.test(window.BrowserDetect.browser)){
         var URL = window.URL || window.webkitURL;
         var url = URL.createObjectURL(blob);
-        var link = $("<a>").attr("href", url).attr("download", decryptedFile.fileName).addClass("btn btn-success")
+        $("<a>").attr("href", url).attr("download", decryptedFile.fileName).addClass("btn btn-success")
           .html('<i class="icon-download-alt icon-white"></i> Download').appendTo("#downloaded-content").hide().fadeIn();
       } else {
         // Safari can't open blobs, create a data URI

@@ -1,4 +1,4 @@
-/*global _:true, File:true, window:true */
+/*global _:true */
 $(function() {
   var encryptedFile /* object */;
   var passphrase = window.secureShared.generatePassphrase();
@@ -10,7 +10,6 @@ $(function() {
   $('#submit').click(uploadFile);
 
   function encryptFile(){
-    var me = this;
 
     // Clear any errors
     $(".itemStatus").add(".attachedFileInfo").html("");
@@ -84,7 +83,7 @@ $(function() {
       // This seems brittle, if the last chunk finishes before another does, the upload will be considered
       // finished & the workers terminated.
       // FIXME: Check `total` === file.size
-      if(e.data.index == slices.length - 1){
+      if(e.data.index === slices.length - 1){
         onEncryptFinished();
       }
     }

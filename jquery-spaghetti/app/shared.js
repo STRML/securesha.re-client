@@ -20,7 +20,7 @@ window.secureShared = {
   generatePassphrase: function() {
     // If window.crypto is available, use it.
     var passphrase;
-    if(window.crypto && typeof window.crypto.getRandomValues == "function"){
+    if(window.crypto && typeof window.crypto.getRandomValues === "function"){
       var array = new Uint8Array(32);
       window.crypto.getRandomValues(array);
       passphrase = window.secureShared.ab2str(array.buffer);
