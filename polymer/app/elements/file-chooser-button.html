@@ -26,19 +26,27 @@
       //applyAuthorStyles: true,
       //resetStyleInheritance: true,
       created: function() { },
+      fileSizeLimit: 10 * 1024 * 1024, // 10MB
       onFileSelected: function() {
         var file = this.$.fileupload.files[0];
         if (!file) return;
-        if(file.size > window.secureShared.fileSizeLimit) return window.alert("File is too big. Please choose a file under 10MB.");
+        if(file.size > this.fileSizeLimit) return window.alert("File is too big. Please choose a file under 10MB.");
         file.name = file.name + "?" + (Math.random() * 1000); // browser cache buster
         this.file = file;
-        this.readableFileSize = this.getReadableFileSize();
+        this.readableFileSize = this.getReadableFileSize(file.size);
       },
       selectFile: function() {
         this.$.fileupload.click(); // wow this works?
       },
-      getReadableFileSize: function() {
-        return window.secureShared.fileSize(this.file.size);
+      getReadableFileSize: function(fileSizeInBytes) {
+        var i = -1;
+        var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+        do {
+          fileSizeInBytes = fileSizeInBytes / 1024;
+          i++;
+        } while (fileSizeInBytes > 1024);
+
+        return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
       },
       enteredView: function() { },
       leftView: function() { },

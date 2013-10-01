@@ -16,9 +16,8 @@
       created: function() {
       },
       // These can be overridden by the parent
-      chunkSize: window.secureShared.chunkSize,
-      workerCount: window.secureShared.workerCount, // usually 4
-      chunkDelimiter: window.secureShared.chunkDelimiter,
+      chunkSize: 512 * 1024, // 512KB
+      workerCount: 1, 
       slices: [],
       //applyAuthorStyles: true,
       //resetStyleInheritance: true,
