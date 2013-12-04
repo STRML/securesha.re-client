@@ -26,9 +26,9 @@
         The file will be destroyed on {{expiration}} or when the views are exhausted, whichever comes first.
       </div>
 
-      <div hidden?="{{maxViews - views > 0}}" class="fileInfo alert-danger alert">
-        This file has expired and will not be available after you close this browser or move to another page. It
-        still can be downloaded from this link as long as you keep this page open. 
+      <div hidden?="{{maxViews - views > 0}}" class="fileInfo alert-info alert">
+        Your file is available below. The download count has expired; the file will be deleted from our
+        servers after you close this page.
       </div>
     </template>
 
