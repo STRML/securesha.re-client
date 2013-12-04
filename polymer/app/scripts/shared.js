@@ -1,4 +1,3 @@
-/*global escape: true, CryptoJS: true */
 'use strict';
 window.secureShared = {
   chunkSize : 512 * 1024, // 512kb chunks
