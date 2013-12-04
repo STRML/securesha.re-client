@@ -44,3 +44,9 @@ footer-element {
   right: 0;
   overflow: hidden;
 }
+
+@media(max-width: $screen-md) { // $screen-md comes from bootstrap
+  footer-element .row {
+    margin-left: 0
+  }
+}
