@@ -14,7 +14,7 @@
           <div>Downloading... {{percent}}% complete.</div>
           <progress value="{{value}}" max="{{max}}"></progress>
         </div>
-        <div hidden?="{{!complete}}">
+        <div hidden?="{{!complete || !file}}">
           Complete!
         </div>
       </div>
