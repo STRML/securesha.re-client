@@ -1,7 +1,7 @@
 'use strict';
 window.secureShared = {
   chunkSize : 512 * 1024, // 512kb chunks
-  fileSizeLimit: 10 * 1024 * 1024, // 10MB
+  fileSizeLimit: 20 * 1024 * 1024, // 20MB
   workerCount : 1,
 
   getHash: function() {

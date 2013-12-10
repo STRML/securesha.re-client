@@ -26,7 +26,7 @@
       //applyAuthorStyles: true,
       //resetStyleInheritance: true,
       created: function() { },
-      fileSizeLimit: 10 * 1024 * 1024, // 10MB
+      fileSizeLimit: window.secureShared.fileSizeLimit,
       onFileSelected: function() {
         var file = this.$.fileupload.files[0];
         if (!file) return;
