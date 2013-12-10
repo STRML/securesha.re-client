@@ -11,7 +11,7 @@
     <polymer-signals on-polymer-signal-download-active="onDownloadActive"></polymer-signals>
     <raw-xhr id="getFile" on-error="handleAjaxError" on-response="handleAjaxSuccess" on-download-progress="handleDownloadProgress"
       url="/get/{{hash.url}}" mode="binary"></raw-xhr> 
-    <file-decryptor file="{{file}}" passphrase="{{hash.passphrase}}" on-decryption-start="showDecrypting"
+    <file-decryptor file="{{file}}" passphrase="{{hash.passphrase}}" on-decryption-started="showDecrypting"
       on-decryption-finished="showDownloadPrompt" on-decryption-error="showBadPassword"></file-decryptor>
 
     <file-download-status downloadStatus="{{downloadStatus}}" fileMeta="{{fileMeta}}" file="{{file}}"
@@ -20,8 +20,6 @@
   </template>
   <script>
     Polymer('file-downloader', {
-      downloadActive: false,
-      decryptionActive: false,
       created: function() {
         this.reset();
       },
@@ -75,9 +73,9 @@
       },
       reset: function() {
         this.downloadActive = false;
+        this.decryptionActive = false;
         this.downloadStatus = null;
         this.decryptedFile = null;
-        this.decryptionActive = false;
         this.file = null;
         this.hash = null;
       },

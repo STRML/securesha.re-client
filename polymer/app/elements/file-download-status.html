@@ -21,31 +21,39 @@
     </template>
 
     <template if="{{fileMeta}}" bind="{{fileMeta}}">
-      <div hidden?="{{maxViews - views === 0}}" class="fileInfo alert">
+      <div hidden?="{{maxViews - views === 0}}" class="fileInfo alert-info alert">
+        Your file has downloaded.
+        <br><br>
         This file has {{maxViews - views}} {{maxViews - views === 1 ? 'view' : 'views'}} remaining.
         The file will be destroyed on {{expiration}} or when the views are exhausted, whichever comes first.
       </div>
 
       <div hidden?="{{maxViews - views > 0}}" class="fileInfo alert-info alert">
-        Your file is available below. The download count has expired; the file will be deleted from our
-        servers after you close this page.
+        Your file has downloaded.
+        <br><br>
+        The download count has expired; the file will be deleted from our
+        servers after you close this page. 
+        <br><br>
+        If this is your file, you must re-upload it if you want 
+        it to be available.
       </div>
     </template>
 
     <div hidden?="{{file !== false}}" class="fileInfo alert-danger alert">
-      Sorry! File not found.
+      Sorry! File not found. <a href="/">Return to Home.</a>
     </div>
 
     <!-- Wrapping this because .btn style sets display:inline-block and that's lame -->
     <template if="{{decryptedFile.url}}">
-      <a href="{{decryptedFile.url}}" download="{{decryptedFile.name}}" class="btn btn-success">
-        <i class="icon-download-alt icon-white"></i> Download
+      <a href="{{decryptedFile.url}}" download="{{decryptedFile.name}}" class="downloadBtn btn btn-success">
+        <i class="icon-download-alt icon-white"></i> Download Again
       </a>
     </template>
 
     <template if="{{decryptionActive}}">
       <div class="decryptionActive alert info">
         Decrypting...
+        <img src="/images/ajax-loader-pacman.gif" />   
       </div>
     </template>
 
@@ -56,11 +64,20 @@
   </template>
   <script>
     Polymer('file-download-status', {
-      //applyAuthorStyles: true,
-      //resetStyleInheritance: true,
       created: function() { },
       enteredView: function() { },
       leftView: function() { },
+      decryptedFileChanged: function() {
+        // Automatically start download
+        if (this.decryptedFile.url) {
+          // According to docs, if the dom changes on the same property change, we need to schedule
+          // a microtask if we want to use the change. The below code works without this.async()
+          // but in case the implementation changes, I've left it here.
+          this.async(function() {
+            this.shadowRoot.querySelector('.downloadBtn').click();
+          });
+        }
+      },
       attributeChanged: function(attrName, oldVal, newVal) { }
     });
   </script>
