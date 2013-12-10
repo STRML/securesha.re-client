@@ -23,6 +23,8 @@
         this.async(this.decrypt);
       },
       decrypt: function() {
+        this.fire('decryption-started');
+
         // Create internal encrypted file container
         this.decryptedFile = {
           fileData : [],
@@ -62,6 +64,7 @@
         this.decryptedFile.fileData[slice.index] = slice.fileData;
 
         this.slicesComplete++;
+        this.fire('slice-complete');
 
         if (this.slicesComplete === this.totalSlices){
           this._onDecryptionFinished();

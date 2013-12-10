@@ -1,4 +1,4 @@
-<polymer-element name="file-download-status"  attributes="downloadStatus fileMeta file decryptedFile downloadActive">
+<polymer-element name="file-download-status"  attributes="downloadStatus fileMeta file decryptedFile downloadActive decryptionActive">
   <template>
     <style>
       @host { :scope {display: block;} }
@@ -41,6 +41,12 @@
       <a href="{{decryptedFile.url}}" download="{{decryptedFile.name}}" class="btn btn-success">
         <i class="icon-download-alt icon-white"></i> Download
       </a>
+    </template>
+
+    <template if="{{decryptionActive}}">
+      <div class="decryptionActive alert info">
+        Decrypting...
+      </div>
     </template>
 
     <div hidden?="{{decryptedFile !== false}}" class="fileInfo alert-danger alert">
