@@ -3,11 +3,11 @@
 <polymer-element name="file-encryptor" attributes="file passphrase workerCount chunkSize chunkDelimiter">
   <template>
     <style>
-      @host { :scope {display: none;} }
+      :host { display: none; }
     </style>
     <file-slicer input="{{file}}" output="{{slices}}" chunkSize="{{chunkSize}}"></file-slicer>
     <template repeat="{{worker in workers}}" id="workers">
-      <webworker-crypto id="worker-{{worker.id}}" on-slice="_onWorkerSlice"></webworker-crypto>
+      <webworker-crypto id="worker-{{worker.id}}" on-slice="{{_onWorkerSlice}}"></webworker-crypto>
     </template>
   </template>
 
@@ -17,7 +17,7 @@
       },
       // These can be overridden by the parent
       chunkSize: 512 * 1024, // 512KB
-      workerCount: 1, 
+      workerCount: 1,
       slices: [],
       //applyAuthorStyles: true,
       //resetStyleInheritance: true,
@@ -75,7 +75,7 @@
 
         // For status elements
         this.fire('polymer-signal', {
-          name: 'encryption-finished', 
+          name: 'encryption-finished',
           data: {file: this.encryptedFile}
         });
 
@@ -85,19 +85,19 @@
       _onWorkerSlice: function(e) {
         var data = e.detail;
         this.slicesComplete++;
-        this.encryptedSize += data.fileData.length;
+        this.encryptedSize += (data.fileData.length || data.fileData.byteLength);
         this.encryptedFile.fileData[data.index] = data.fileData;
         if(data.fileName) this.encryptedFile.fileName = data.fileName;
 
         // Fire a nice event
         var eventData = {
-          value: data.index, 
-          total: this.slices.length, 
+          value: data.index,
+          total: this.slices.length,
           fileName: this.file.fileName
         };
-        // Fire a signal so status listeners can listen in 
+        // Fire a signal so status listeners can listen in
         this.fire('polymer-signal', {
-          name: 'slice-finished', 
+          name: 'slice-finished',
           data: eventData
         });
         // Fire the event right here too in case the parent wants a go at it

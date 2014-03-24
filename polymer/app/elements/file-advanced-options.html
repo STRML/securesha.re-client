@@ -1,8 +1,11 @@
-<link rel="import" href="/bower_components/polymer-elements/polymer-collapse/polymer-collapse.html">
+<link rel="import" href="/bower_components/polymer-collapse/polymer-collapse.html">
 <polymer-element name="file-advanced-options"  attributes="fileOptions closed">
   <template>
+    <link rel="stylesheet" href="/styles/main.css">
     <style>
-      @host { :scope {display: block;} }
+      :host {
+        display: block;
+      }
     </style>
     <link rel="stylesheet" href="/styles/advancedOptions.css" />
 
@@ -10,7 +13,7 @@
 
     <div id="outer-advanced">
       <div>
-        <span id="advance-toggle" on-click="toggle">
+        <span id="advance-toggle" on-click="{{toggle}}">
           <i class="glyphicon {{closed ? 'glyphicon-chevron-right' : 'glyphicon-chevron-down'}}"></i>
           Advanced Options
         </span>
@@ -59,7 +62,7 @@
     Polymer('file-advanced-options', {
       //applyAuthorStyles: true,
       //resetStyleInheritance: true,
-      created: function() { 
+      created: function() {
         this.fileOptions = this.fileOptions || {
           days: 7,
           views: 1
@@ -67,6 +70,7 @@
         this.closed = true;
       },
       toggle: function() {
+        // debugger;
         this.closed = !this.closed;
       },
       enteredView: function() { },

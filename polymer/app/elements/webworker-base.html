@@ -1,12 +1,12 @@
 <polymer-element name="webworker-base" attributes="src worker">
   <template>
     <style>
-      @host { :scope {display: none;} }
+      :host { display: none; }
     </style>
   </template>
   <script>
     Polymer('webworker-base', {
-      created: function() { 
+      created: function() {
       },
       _onMessage: function(e) {
         this.fire('message', e);

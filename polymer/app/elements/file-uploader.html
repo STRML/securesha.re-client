@@ -5,16 +5,17 @@
 <link rel="import" href="passphrase-generator.html">
 <link rel="import" href="webworker-xhr.html">
 <link rel="import" href="raw-xhr.html">
-<link rel="import" href="/bower_components/polymer-elements/polymer-ajax/polymer-ajax.html">
-<link rel="import" href="vendor/polymer-signals.html">
+<link rel="import" href="/bower_components/polymer-ajax/polymer-ajax.html">
+<link rel="import" href="/bower_components/polymer-signals/polymer-signals.html">
 <polymer-element name="file-uploader" attributes="">
   <template>
+    <link rel="stylesheet" href="/styles/main.css">
     <style>
-      @host { :scope {display: block;} }
+      :host { display: block; }
     </style>
     <link rel="stylesheet" href="/styles/fileUploader.css" />
 
-    <polymer-signals on-polymer-signal-download-active="onDownloadActive"></polymer-signals>
+    <polymer-signals on-polymer-signal-download-active="{{onDownloadActive}}"></polymer-signals>
     <header>
       <h2>Upload a File</h2>
     </header>
@@ -26,10 +27,9 @@
       </form>
     </article>
     <passphrase-generator passphrase="{{fileOptions.passphrase}}"></passphrase-generator>
-    <file-encryptor file="{{file}}" passphrase="{{fileOptions.passphrase}}" on-encryption-finished="uploadFile"></file-encryptor>
-    <!-- <webworker-xhr id="xhrPreparer" on-xhr-prepared="uploadFile"></webworker-xhr> -->
-    <raw-xhr id="ajaxUpload" on-error="handleError" on-response="handleResponse" on-upload-progress="handleUploadProgress"
-      body="{{xhrBody}}" headers="{{xhrHeaders}}" method="POST" url="/putfile" mode="binary"></raw-xhr> 
+    <file-encryptor file="{{file}}" passphrase="{{fileOptions.passphrase}}" on-encryption-finished="{{uploadFile}}"></file-encryptor>
+    <raw-xhr id="ajaxUpload" on-error="{{handleError}}" on-response="{{handleResponse}}" on-upload-progress="{{handleUploadProgress}}"
+      body="{{xhrBody}}" headers="{{xhrHeaders}}" method="POST" url="/putfile" mode="binary"></raw-xhr>
   </template>
   <script>
     Polymer('file-uploader', {
@@ -42,14 +42,6 @@
           days: 7,
           views: 1
         };
-      },
-      // We farm off XHR prep to a web worker since it can freeze up the browser for a while.
-      // It's a long string.
-      prepareXHR: function(e, data) {
-        this.fire('polymer-signal', {
-          name: 'upload-preparing'
-        });
-        this.$.xhrPreparer.prepareXHR(data);
       },
       // Forgoing polymer-ajax here, it expects JSON input & attempts to querystring
       // params (in polymer-xhr). Takes too long, that's why we have the webworker
@@ -75,7 +67,7 @@
           return console.error("Unable to parse server response." + err);
         }
         this.fire('polymer-signal', {
-          name: 'upload-complete', 
+          name: 'upload-complete',
           data: {
             fileName: response.url,
             passphrase: this.fileOptions.passphrase
@@ -87,7 +79,7 @@
       },
       // Fire a signal whenever we get a progress report
       handleUploadProgress: function(e, data) {
-        if (!data.lengthComputable) return;        
+        if (!data.lengthComputable) return;
         this.fire('polymer-signal', {
           name: 'upload-progress',
           data: {

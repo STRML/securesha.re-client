@@ -1,9 +1,10 @@
 <polymer-element name="file-download-status"  attributes="downloadStatus fileMeta file decryptedFile downloadActive decryptionActive">
   <template>
+    <link rel="stylesheet" href="/styles/main.css">
     <style>
-      @host { :scope {display: block;} }
+      :host { display: block; }
     </style>
-    
+
     <div hidden?="{{!downloadActive || downloadStatus}}" class="findingFile alert">
       Finding your file...
     </div>
@@ -32,9 +33,9 @@
         Your file has downloaded.
         <br><br>
         The download count has expired; the file will be deleted from our
-        servers after you close this page. 
+        servers after you close this page.
         <br><br>
-        If this is your file, you must re-upload it if you want 
+        If this is your file, you must re-upload it if you want
         it to be available.
       </div>
     </template>
@@ -53,7 +54,7 @@
     <template if="{{decryptionActive}}">
       <div class="decryptionActive alert info">
         Decrypting...
-        <img src="/images/ajax-loader-pacman.gif" />   
+        <img src="/images/ajax-loader-pacman.gif" />
       </div>
     </template>
 

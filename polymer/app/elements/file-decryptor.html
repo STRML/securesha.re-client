@@ -1,10 +1,10 @@
 <polymer-element name="file-decryptor" attributes="file passphrase chunkSize workerCount chunkDelimiter">
   <template>
     <style>
-      @host { :scope {display: none;} }
+      :host { display: none; }
     </style>
     <template repeat="{{worker in workers}}" id="workers">
-      <webworker-crypto id="worker-{{worker.id}}" on-slice="_onWorkerSlice"></webworker-crypto>
+      <webworker-crypto id="worker-{{worker.id}}" on-slice="{{_onWorkerSlice}}"></webworker-crypto>
     </template>
   </template>
   <script>

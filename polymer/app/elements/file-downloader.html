@@ -1,18 +1,18 @@
-<link rel="import" href="vendor/polymer-signals.html">
+<link rel="import" href="/bower_components/polymer-signals/polymer-signals.html">
 <link rel="import" href="file-decryptor.html">
 <link rel="import" href="file-download-status.html">
 
 <polymer-element name="file-downloader" attributes="">
   <template>
     <style>
-      @host { :scope {display: block;} }
+      :host { display: block; }
     </style>
 
-    <polymer-signals on-polymer-signal-download-active="onDownloadActive"></polymer-signals>
-    <raw-xhr id="getFile" on-error="handleAjaxError" on-response="handleAjaxSuccess" on-download-progress="handleDownloadProgress"
-      url="/get/{{hash.url}}" mode="binary"></raw-xhr> 
-    <file-decryptor file="{{file}}" passphrase="{{hash.passphrase}}" on-decryption-started="showDecrypting"
-      on-decryption-finished="showDownloadPrompt" on-decryption-error="showBadPassword"></file-decryptor>
+    <polymer-signals on-polymer-signal-download-active="{{onDownloadActive}}"></polymer-signals>
+    <raw-xhr id="getFile" on-error="{{handleAjaxError}}" on-response="{{handleAjaxSuccess}}" on-download-progress="{{handleDownloadProgress}}"
+      url="/get/{{hash.url}}" mode="binary"></raw-xhr>
+    <file-decryptor file="{{file}}" passphrase="{{hash.passphrase}}" on-decryption-started="{{showDecrypting}}"
+      on-decryption-finished="{{showDownloadPrompt}}" on-decryption-error="{{showBadPassword}}"></file-decryptor>
 
     <file-download-status downloadStatus="{{downloadStatus}}" fileMeta="{{fileMeta}}" file="{{file}}"
       decryptedFile="{{decryptedFile}}" downloadActive="{{downloadActive}}" decryptionActive="{{decryptionActive}}">

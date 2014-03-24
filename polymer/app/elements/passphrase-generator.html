@@ -1,7 +1,7 @@
 <polymer-element name="passphrase-generator"  attributes="passphrase">
   <template>
     <style>
-      @host { :scope {display: none;} }
+      :host { display: none; }
     </style>
   </template>
   <script>
@@ -9,7 +9,7 @@
       enteredView: function() {
         this.passphrase = this.generatePassphrase();
       },
-      // Generate a 256-bit key. 
+      // Generate a 256-bit key.
       generatePassphrase: function() {
         // If window.crypto is available, use it.
         var passphrase;

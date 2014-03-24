@@ -4,7 +4,7 @@
 <polymer-element name="file-slicer" attributes="input output chunkSize">
   <template>
     <style>
-      @host { :scope {display: none;} }
+      :host { display: none; }
     </style>
   </template>
   <script>
@@ -12,7 +12,7 @@
       output: [],
       // This slicer is useful for distributing file operations among multiple workers,
       // so we can use multiple cores. Since switching to Typed Arrays the whole operation
-      // has gotten much faster so I've turned this off for now. Maybe later on it would be 
+      // has gotten much faster so I've turned this off for now. Maybe later on it would be
       // fun to figure out how to get it working again.
 
       // The sticky point is slicing the output file exactly the same way the input file was sliced.

@@ -1,7 +1,10 @@
 <polymer-element name="footer-element" attributes="">
   <template>
+    <link rel="stylesheet" href="/styles/main.css">
     <style>
-      @host { :scope {display: block;} }
+      :host {
+        display: block;
+      }
       article {
         text-align: left;
         color: white;
@@ -68,7 +71,7 @@
   </template>
   <script>
     Polymer('footer-element', {
-      //applyAuthorStyles: true,
+      // applyAuthorStyles: true,
       //resetStyleInheritance: true,
       created: function() { },
       enteredView: function() { },

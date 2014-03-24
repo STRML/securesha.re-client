@@ -1,7 +1,7 @@
 <polymer-element name="raw-xhr"  attributes="async body headers method mode url xhr">
   <template>
     <style>
-      @host { :scope {display: none;} }
+      :host { display: none; }
     </style>
   </template>
   <script>
@@ -40,7 +40,7 @@
       go: function() {
         if (!this.url) throw new Error("XHRs must have a URL, puff puff pass.");
         var xhr = this.xhr = new XMLHttpRequest();
-        
+
         // Attach handlers
         xhr.onload = this.handleResponse.bind(this, xhr);
         xhr.onerror = this.handleError.bind(this, xhr);
@@ -103,7 +103,7 @@
       // make one.
       _convertToBlob: function(body) {
         if (!body) return null;
-        if (Object.prototype.toString.call(body) !== '[object Blob]' && 
+        if (Object.prototype.toString.call(body) !== '[object Blob]' &&
             Object.prototype.toString.call(body) !== '[object ArrayBuffer]') {
           // Convert to Array, as Blob expects
           if (!Array.isArray(this.body)) {

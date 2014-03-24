@@ -1,8 +1,11 @@
-<link rel="import" href="/bower_components/polymer-elements/polymer-file/polymer-file.html">
+<link rel="import" href="/bower_components/polymer-file/polymer-file.html">
 <polymer-element name="file-chooser-button"  attributes="file">
   <template>
+    <link rel="stylesheet" href="/styles/main.css">
     <style>
-      @host { :scope {display: block;} }
+      :host {
+        display: block;
+      }
       #fileupload {
         display: none;
       }
@@ -11,10 +14,10 @@
       }
     </style>
     <polymer-file id="file" result="{{file}}"></polymer-file>
-    <span class="btn btn-success fileUpload" on-click="selectFile">
+    <span class="btn btn-success fileUpload" on-click="{{selectFile}}">
       <i class="glyphicon glyphicon-plus"></i>
       <span>&nbsp;Choose Your File...</span>
-      <input id="fileupload" type="file" name="file" on-change="onFileSelected">
+      <input id="fileupload" type="file" name="file" on-change="{{onFileSelected}}">
     </span>
     <div hidden?="{{!file}}">
       <div>File Attached: {{file.name}}.</div>

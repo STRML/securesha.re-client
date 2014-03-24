@@ -2,13 +2,13 @@
 <polymer-element name="webworker-crypto" attributes="">
   <template>
     <style>
-      @host { :scope {display: none;} }
+      :host { display: none; }
     </style>
-    <webworker-base src="/scripts/workers/crypto.js" on-message="onMessage" on-error"onError" worker="{{worker}}"></webworker-base>
+    <webworker-base src="/scripts/workers/crypto.js" on-message="{{onMessage}}" on-error"{{onError}}" worker="{{worker}}"></webworker-base>
   </template>
   <script>
     Polymer('webworker-crypto', {
-      created: function() { 
+      created: function() {
       },
       // FYI, no need to use transferable object syntax as Blobs are immutable and transfered
       // by an internal URL AFAIK. If this is wrong, please let me know
