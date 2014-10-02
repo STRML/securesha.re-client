@@ -18,6 +18,7 @@ $(function() {
   if(hash.u){
     var url = hash.u;
     // Browser restrictions, unfortunately
+    // TODO detect capabilities instead
     var isOkay = false;
     if(/Chrome/i.test(window.BrowserDetect.browser)) isOkay = true;
     if(/Firefox/i.test(window.BrowserDetect.browser)) isOkay = true;
@@ -167,8 +168,10 @@ $(function() {
         $(".downloadLoader").hide();
         return;
       }
+      receivedCount++;
       onSliceReceived(e.data);
-      if(e.data.index === slices.length - 1){
+
+      if(receivedCount === slices.length){
         // last slice, finalize
         onFinish();
       }
@@ -178,7 +181,7 @@ $(function() {
       if(slice.fileName) decryptedFile.fileName = slice.fileName;
       decryptedFile.fileData[slice.index] = slice.fileData;
       $('#downloadProgress').attr({
-        value: ++receivedCount,
+        value: receivedCount,
         max: slices.length
       });
       $(".downloadStatusText").html("Decrypting: " + ((receivedCount / (slices.length)) * 100).toFixed(0) + "% complete.");

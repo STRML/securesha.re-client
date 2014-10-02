@@ -78,12 +78,13 @@ $(function() {
 
       onSlice(e);
       total += e.data.fileData.length;
+      finished++;
 
       // If finished
       // This seems brittle, if the last chunk finishes before another does, the upload will be considered
       // finished & the workers terminated.
       // FIXME: Check `total` === file.size
-      if(e.data.index === slices.length - 1){
+      if(finished === slices.length){
         onEncryptFinished();
       }
     }
@@ -91,7 +92,6 @@ $(function() {
     function onSlice(e){
       encryptedFile.fileData[e.data.index] = e.data.fileData;
       if(e.data.fileName) encryptedFile.fileName = e.data.fileName;
-      finished++;
       $("#uploadProgress").attr({value: finished, max: slices.length + 1});
       $(".itemStatus").html("Encrypting: " + ((finished / (slices.length + 1))* 100).toFixed(0) + "% complete.");
     }
@@ -159,7 +159,7 @@ $(function() {
         'X-File-Content-Type': params.contentType,
         'X-File-Name': params.fileName
       },
-      data: params.fileData,
+      data: params.fileData.join(window.secureShared.chunkDelimiter),
       processData: false,
       cache: false
     });

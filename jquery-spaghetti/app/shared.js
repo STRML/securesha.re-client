@@ -1,6 +1,6 @@
 /*global _:true, escape: true, CryptoJS: true */
 window.secureShared = {
-  chunkSize : 64 * 1024, // 128kb chunks
+  chunkSize : 64 * 1024, // 64kb chunks
   chunkDelimiter : "/--delimiter--/",
   fileSizeLimit: 10 * 1024 * 1024,
   workerCount : 4,
