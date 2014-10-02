@@ -17,19 +17,17 @@ code.google.com/p/crypto-js/wiki/License
     var G  = [];
 
     /**
-     * Rabbit stream cipher algorithm
+     * Rabbit stream cipher algorithm.
+     *
+     * This is a legacy version that neglected to convert the key to little-endian.
+     * This error doesn't affect the cipher's security,
+     * but it does affect its compatibility with other implementations.
      */
-    var Rabbit = C_algo.Rabbit = StreamCipher.extend({
+    var RabbitLegacy = C_algo.RabbitLegacy = StreamCipher.extend({
         _doReset: function () {
             // Shortcuts
             var K = this._key.words;
             var iv = this.cfg.iv;
-
-            // Swap endian
-            for (var i = 0; i < 4; i++) {
-                K[i] = (((K[i] << 8)  | (K[i] >>> 24)) & 0x00ff00ff) |
-                       (((K[i] << 24) | (K[i] >>> 8))  & 0xff00ff00);
-            }
 
             // Generate initial state values
             var X = this._X = [
@@ -171,8 +169,8 @@ code.google.com/p/crypto-js/wiki/License
      *
      * @example
      *
-     *     var ciphertext = CryptoJS.Rabbit.encrypt(message, key, cfg);
-     *     var plaintext  = CryptoJS.Rabbit.decrypt(ciphertext, key, cfg);
+     *     var ciphertext = CryptoJS.RabbitLegacy.encrypt(message, key, cfg);
+     *     var plaintext  = CryptoJS.RabbitLegacy.decrypt(ciphertext, key, cfg);
      */
-    C.Rabbit = StreamCipher._createHelper(Rabbit);
+    C.RabbitLegacy = StreamCipher._createHelper(RabbitLegacy);
 }());
