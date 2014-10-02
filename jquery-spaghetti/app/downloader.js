@@ -100,7 +100,7 @@ $(function() {
     var expiringSoonText = "This file has " + remainingViews + " view" + (remainingViews > 1 ? "s " : " ") +
       "remaining. The file will be destroyed on " + expiration + " or when the views are exhausted, whichever " +
       "comes first.";
-    var expiredText = "This file has expired and has been deleted. You hold the last copy. Good luck.";
+    var expiredText = "Please click the download link above. This file has expired and has now been deleted from our servers.";
     var isExpired = remainingViews < 1;
     if(isExpired) $("#downloaded-content .fileInfo").addClass('alert-danger');
     $("#downloaded-content .fileInfo").addClass('alert').html(isExpired ? expiredText : expiringSoonText);
