@@ -2,7 +2,7 @@
 window.secureShared = {
   chunkSize : 64 * 1024, // 64kb chunks
   chunkDelimiter : "/--delimiter--/",
-  fileSizeLimit: 10 * 1024 * 1024,
+  fileSizeLimit: 20 * 1024 * 1024,
   workerCount : 4,
   spawnWorkers : function(workerCount){
     var workers = [];
