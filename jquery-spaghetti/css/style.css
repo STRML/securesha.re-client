@@ -43,6 +43,7 @@ body {
   min-height: 500px;
   text-align: center;
   position: relative;
+  margin-bottom: 260px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/samuelreed\/git\/securesha\.re\/public\/css\/style\.sass}line{font-family:\0000336}}
 #main .bg {

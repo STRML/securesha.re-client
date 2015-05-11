@@ -1,9 +1,6 @@
 'use strict';
 
-var os = require('os');
 var _ = require('lodash');
-var fs = require('fs');
-var path = require('path');
 var matchdep = require('matchdep');
 
 module.exports = function(grunt) {
@@ -26,14 +23,14 @@ module.exports = function(grunt) {
       validate: {
         src: ['app/**/*.js']
       },
-      options: grunt.file.readJSON('../.jshintrc')
+      options: grunt.file.readJSON('.jshintrc')
     },
 
     compass: {
       secureshare: {
         options: {
-          config: "../config.rb",
-          basePath: "../",
+          // config: "../config.rb",
+          // basePath: "../",
           force: false // not necessary unless config_prod changes
         }
       }
