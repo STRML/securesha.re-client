@@ -1,7 +1,7 @@
 securesha.re-client
 ===================
 
-Client-side files for Securesha.re, a simple end-to-end encrypted file sharing website.
+Client-side files for [Securesha.re](securesha.re), a simple end-to-end encrypted file sharing website.
 
 
 What is this?
