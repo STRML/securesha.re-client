@@ -100,7 +100,7 @@ $(function() {
     var expiringSoonText = "This file has " + remainingViews + " view" + (remainingViews > 1 ? "s " : " ") +
       "remaining. The file will be destroyed on " + expiration + " or when the views are exhausted, whichever " +
       "comes first.";
-    var expiredText = "Please click the download link above. This file has expired and has now been deleted from our servers.";
+    var expiredText = "Please click the download link below. This file has expired and has now been deleted from our servers.";
     var isExpired = remainingViews < 1;
     if(isExpired) $("#downloaded-content .fileInfo").addClass('alert-danger');
     $("#downloaded-content .fileInfo").addClass('alert').html(isExpired ? expiredText : expiringSoonText);
@@ -111,7 +111,7 @@ $(function() {
     // Provided in URL.
     if(hash.p) return callback(hash.p);
     $("#passwordModal").modal();
-    
+
     // Grab passphrase & throw it back
     $("#passwordModal button.download").click(function(){
       var passphrase = $("#decryptPassphrase").val();
@@ -157,7 +157,7 @@ $(function() {
       value: 0,
       max: slices.length
     });
-    
+
     function onWorkerMessage(e){
       // got a slice. Process it.
       if(!_.isObject(e.data)){
