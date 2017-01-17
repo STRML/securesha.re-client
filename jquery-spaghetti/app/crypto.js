@@ -20,7 +20,7 @@ function encrypt(oEvent){
   var fileData;
   var time = new Date();
   if(oEvent.data.slice) fileData = fileReader.readAsBinaryString(oEvent.data.slice); // reads as utf8 string
-  //postMessage("time to read file: " + (new Date() - time));
+  postMessage("time to read file: " + (new Date() - time));
   var fileName = oEvent.data.fileName;
   var passphrase = oEvent.data.passphrase;
   var encrypted = {index: oEvent.data.index}; // keep index for eventual rebuilding
@@ -29,9 +29,9 @@ function encrypt(oEvent){
   if(fileName) encrypted.fileName = CryptoJS.AES.encrypt(fileName, passphrase).toString();
 
   // Encrypt filedata
-  //time = new Date();
+  time = new Date();
   encrypted.fileData = CryptoJS.AES.encrypt(fileData, passphrase).toString(Latin1Formatter);
-  //postMessage("time to encrypt + format: " + (new Date() - time) + " size: " + encrypted.fileData.length);
+  postMessage("time to encrypt + format: " + (new Date() - time) + " size: " + encrypted.fileData.length);
 
   postMessage(encrypted);
 }

@@ -1,9 +1,8 @@
-/*global _:true */
+/*global _:true, $:true, Unibabel:true */
 $(function() {
   var encryptedFile /* object */;
   var passphrase = window.secureShared.generatePassphrase();
   $("#password").val(passphrase);
-  var cryptoWorker;
 
   // bindings
   $('#fileupload').change(encryptFile);
@@ -24,7 +23,10 @@ $(function() {
     // Check file
     var file = this.files[0]; // browser 'File' object
     if(!file) return window.alert("Please attach a file to share.");
-    if(file.size > window.secureShared.fileSizeLimit) return window.alert("File is too big. Please choose a file under 10MB.");
+    if(file.size > window.secureShared.fileSizeLimit) {
+      return window.alert("File is too big. Please choose a file under " +
+        window.secureShared.fileSize(window.secureShared.fileSizeLimit) + ".");
+    }
     file.name = file.name + "?" + (Math.random() * 1000); // browser cache buster
 
     // Change page styles to indicate encryption is in #uploadProgress
@@ -35,76 +37,85 @@ $(function() {
     $("#submit").removeClass('btn-primary').addClass('btn-inverse loading').attr('disabled', 'disabled');
     $("#uploadProgress").toggle();
 
-    // Create worker
-    if(cryptoWorker) cryptoWorker.terminate();
-    var workers = window.secureShared.spawnWorkers(window.secureShared.workerCount), i;
-    for(i = 0; i < workers.length; i++){
-      workers[i].addEventListener('message', onWorkerMessage, false);
-      // Log errors
-      workers[i].onError = onWorkerError;
-    }
-
-    // Slice file into chunks
-    var slices = sliceFile(file);
-
-    // Encrypt slices (post to workers)
-    for(i = 0; i < slices.length; i++){
-      var msg = {slice: slices[i], encrypt: true, passphrase: passphrase, index: i};
-      if(i === 0) msg.fileName = file.name; // don't send filename past the first slice
-      workers[i % workers.length].postMessage(msg);
-    }
-
     encryptedFile = {
-      fileData : [],
-      fileName : '',
+      fileData : null,
+      fileName : file.name,
       contentType: file.type,
-      chunkDelimiter: window.secureShared.chunkDelimiter
     };
-    // Listen to encryption events
-    var finished = 0;
-    var total = 0;
-    var time = new Date();
 
-    function onWorkerError(e){
-      console.error(e.data);
-    }
-    function onWorkerMessage(e){
-      // received a slice.
-      if(_.isString(e.data)){
-        // message
-        return console.log(e.data);
-      }
-      // console.log(e.data.fileData.length);
+    var crypto = window.crypto.subtle;
 
-      onSlice(e);
-      total += e.data.fileData.length;
-      finished++;
+    // salt should be Uint8Array or ArrayBuffer
+    var saltBuffer = Unibabel.utf8ToBuffer(passphrase);
 
-      // If finished
-      // This seems brittle, if the last chunk finishes before another does, the upload will be considered
-      // finished & the workers terminated.
-      // FIXME: Check `total` === file.size
-      if(finished === slices.length){
-        onEncryptFinished();
-      }
-    }
+    // don't use naïve approaches for converting text, otherwise international
+    // characters won't have the correct byte sequences. Use TextEncoder when
+    // available or otherwise use relevant polyfills
+    var passphraseKey = Unibabel.utf8ToBuffer("I hëart årt and £$¢!");
 
-    function onSlice(e){
-      encryptedFile.fileData[e.data.index] = e.data.fileData;
-      if(e.data.fileName) encryptedFile.fileName = e.data.fileName;
-      $("#uploadProgress").attr({value: finished, max: slices.length + 1});
-      $(".itemStatus").html("Encrypting: " + ((finished / (slices.length + 1))* 100).toFixed(0) + "% complete.");
-    }
+    // You should firstly import your passphrase Uint8array into a CryptoKey
+    console.time('encrypting');
+    crypto.importKey(
+      'raw',
+      passphraseKey,
+      {name: 'PBKDF2'},
+      false,
+      ['deriveBits', 'deriveKey']
+    ).then(function(masterKey) {
+      return crypto.deriveKey(
+        { "name": 'PBKDF2',
+          "salt": saltBuffer,
+          // don't get too ambitious, or at least remember
+          // that low-power phones will access your app
+          "iterations": 100,
+          "hash": 'SHA-256'
+        },
+        masterKey,
+
+        // Note: for this demo we don't actually need a cipher suite,
+        // but the api requires that it must be specified.
+
+        // For AES the length required to be 128 or 256 bits (not bytes)
+        { "name": 'AES-CBC', "length": 256 },
+
+        // Whether or not the key is extractable (less secure) or not (more secure)
+        // when false, the key can only be passed as a web crypto object, not inspected
+        false,
+
+        // this web crypto object will only be allowed for these functions
+        [ "encrypt", "decrypt" ]
+      )
+    })
+    .then(function(cryptoKey) {
+      return new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.addEventListener("loadend", function() {
+          resolve(reader.result);
+        });
+        reader.addEventListener("loadError", function() {
+          reject(reader.error);
+        })
+        reader.readAsArrayBuffer(file);
+      })
+      .then(function(fileBuf) {
+        var iv = new Uint8Array(16);
+        window.crypto.getRandomValues(iv);
+        return crypto.encrypt({name: 'AES-CBC', iv: iv}, cryptoKey, fileBuf)
+      })
+    })
+    .then(function(encryptedBuffer) {
+      console.timeEnd('encrypting');
+      encryptedFile.fileData = encryptedBuffer;
+      onEncryptFinished();
+    })
+    .catch(console.error);
+
 
     function onEncryptFinished(){
       // console.log("File Size: " + file.size);
       // console.log("Total: " + total);
       // console.log("Time elapsed: " + (new Date() - time));
 
-      // Terminate workers
-      for(var i = 0; i < workers.length; i++){
-        workers[i].terminate();
-      }
       window.isEncrypting = false;
       $(".uploadLoader").hide();
       $(".itemStatus").html("Encryption complete. Click \"Get Secure Link\" to upload.");
@@ -136,6 +147,7 @@ $(function() {
     $(".itemStatus").html("Preparing Upload...");
 
     $(".uploadLoader").show();
+    errorHandler();
     $.ajax({
       url: '/putfile',
       //server script to process data
@@ -212,15 +224,4 @@ $(function() {
     onPasswordKeyUp();
     passphrase = $(this).val(); // change encrypted file's passphrase
   });
-
-  // Slice a file into chunks for fast encryption & upload.
-  function sliceFile(file){
-    file.slice = file.mozSlice || file.webkitSlice || file.slice; // compatibility
-    var pos = 0;
-    var slices = [];
-    while(pos < file.size){
-      slices.push(file.slice(pos, pos += window.secureShared.chunkSize));
-    }
-    return slices;
-  }
 });

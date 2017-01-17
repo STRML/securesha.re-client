@@ -1,35 +1,18 @@
 /*global _:true, escape: true, CryptoJS: true */
 window.secureShared = {
-  chunkSize : 64 * 1024, // 64kb chunks
-  chunkDelimiter : "/--delimiter--/",
-  fileSizeLimit: 20 * 1024 * 1024,
-  workerCount : 4,
-  spawnWorkers : function(workerCount){
-    var workers = [];
-    for(var i = 0; i < workerCount; i++){
-      workers.push(new Worker("app/crypto.js"));
-    }
-    return workers;
-  },
+  fileSizeLimit: 200 * 1024 * 1024,
 
   convertLatin1ToUtf8 : function(str){
     return decodeURIComponent(escape(str));
   },
 
-  // Generate a 256-bit key. 
+  // Generate a 256-bit key.
   generatePassphrase: function() {
     // If window.crypto is available, use it.
     var passphrase;
-    if(window.crypto && typeof window.crypto.getRandomValues === "function"){
-      var array = new Uint8Array(32);
-      window.crypto.getRandomValues(array);
-      passphrase = window.secureShared.ab2str(array.buffer);
-    }
-    // Otherwise, use CryptoJS internals.
-    else {
-      passphrase = CryptoJS.enc.Base64.stringify(CryptoJS.lib.WordArray.random(32));
-    }
-    return window.secureShared.urlSafeBase64encode(passphrase);
+    var array = new Uint8Array(32);
+    window.crypto.getRandomValues(array);
+    return Unibabel.bufferToBase64(array);
   },
 
   // Create url-safe base64 string from array buffer.
