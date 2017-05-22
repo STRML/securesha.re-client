@@ -87,16 +87,7 @@ $(function() {
       )
     })
     .then(function(cryptoKey) {
-      return new Promise(function(resolve, reject) {
-        var reader = new FileReader();
-        reader.addEventListener("loadend", function() {
-          resolve(reader.result);
-        });
-        reader.addEventListener("loadError", function() {
-          reject(reader.error);
-        })
-        reader.readAsArrayBuffer(file);
-      })
+      return readFileAsArrayBuffer(file)
       .then(function(fileBuf) {
         var iv = new Uint8Array(16);
         window.crypto.getRandomValues(iv);
@@ -204,6 +195,20 @@ $(function() {
         $(".itemStatus").html("Upload complete. Generating URL...");
       }
     }
+  }
+
+  // Create a FileReader and return a Promise<ArrayBuffer>
+  function readFileAsArrayBuffer(file) {
+    return new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.addEventListener("loadend", function() {
+        resolve(reader.result);
+      });
+      reader.addEventListener("loadError", function() {
+        reject(reader.error);
+      })
+      reader.readAsArrayBuffer(file);
+    });
   }
 
   // Display uploaded file URL on screen.
