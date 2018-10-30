@@ -23,7 +23,7 @@ $(function() {
 
     // Check file
     var file = this.files[0]; // browser 'File' object
-    if(!file) return window.alert("Please attach a file to share.");
+    if(!file) return window.alert("Please attach a file to share first.");
     if(file.size > window.secureShared.fileSizeLimit) return window.alert("File is too big. Please choose a file under 10MB.");
     file.name = file.name + "?" + (Math.random() * 1000); // browser cache buster
 
@@ -209,8 +209,11 @@ $(function() {
   // Regen hashes if the user changes the encryption key
   var onPasswordKeyUp = _.debounce(function(){$("#fileupload").trigger('change');}, 250);
   $('#password').bind('input', function() {
-    onPasswordKeyUp();
-    passphrase = $(this).val(); // change encrypted file's passphrase
+    // Ensure the slider is actually open
+    if ($("#advance-toggle").find("i").hasClass("glyphicon-chevron-down")) {
+      onPasswordKeyUp();
+      passphrase = $(this).val(); // change encrypted file's passphrase
+    }
   });
 
   // Slice a file into chunks for fast encryption & upload.

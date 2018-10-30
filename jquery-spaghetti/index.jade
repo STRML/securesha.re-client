@@ -39,9 +39,9 @@ html(lang="en")
               #inner-advanced
                 #password-field
                   p File Password
-                  input#password.form-control(type='text', name='password')
+                  input#password.form-control(type='text', name='password', autocomplete='off')
                   .passwordNotes.help-block
-                    | Change this password if you have shared it with the recipient previously. 
+                    | Change this password if you have shared it with the recipient previously.
                     | The default is secure and randomly generated;
                     | keep it as-is for maximum security.
                 #expiration-field
@@ -65,6 +65,6 @@ html(lang="en")
               .uploadLoader.ajaxLoader
             .clear
             .itemStatus
-        
+
     include includes/footer
 
