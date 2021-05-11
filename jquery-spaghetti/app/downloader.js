@@ -192,23 +192,10 @@ $(function() {
       var binaryData = decryptedFile.fileData.join("");
       var blob = new Blob([window.secureShared.str2ab(binaryData)], {type: fileMeta.contentType});
 
-      if(!/Safari/i.test(window.BrowserDetect.browser)){
-        var URL = window.URL || window.webkitURL;
-        var url = URL.createObjectURL(blob);
-        $("<a>").attr("href", url).attr("download", decryptedFile.fileName).addClass("btn btn-success")
-          .html('<i class="icon-download-alt icon-white"></i> Download').appendTo("#downloaded-content").hide().fadeIn();
-      } else {
-        // Safari can't open blobs, create a data URI
-        // This will fail if the file is greater than ~200KB or so
-        // TODO figure out what's wrong with the blob size in safari
-        // TODO Why doesn't safari want a dataview here?
-        if(blob.size > 200000) return window.alert("Sorry, this file is too big for Safari. Please try to open it in Chrome.");
-        var fileReader = new FileReader();
-        fileReader.onload = function (event) {
-          $("<a>").text("Download").appendTo("#downloaded-content").attr("href", event.target.result).hide().fadeIn();
-        };
-        fileReader.readAsDataURL(blob);
-      }
+      var URL = window.URL || window.webkitURL;
+      var url = URL.createObjectURL(blob);
+      $("<a>").attr("href", url).attr("download", decryptedFile.fileName).addClass("btn btn-success")
+        .html('<i class="icon-download-alt icon-white"></i> Download').appendTo("#downloaded-content").hide().fadeIn();
 
       window.isDecrypting = false;
       $(".downloadStatusText").hide();
