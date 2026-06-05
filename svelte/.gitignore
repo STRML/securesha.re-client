@@ -1,0 +1,6 @@
+node_modules
+.tmp
+*.local
+
+# NOTE: app/ is intentionally NOT ignored — it is the build output this variant
+# serves, committed so `node app -f svelte` runs without a build step.
