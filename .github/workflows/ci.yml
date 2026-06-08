@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  svelte:
+    name: svelte client (test + build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: svelte
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: svelte/package-lock.json
+
+      - run: npm ci
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # app/ is committed build output served by the server with no build step.
+      # Fail CI if a build would change it (i.e. someone hand-edited app/ or
+      # forgot to rebuild after changing src/).
+      - name: Verify committed build output is up to date
+        run: |
+          if ! git diff --quiet -- app; then
+            echo "::error::svelte/app/ is out of date with src/. Run 'npm run build' and commit."
+            git --no-pager diff --stat -- app
+            exit 1
+          fi
