@@ -44,7 +44,18 @@ main {
 
 /* ---- Hero title ---- */
 .title {
-  margin-bottom: 30px;
+  margin: 0 0 30px;
+}
+
+/* Rules and heading run 100px wider than the 600px content column, but only
+   where the viewport has room for the bleed. */
+@media (min-width: 800px) {
+  .title {
+    margin: 0 -50px 30px;
+  }
+  .title h1 {
+    white-space: nowrap;
+  }
 }
 
 .intro-line {
@@ -61,9 +72,37 @@ main {
   line-height: 1.1;
 }
 
+.title h1 a {
+  text-decoration: none;
+}
+
 .title .tagline {
   font-size: 17px;
-  margin: 0 0 22px;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+/* "Upload a File" sits above the panel, not inside it */
+.panel-title {
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 20px 0 10px;
+}
+
+.ico {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  vertical-align: -0.125em;
+  margin-right: 6px;
+}
+.toggle .ico {
+  margin-right: 2px;
+  transition: transform 0.1s;
+}
+.toggle .ico.open {
+  transform: rotate(90deg);
 }
 
 /* ---- Panel (upload / download) ---- */
@@ -128,10 +167,10 @@ textarea {
   vertical-align: middle;
   border: 1px solid transparent;
   border-radius: 4px;
-  padding: 8px 14px;
+  padding: 6px 12px;
+  line-height: 1.428571429;
   cursor: pointer;
   color: #fff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .btn:disabled {
@@ -140,21 +179,21 @@ textarea {
 }
 
 .btn-success {
-  background-color: #5bb75b;
-  background-image: linear-gradient(to bottom, #62c462, #51a351);
-  border-color: #51a351 #51a351 #387038;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
 }
 .btn-success:hover:not(:disabled) {
-  background-image: linear-gradient(to bottom, #51a351, #499249);
+  background-color: #47a447;
+  border-color: #398439;
 }
 
 .btn-primary {
-  background-color: #006dcc;
-  background-image: linear-gradient(to bottom, #08c, #0044cc);
-  border-color: #0044cc #0044cc #002a80;
+  background-color: #428bca;
+  border-color: #357ebd;
 }
 .btn-primary:hover:not(:disabled) {
-  background-image: linear-gradient(to bottom, #0044cc, #003bb3);
+  background-color: #3276b1;
+  border-color: #285e8e;
 }
 
 .btn-block {
@@ -221,8 +260,8 @@ textarea {
   align-items: center;
   padding: 0 12px;
   color: #fff;
-  background-image: linear-gradient(to bottom, #62c462, #51a351);
-  border: 1px solid #51a351;
+  background-color: #5cb85c;
+  border: 1px solid #4cae4c;
   border-left: 0;
   border-radius: 0 4px 4px 0;
   white-space: nowrap;
@@ -284,15 +323,15 @@ footer {
   flex-shrink: 0;
   background: #000;
   width: 100%;
-  padding: 30px 0 40px;
+  padding: 15px 0 20px;
 }
 
 .footer-inner {
-  width: 600px;
+  width: 1040px;
   max-width: 92vw;
   margin: 0 auto;
   display: flex;
-  gap: 48px;
+  gap: 30px;
 }
 
 .footer-inner article {
@@ -301,21 +340,23 @@ footer {
 }
 
 .footer-inner h2 {
-  font-size: 1.6em;
+  font-size: 30px;
   font-weight: 500;
-  margin: 0 0 10px;
+  line-height: 1.1;
+  margin: 20px 0 10px;
 }
 
 .footer-inner ul {
-  padding-left: 20px;
-  margin: 0;
+  padding-left: 40px;
+  margin: 0 0 10px;
 }
 .footer-inner li {
-  margin-bottom: 6px;
+  line-height: 20px;
 }
 
 .footer-inner a {
-  color: #6fb3ff;
+  color: #428bca;
+  text-decoration: none;
 }
 
 @media (max-width: 700px) {
