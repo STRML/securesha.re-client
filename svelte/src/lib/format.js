@@ -52,3 +52,9 @@ export function parseHash(hash) {
 export function isCurrentKey(key) {
   return /^[A-Za-z0-9_-]{43}$/.test(key || '');
 }
+
+// True when the URL has a query part, even an empty one ("/?#u=..."). Only the part
+// before the fragment counts, so a "?" inside the fragment does not.
+export function hasQuery(href) {
+  return (href || '').split('#')[0].includes('?');
+}

@@ -1,7 +1,7 @@
 <script>
   import Upload from './lib/Upload.svelte';
   import Download from './lib/Download.svelte';
-  import { parseHash, isCurrentKey } from './lib/format.js';
+  import { parseHash, isCurrentKey, hasQuery } from './lib/format.js';
 
   const hash = parseHash(window.location.hash);
   const isDownload = !!hash.u;
@@ -10,7 +10,7 @@
   // fetching the file first would use up a view for nothing. The server serves the
   // original client at "/?", so send those links there before any fetch.
   const legacyKey = isDownload && !!hash.p && !isCurrentKey(hash.p);
-  const alreadyAtLegacyUrl = window.location.href.includes('?');
+  const alreadyAtLegacyUrl = hasQuery(window.location.href);
   if (legacyKey && !alreadyAtLegacyUrl) {
     window.location.replace('/?' + window.location.hash);
   }
