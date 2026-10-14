@@ -77,6 +77,11 @@ main {
   padding: 20px;
 }
 
+.panel.dragging {
+  outline: 2px dashed rgba(255, 255, 255, 0.8);
+  outline-offset: -8px;
+}
+
 .panel h2 {
   margin: 0 0 16px;
   font-weight: 500;

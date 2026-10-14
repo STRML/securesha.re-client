@@ -18,15 +18,15 @@
   let shareLink = $state('');
   let shareLinkNoKey = $state('');
   let copied = $state('');
+  let dragging = $state(false);
 
   const expiry = $derived(new Date(Date.now() + days * 86400000));
   const busy = $derived(phase === 'encrypting' || phase === 'uploading');
 
-  function onPick(e) {
+  function acceptFile(f) {
     errorMsg = '';
     shareLink = '';
     phase = 'idle';
-    const f = e.target.files[0];
     if (!f) {
       file = null;
       return;
@@ -37,6 +37,22 @@
       return;
     }
     file = f;
+  }
+
+  const onPick = (e) => acceptFile(e.target.files[0]);
+
+  // Only react to drags that carry files, and only while a new file can be chosen.
+  const canDrop = (e) => !busy && phase !== 'done' && e.dataTransfer?.types.includes('Files');
+
+  function onDragOver(e) {
+    e.preventDefault(); // also stops the browser from navigating to a dropped file
+    dragging = canDrop(e);
+  }
+
+  function onDrop(e) {
+    e.preventDefault();
+    dragging = false;
+    if (canDrop(e)) acceptFile(e.dataTransfer.files[0]);
   }
 
   async function share() {
@@ -93,7 +109,13 @@
   }
 </script>
 
-<section class="panel">
+<svelte:window
+  ondragover={onDragOver}
+  ondragleave={(e) => !e.relatedTarget && (dragging = false)}
+  ondrop={onDrop}
+/>
+
+<section class="panel" class:dragging>
   {#if phase === 'done'}
     <h2>Your secure link is ready</h2>
     <div class="alert info">Encrypted in your browser and uploaded. Share the link below.</div>
@@ -131,6 +153,9 @@
         + {file ? 'Change file' : 'Choose Your File…'}
         <input type="file" onchange={onPick} disabled={busy} />
       </span>
+      <p class="muted" style="margin:10px 0 0">
+        {dragging ? 'Drop to select' : 'or drag a file (a .zip works) anywhere on this page'}
+      </p>
       {#if file}
         <p class="muted" style="margin:10px 0 0">
           {file.name} · {fileSize(file.size)}
