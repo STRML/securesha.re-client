@@ -46,3 +46,15 @@ export function parseHash(hash) {
   }
   return out;
 }
+
+// A key made by this client is a 32-byte AES-GCM key as 43 base64url characters.
+// Links from the original client carry a longer double-base64 passphrase.
+export function isCurrentKey(key) {
+  return /^[A-Za-z0-9_-]{43}$/.test(key || '');
+}
+
+// True when the URL has a query part, even an empty one ("/?#u=..."). Only the part
+// before the fragment counts, so a "?" inside the fragment does not.
+export function hasQuery(href) {
+  return (href || '').split('#')[0].includes('?');
+}

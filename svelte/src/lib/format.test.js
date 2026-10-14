@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { bytesToB64url, b64urlToBytes, fileSize, parseHash } from './format.js';
+import { bytesToB64url, b64urlToBytes, fileSize, parseHash, isCurrentKey, hasQuery } from './format.js';
 
 describe('base64url', () => {
   it('round-trips arbitrary bytes', () => {
@@ -45,5 +45,36 @@ describe('parseHash', () => {
   });
   it('tolerates a leading ? (legacy ?# links)', () => {
     expect(parseHash('?u=x&p=y')).toEqual({ u: 'x', p: 'y' });
+  });
+});
+
+describe('isCurrentKey', () => {
+  it('accepts a freshly encoded 32-byte key', () => {
+    expect(isCurrentKey(bytesToB64url(new Uint8Array(32).fill(7)))).toBe(true);
+  });
+  it('rejects the original client passphrase (double base64, ~59 chars)', () => {
+    const old = btoa(btoa(String.fromCharCode(...new Uint8Array(32).fill(7)))).replace(/=+$/, '');
+    expect(old.length).toBeGreaterThan(43);
+    expect(isCurrentKey(old)).toBe(false);
+  });
+  it('rejects empty, undefined, and wrong-length keys', () => {
+    for (const k of ['', undefined, 'short', 'a'.repeat(44), 'a'.repeat(42)]) {
+      expect(isCurrentKey(k)).toBe(false);
+    }
+  });
+});
+
+describe('hasQuery', () => {
+  it('sees the empty query of an original-client link', () => {
+    expect(hasQuery('https://securesha.re/?#u=abc&p=xyz')).toBe(true);
+    expect(hasQuery('https://securesha.re/?u=abc')).toBe(true);
+  });
+  it('ignores a ? inside the fragment', () => {
+    expect(hasQuery('https://securesha.re/#u=a?b&p=xyz')).toBe(false);
+  });
+  it('is false for a plain current-client link', () => {
+    expect(hasQuery('https://securesha.re/#u=abc&p=xyz')).toBe(false);
+    expect(hasQuery('')).toBe(false);
+    expect(hasQuery(undefined)).toBe(false);
   });
 });

@@ -1,10 +1,19 @@
 <script>
   import Upload from './lib/Upload.svelte';
   import Download from './lib/Download.svelte';
-  import { parseHash } from './lib/format.js';
+  import { parseHash, isCurrentKey, hasQuery } from './lib/format.js';
 
   const hash = parseHash(window.location.hash);
   const isDownload = !!hash.u;
+
+  // A link from the original client carries a key this client cannot read, and
+  // fetching the file first would use up a view for nothing. The server serves the
+  // original client at "/?", so send those links there before any fetch.
+  const legacyKey = isDownload && !!hash.p && !isCurrentKey(hash.p);
+  const alreadyAtLegacyUrl = hasQuery(window.location.href);
+  if (legacyKey && !alreadyAtLegacyUrl) {
+    window.location.replace('/?' + window.location.hash);
+  }
 </script>
 
 <main>
@@ -18,7 +27,15 @@
     <div class="intro-line"></div>
   </div>
 
-  {#if isDownload}
+  {#if legacyKey}
+    <section class="panel">
+      <h2>Link from an older version</h2>
+      <div class="alert warn">
+        This link was made by the previous version of Securesha.re and cannot be opened
+        here. Nothing was downloaded, so it has not used up a view.
+      </div>
+    </section>
+  {:else if isDownload}
     <Download url={hash.u} keyFromHash={hash.p || ''} />
   {:else}
     <Upload />
