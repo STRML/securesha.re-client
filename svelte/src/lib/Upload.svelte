@@ -61,7 +61,7 @@
       return;
     }
     acceptFile(files[0]);
-    if (files.length > 1) errorMsg = 'Only one file at a time. Selected the first.';
+    if (file && files.length > 1) errorMsg = 'Only one file at a time. Selected the first.';
   }
 
   async function share() {
