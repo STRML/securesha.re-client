@@ -44,8 +44,18 @@ main {
 
 /* ---- Hero title ---- */
 .title {
-  /* Rules and heading run 100px wider than the 600px content column. */
-  margin: 0 -50px 30px;
+  margin: 0 0 30px;
+}
+
+/* Rules and heading run 100px wider than the 600px content column, but only
+   where the viewport has room for the bleed. */
+@media (min-width: 800px) {
+  .title {
+    margin: 0 -50px 30px;
+  }
+  .title h1 {
+    white-space: nowrap;
+  }
 }
 
 .intro-line {
@@ -60,7 +70,6 @@ main {
   font-weight: 700;
   margin: 0 0 15px;
   line-height: 1.1;
-  white-space: nowrap;
 }
 
 .title h1 a {
@@ -354,12 +363,8 @@ footer {
   main {
     padding-top: 40px;
   }
-  .title {
-    margin: 0 0 30px;
-  }
   .title h1 {
     font-size: 34px;
-    white-space: normal;
   }
   .footer-inner {
     flex-direction: column;
