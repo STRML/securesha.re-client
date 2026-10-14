@@ -52,7 +52,16 @@
   function onDrop(e) {
     e.preventDefault();
     dragging = false;
-    if (canDrop(e)) acceptFile(e.dataTransfer.files[0]);
+    if (!canDrop(e)) return;
+    const { files, items } = e.dataTransfer;
+    // A dropped folder shows up as a File too; only the entry API tells them apart.
+    if (items[0]?.webkitGetAsEntry?.()?.isDirectory) {
+      acceptFile(null);
+      errorMsg = 'Folders cannot be shared. Zip it first, then drop the zip.';
+      return;
+    }
+    acceptFile(files[0]);
+    if (files.length > 1) errorMsg = 'Only one file at a time. Selected the first.';
   }
 
   async function share() {
