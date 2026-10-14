@@ -124,6 +124,10 @@
   ondrop={onDrop}
 />
 
+{#if phase !== 'done'}
+  <h2 class="panel-title">Upload a File</h2>
+{/if}
+
 <section class="panel" class:dragging>
   {#if phase === 'done'}
     <h2>Your secure link is ready</h2>
@@ -155,11 +159,9 @@
       the link as the secret.
     </p>
   {:else}
-    <h2>Upload a File</h2>
-
     <div class="field">
       <span class="btn btn-success file-pick">
-        + {file ? 'Change file' : 'Choose Your File…'}
+        <svg class="ico" viewBox="0 0 12 12" aria-hidden="true"><path d="M5 0h2v5h5v2H7v5H5V7H0V5h5z" /></svg>{file ? 'Change file' : 'Choose Your File...'}
         <input type="file" onchange={onPick} disabled={busy} />
       </span>
       <p class="muted" style="margin:10px 0 0">
@@ -173,7 +175,7 @@
     </div>
 
     <button class="toggle" onclick={() => (showAdvanced = !showAdvanced)}>
-      {showAdvanced ? '▾' : '▸'} Advanced Options
+      <svg class="ico" class:open={showAdvanced} viewBox="0 0 8 12" aria-hidden="true"><path d="M1.5 0 0 1.5 4.5 6 0 10.5 1.5 12 7.5 6z" /></svg>Advanced Options
     </button>
 
     {#if showAdvanced}
@@ -202,8 +204,8 @@
     {/if}
 
     <div class="actions">
-      <button class="btn btn-primary" onclick={share} disabled={busy || !file}>
-        🔒 {#if phase === 'encrypting'}Encrypting…{:else if phase === 'uploading'}Uploading…{:else}Get Secure Link{/if}
+      <button class="btn btn-primary" onclick={share} disabled={busy}>
+        <svg class="ico" viewBox="0 0 12 14" aria-hidden="true"><path fill-rule="evenodd" d="M3 5V4a3 3 0 0 1 6 0v1h1v8H2V5zm1.5 0h3V4a1.5 1.5 0 0 0-3 0z" /></svg>{#if phase === 'encrypting'}Encrypting…{:else if phase === 'uploading'}Uploading…{:else}Get Secure Link{/if}
       </button>
     </div>
 
