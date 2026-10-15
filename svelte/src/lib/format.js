@@ -47,10 +47,13 @@ export function parseHash(hash) {
   return out;
 }
 
-// A key made by this client is a 32-byte AES-GCM key as 43 base64url characters.
-// Links from the original client carry a longer double-base64 passphrase.
-export function isCurrentKey(key) {
-  return /^[A-Za-z0-9_-]{43}$/.test(key || '');
+// True when the URL has an EMPTY query part before the fragment ("/?#u=..."). The
+// original client built its links as "...?#u=...", this one builds ".../#u=...". Only
+// an empty query counts: a link shared through a mailer or social site can pick up
+// "?fbclid=..." or "?utm_...", and that is not a reason to hand it to the other client.
+// The key cannot tell the two apart: both are 32 random bytes in base64, 43 characters.
+export function hasEmptyQuery(href) {
+  return /\?$/.test((href || '').split('#')[0]);
 }
 
 // The server serves the original client at this path. It is a real path, not "/?",

@@ -1,7 +1,6 @@
 <script>
   import { importKeyB64, decryptPayload, TransportError, DecryptError } from './crypto.js';
   import { getFile } from './api.js';
-  import { isCurrentKey, isOriginalPath, ORIGINAL_CLIENT_PATH } from './format.js';
 
   let { url, keyFromHash = '' } = $props();
 
@@ -61,21 +60,10 @@
     }
   }
 
-  // A key from the original client means the file is in the original format. Fetching
-  // it here would use up a view and then fail, so hand the link to the original client.
-  function openInOriginalClient(keyB64) {
-    if (isOriginalPath(window.location.pathname)) {
-      errorMsg = 'This key was made by the previous version of Securesha.re and cannot be used here. Nothing was downloaded.';
-      return;
-    }
-    window.location.assign(ORIGINAL_CLIENT_PATH + '#u=' + url + '&p=' + encodeURIComponent(keyB64));
-  }
-
   function submitKey() {
     const key = keyInput.trim();
     if (!key) return;
     if (body) return doDecrypt(key); // wrong-key retry: bytes are already here
-    if (!isCurrentKey(key)) return openInOriginalClient(key);
     start(key);
   }
 
