@@ -1,18 +1,18 @@
 <script>
   import Upload from './lib/Upload.svelte';
   import Download from './lib/Download.svelte';
-  import { parseHash, isCurrentKey, hasQuery } from './lib/format.js';
+  import { parseHash, isCurrentKey, isOriginalPath, ORIGINAL_CLIENT_PATH } from './lib/format.js';
 
   const hash = parseHash(window.location.hash);
   const isDownload = !!hash.u;
 
   // A link from the original client carries a key this client cannot read, and
-  // fetching the file first would use up a view for nothing. The server serves the
-  // original client at "/?", so send those links there before any fetch.
+  // fetching the file first would use up a view for nothing. Those links arrive here
+  // as "/?#u=..." (a proxy may drop the empty query), so send them to the original
+  // client, which the server serves at ORIGINAL_CLIENT_PATH, before any fetch.
   const legacyKey = isDownload && !!hash.p && !isCurrentKey(hash.p);
-  const alreadyAtLegacyUrl = hasQuery(window.location.href);
-  if (legacyKey && !alreadyAtLegacyUrl) {
-    window.location.replace('/?' + window.location.hash);
+  if (legacyKey && !isOriginalPath(window.location.pathname)) {
+    window.location.replace(ORIGINAL_CLIENT_PATH + window.location.hash);
   }
 </script>
 

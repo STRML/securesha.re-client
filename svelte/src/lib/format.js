@@ -53,8 +53,10 @@ export function isCurrentKey(key) {
   return /^[A-Za-z0-9_-]{43}$/.test(key || '');
 }
 
-// True when the URL has a query part, even an empty one ("/?#u=..."). Only the part
-// before the fragment counts, so a "?" inside the fragment does not.
-export function hasQuery(href) {
-  return (href || '').split('#')[0].includes('?');
+// The server serves the original client at this path. It is a real path, not "/?",
+// because a proxy may drop an empty query before the request reaches the server.
+export const ORIGINAL_CLIENT_PATH = '/original';
+
+export function isOriginalPath(pathname) {
+  return pathname === ORIGINAL_CLIENT_PATH;
 }

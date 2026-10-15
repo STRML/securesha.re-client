@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { bytesToB64url, b64urlToBytes, fileSize, parseHash, isCurrentKey, hasQuery } from './format.js';
+import { bytesToB64url, b64urlToBytes, fileSize, parseHash, isCurrentKey, isOriginalPath } from './format.js';
 
 describe('base64url', () => {
   it('round-trips arbitrary bytes', () => {
@@ -64,17 +64,12 @@ describe('isCurrentKey', () => {
   });
 });
 
-describe('hasQuery', () => {
-  it('sees the empty query of an original-client link', () => {
-    expect(hasQuery('https://securesha.re/?#u=abc&p=xyz')).toBe(true);
-    expect(hasQuery('https://securesha.re/?u=abc')).toBe(true);
-  });
-  it('ignores a ? inside the fragment', () => {
-    expect(hasQuery('https://securesha.re/#u=a?b&p=xyz')).toBe(false);
-  });
-  it('is false for a plain current-client link', () => {
-    expect(hasQuery('https://securesha.re/#u=abc&p=xyz')).toBe(false);
-    expect(hasQuery('')).toBe(false);
-    expect(hasQuery(undefined)).toBe(false);
+describe('isOriginalPath', () => {
+  it('matches only the original client path', () => {
+    expect(isOriginalPath('/original')).toBe(true);
+    expect(isOriginalPath('/')).toBe(false);
+    expect(isOriginalPath('/originals')).toBe(false);
+    expect(isOriginalPath('/original/')).toBe(false);
+    expect(isOriginalPath('')).toBe(false);
   });
 });
