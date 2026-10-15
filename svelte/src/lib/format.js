@@ -47,12 +47,13 @@ export function parseHash(hash) {
   return out;
 }
 
-// True when the URL has a query part, even an empty one ("/?#u=..."). Only the part
-// before the fragment counts, so a "?" inside the fragment does not. The original
-// client built its links as "...?#u=...", this one builds ".../#u=...". The key cannot
-// tell the two apart: both are 32 random bytes in base64, 43 characters.
-export function hasQuery(href) {
-  return (href || '').split('#')[0].includes('?');
+// True when the URL has an EMPTY query part before the fragment ("/?#u=..."). The
+// original client built its links as "...?#u=...", this one builds ".../#u=...". Only
+// an empty query counts: a link shared through a mailer or social site can pick up
+// "?fbclid=..." or "?utm_...", and that is not a reason to hand it to the other client.
+// The key cannot tell the two apart: both are 32 random bytes in base64, 43 characters.
+export function hasEmptyQuery(href) {
+  return /\?$/.test((href || '').split('#')[0]);
 }
 
 // The server serves the original client at this path. It is a real path, not "/?",

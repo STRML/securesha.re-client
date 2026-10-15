@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { bytesToB64url, b64urlToBytes, fileSize, parseHash, hasQuery, isOriginalPath } from './format.js';
+import { bytesToB64url, b64urlToBytes, fileSize, parseHash, hasEmptyQuery, isOriginalPath } from './format.js';
 
 describe('base64url', () => {
   it('round-trips arbitrary bytes', () => {
@@ -48,18 +48,23 @@ describe('parseHash', () => {
   });
 });
 
-describe('hasQuery', () => {
+describe('hasEmptyQuery', () => {
   it('sees the empty query of an original-client link', () => {
-    expect(hasQuery('https://securesha.re/?#u=abc&p=xyz')).toBe(true);
-    expect(hasQuery('https://securesha.re/?u=abc')).toBe(true);
+    expect(hasEmptyQuery('https://securesha.re/?#u=abc&p=xyz')).toBe(true);
+  });
+  it('ignores a query with parameters, such as a tracker added in transit', () => {
+    expect(hasEmptyQuery('https://securesha.re/?fbclid=1#u=abc&p=xyz')).toBe(false);
+    expect(hasEmptyQuery('https://securesha.re/?utm_source=x&u=abc')).toBe(false);
+    expect(hasEmptyQuery('https://securesha.re/?u=abc')).toBe(false);
   });
   it('ignores a ? inside the fragment', () => {
-    expect(hasQuery('https://securesha.re/#u=a?b&p=xyz')).toBe(false);
+    expect(hasEmptyQuery('https://securesha.re/#u=a?b&p=xyz')).toBe(false);
+    expect(hasEmptyQuery('https://securesha.re/#u=abc?')).toBe(false);
   });
   it('is false for a link this client makes', () => {
-    expect(hasQuery('https://securesha.re/#u=abc&p=xyz')).toBe(false);
-    expect(hasQuery('')).toBe(false);
-    expect(hasQuery(undefined)).toBe(false);
+    expect(hasEmptyQuery('https://securesha.re/#u=abc&p=xyz')).toBe(false);
+    expect(hasEmptyQuery('')).toBe(false);
+    expect(hasEmptyQuery(undefined)).toBe(false);
   });
   it('does not depend on the key: a realistic original-client key has the current key shape', () => {
     // generatePassphrase(): base64 of 32 random bytes, then urlSafeBase64encode
@@ -68,8 +73,8 @@ describe('hasQuery', () => {
     const newKey = bytesToB64url(new Uint8Array(32).map((_, i) => (i * 41 + 3) & 0xff));
     expect(oldKey.length).toBe(43);
     expect(newKey.length).toBe(43);
-    expect(hasQuery(`https://securesha.re/?#u=x&p=${oldKey}`)).toBe(true);
-    expect(hasQuery(`https://securesha.re/#u=x&p=${newKey}`)).toBe(false);
+    expect(hasEmptyQuery(`https://securesha.re/?#u=x&p=${oldKey}`)).toBe(true);
+    expect(hasEmptyQuery(`https://securesha.re/#u=x&p=${newKey}`)).toBe(false);
   });
 });
 

@@ -4,7 +4,8 @@
 
   let { url, keyFromHash = '' } = $props();
 
-  let phase = $state('downloading'); // downloading | needkey | decrypting | ready | error
+  // askkey: no key in the link yet, so nothing has been fetched.
+  let phase = $state(keyFromHash ? 'downloading' : 'askkey'); // askkey | downloading | needkey | decrypting | ready | error
   let progress = $state(0);
   let errorMsg = $state('');
   let meta = $state(null);
@@ -19,17 +20,13 @@
   const remaining = $derived(meta && meta.maxViews != null ? meta.maxViews - meta.views : null);
   const lastView = $derived(remaining != null && remaining <= 1);
 
-  async function start() {
+  async function start(keyB64) {
     try {
       phase = 'downloading';
       const res = await getFile(url, (p) => (progress = p));
       body = res.body;
       meta = res.meta;
-      if (keyFromHash) {
-        await doDecrypt(keyFromHash);
-      } else {
-        phase = 'needkey';
-      }
+      await doDecrypt(keyB64);
     } catch (e) {
       phase = 'error';
       errorMsg = e?.message || 'Download failed.';
@@ -64,10 +61,13 @@
   }
 
   function submitKey() {
-    if (keyInput.trim()) doDecrypt(keyInput);
+    const key = keyInput.trim();
+    if (!key) return;
+    if (body) return doDecrypt(key); // wrong-key retry: bytes are already here
+    start(key);
   }
 
-  start();
+  if (keyFromHash) start(keyFromHash);
 </script>
 
 <section class="panel">
@@ -93,7 +93,10 @@
       {/if}
     {/if}
 
-    {#if phase === 'needkey'}
+    {#if phase === 'needkey' || phase === 'askkey'}
+      {#if phase === 'askkey'}
+        <p>Enter the key from the sender to open this file. Nothing is downloaded until you do.</p>
+      {/if}
       <div class="field" style="margin-top:16px">
         <label for="key">File Password / Key</label>
         <input
@@ -106,7 +109,7 @@
       </div>
       <div class="actions">
         <button class="btn btn-success" onclick={submitKey} disabled={!keyInput.trim()}>
-          Decrypt &amp; Download
+          {phase === 'askkey' ? 'Continue' : 'Decrypt & Download'}
         </button>
       </div>
     {:else if phase === 'decrypting'}

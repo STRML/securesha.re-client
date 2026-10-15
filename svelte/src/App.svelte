@@ -1,19 +1,19 @@
 <script>
   import Upload from './lib/Upload.svelte';
   import Download from './lib/Download.svelte';
-  import { parseHash, hasQuery, isOriginalPath, ORIGINAL_CLIENT_PATH } from './lib/format.js';
+  import { parseHash, hasEmptyQuery, isOriginalPath, ORIGINAL_CLIENT_PATH } from './lib/format.js';
 
   const hash = parseHash(window.location.hash);
   const isDownload = !!hash.u;
 
   // A link made by the original client is built as "...?#u=...", so the URL has a query
-  // part before the "#". Links made by this client are ".../#u=...". The key cannot tell
+  // part (an empty one) before the "#". Links made by this client are ".../#u=...". The key cannot tell
   // them apart (both are 32 random bytes in base64), and fetching with the wrong client
   // uses a view and deletes a one-view file, so decide from the link before any request.
   // The server serves the original client at ORIGINAL_CLIENT_PATH; if this client is
   // being served there instead (no --legacy), show a message and fetch nothing.
   const onOriginalPath = isOriginalPath(window.location.pathname);
-  const fromOriginalClient = isDownload && (onOriginalPath || hasQuery(window.location.href));
+  const fromOriginalClient = isDownload && (onOriginalPath || hasEmptyQuery(window.location.href));
   if (fromOriginalClient && !onOriginalPath) {
     window.location.replace(ORIGINAL_CLIENT_PATH + window.location.hash);
   }
