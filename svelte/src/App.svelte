@@ -1,17 +1,20 @@
 <script>
   import Upload from './lib/Upload.svelte';
   import Download from './lib/Download.svelte';
-  import { parseHash, isCurrentKey, isOriginalPath, ORIGINAL_CLIENT_PATH } from './lib/format.js';
+  import { parseHash, hasQuery, isOriginalPath, ORIGINAL_CLIENT_PATH } from './lib/format.js';
 
   const hash = parseHash(window.location.hash);
   const isDownload = !!hash.u;
 
-  // A link from the original client carries a key this client cannot read, and
-  // fetching the file first would use up a view for nothing. Those links arrive here
-  // as "/?#u=..." (a proxy may drop the empty query), so send them to the original
-  // client, which the server serves at ORIGINAL_CLIENT_PATH, before any fetch.
-  const legacyKey = isDownload && !!hash.p && !isCurrentKey(hash.p);
-  if (legacyKey && !isOriginalPath(window.location.pathname)) {
+  // A link made by the original client is built as "...?#u=...", so the URL has a query
+  // part before the "#". Links made by this client are ".../#u=...". The key cannot tell
+  // them apart (both are 32 random bytes in base64), and fetching with the wrong client
+  // uses a view and deletes a one-view file, so decide from the link before any request.
+  // The server serves the original client at ORIGINAL_CLIENT_PATH; if this client is
+  // being served there instead (no --legacy), show a message and fetch nothing.
+  const onOriginalPath = isOriginalPath(window.location.pathname);
+  const fromOriginalClient = isDownload && (onOriginalPath || hasQuery(window.location.href));
+  if (fromOriginalClient && !onOriginalPath) {
     window.location.replace(ORIGINAL_CLIENT_PATH + window.location.hash);
   }
 </script>
@@ -27,7 +30,7 @@
     <div class="intro-line"></div>
   </div>
 
-  {#if legacyKey}
+  {#if fromOriginalClient}
     <section class="panel">
       <h2>Link from an older version</h2>
       <div class="alert warn">

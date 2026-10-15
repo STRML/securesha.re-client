@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { bytesToB64url, b64urlToBytes, fileSize, parseHash, isCurrentKey, isOriginalPath } from './format.js';
+import { bytesToB64url, b64urlToBytes, fileSize, parseHash, hasQuery, isOriginalPath } from './format.js';
 
 describe('base64url', () => {
   it('round-trips arbitrary bytes', () => {
@@ -48,19 +48,28 @@ describe('parseHash', () => {
   });
 });
 
-describe('isCurrentKey', () => {
-  it('accepts a freshly encoded 32-byte key', () => {
-    expect(isCurrentKey(bytesToB64url(new Uint8Array(32).fill(7)))).toBe(true);
+describe('hasQuery', () => {
+  it('sees the empty query of an original-client link', () => {
+    expect(hasQuery('https://securesha.re/?#u=abc&p=xyz')).toBe(true);
+    expect(hasQuery('https://securesha.re/?u=abc')).toBe(true);
   });
-  it('rejects the original client passphrase (double base64, ~59 chars)', () => {
-    const old = btoa(btoa(String.fromCharCode(...new Uint8Array(32).fill(7)))).replace(/=+$/, '');
-    expect(old.length).toBeGreaterThan(43);
-    expect(isCurrentKey(old)).toBe(false);
+  it('ignores a ? inside the fragment', () => {
+    expect(hasQuery('https://securesha.re/#u=a?b&p=xyz')).toBe(false);
   });
-  it('rejects empty, undefined, and wrong-length keys', () => {
-    for (const k of ['', undefined, 'short', 'a'.repeat(44), 'a'.repeat(42)]) {
-      expect(isCurrentKey(k)).toBe(false);
-    }
+  it('is false for a link this client makes', () => {
+    expect(hasQuery('https://securesha.re/#u=abc&p=xyz')).toBe(false);
+    expect(hasQuery('')).toBe(false);
+    expect(hasQuery(undefined)).toBe(false);
+  });
+  it('does not depend on the key: a realistic original-client key has the current key shape', () => {
+    // generatePassphrase(): base64 of 32 random bytes, then urlSafeBase64encode
+    const std = btoa(String.fromCharCode(...new Uint8Array(32).map((_, i) => (i * 41 + 3) & 0xff)));
+    const oldKey = std.replace(/\+/g, '-').replace(/\//, '_').replace(/=/g, '');
+    const newKey = bytesToB64url(new Uint8Array(32).map((_, i) => (i * 41 + 3) & 0xff));
+    expect(oldKey.length).toBe(43);
+    expect(newKey.length).toBe(43);
+    expect(hasQuery(`https://securesha.re/?#u=x&p=${oldKey}`)).toBe(true);
+    expect(hasQuery(`https://securesha.re/#u=x&p=${newKey}`)).toBe(false);
   });
 });
 

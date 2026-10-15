@@ -1,12 +1,10 @@
 <script>
   import { importKeyB64, decryptPayload, TransportError, DecryptError } from './crypto.js';
   import { getFile } from './api.js';
-  import { isCurrentKey, isOriginalPath, ORIGINAL_CLIENT_PATH } from './format.js';
 
   let { url, keyFromHash = '' } = $props();
 
-  // askkey: no key in the link yet, so nothing has been fetched.
-  let phase = $state(keyFromHash ? 'downloading' : 'askkey'); // askkey | downloading | needkey | decrypting | ready | error
+  let phase = $state('downloading'); // downloading | needkey | decrypting | ready | error
   let progress = $state(0);
   let errorMsg = $state('');
   let meta = $state(null);
@@ -21,13 +19,17 @@
   const remaining = $derived(meta && meta.maxViews != null ? meta.maxViews - meta.views : null);
   const lastView = $derived(remaining != null && remaining <= 1);
 
-  async function start(keyB64) {
+  async function start() {
     try {
       phase = 'downloading';
       const res = await getFile(url, (p) => (progress = p));
       body = res.body;
       meta = res.meta;
-      await doDecrypt(keyB64);
+      if (keyFromHash) {
+        await doDecrypt(keyFromHash);
+      } else {
+        phase = 'needkey';
+      }
     } catch (e) {
       phase = 'error';
       errorMsg = e?.message || 'Download failed.';
@@ -61,25 +63,11 @@
     }
   }
 
-  // A key from the original client means the file is in the original format. Fetching
-  // it here would use up a view and then fail, so hand the link to the original client.
-  function openInOriginalClient(keyB64) {
-    if (isOriginalPath(window.location.pathname)) {
-      errorMsg = 'This key was made by the previous version of Securesha.re and cannot be used here. Nothing was downloaded.';
-      return;
-    }
-    window.location.assign(ORIGINAL_CLIENT_PATH + '#u=' + url + '&p=' + encodeURIComponent(keyB64));
-  }
-
   function submitKey() {
-    const key = keyInput.trim();
-    if (!key) return;
-    if (body) return doDecrypt(key); // wrong-key retry: bytes are already here
-    if (!isCurrentKey(key)) return openInOriginalClient(key);
-    start(key);
+    if (keyInput.trim()) doDecrypt(keyInput);
   }
 
-  if (keyFromHash) start(keyFromHash);
+  start();
 </script>
 
 <section class="panel">
@@ -105,10 +93,7 @@
       {/if}
     {/if}
 
-    {#if phase === 'needkey' || phase === 'askkey'}
-      {#if phase === 'askkey'}
-        <p>Enter the key from the sender to open this file. Nothing is downloaded until you do.</p>
-      {/if}
+    {#if phase === 'needkey'}
       <div class="field" style="margin-top:16px">
         <label for="key">File Password / Key</label>
         <input
@@ -121,7 +106,7 @@
       </div>
       <div class="actions">
         <button class="btn btn-success" onclick={submitKey} disabled={!keyInput.trim()}>
-          {phase === 'askkey' ? 'Continue' : 'Decrypt & Download'}
+          Decrypt &amp; Download
         </button>
       </div>
     {:else if phase === 'decrypting'}
